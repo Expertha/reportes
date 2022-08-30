@@ -26,7 +26,12 @@
 ########################################################################
 
 import json
+import datetime
+import io
+
 from odoo import fields, models, api, _
+from odoo.tools.misc import xlsxwriter
+from odoo.tools import config, date_utils, get_lang
 
 
 class CustomTrialBalance(models.AbstractModel):
@@ -49,27 +54,24 @@ class CustomTrialBalance(models.AbstractModel):
 
 		return templates
 
-	# @api.model
-	# def _get_columns(self, options):
-	# 	header1 = [
-	# 				  {'name': '', 'style': 'width: 100%'},
-	# 				  {'name': '', 'class': 'number', 'colspan': 1},
-	# 			  ] + [
-	# 				  {'name': options['date']['string'], 'class': 'number', 'colspan': 2},
-	# 				  {'name': '', 'class': 'number', 'colspan': 1},
-	# 			  ]
-	# 	header2 = [
-	# 		{'name': '', 'style': 'width: 100%'},
-	# 		{'name': _('Previous balance'), 'class': 'number o_account_coa_column_contrast'},
-	# 	]
-	#
-	# 	header2 += [
-	# 		{'name': _('Debit'), 'class': 'number o_account_coa_column_contrast'},
-	# 		{'name': _('Credit'), 'class': 'number o_account_coa_column_contrast'},
-	# 		{'name': _('Debit'), 'class': 'number o_account_coa_column_contrast'},
-	# 		{'name': _('Credit'), 'class': 'number o_account_coa_column_contrast'},
-	# 	]
-	# 	return [header1, header2]
+	@api.model
+	def _get_columns(self, options):
+		header1 = [
+					  {'name': '', 'style': 'width: 100%'}
+				  ] + [
+					  {'name': options['date']['string'], 'class': 'number', 'colspan': 4},
+				  ]
+		header2 = [
+			{'name': ' ', 'style': 'width: 100%'},
+			{'name': _('Previous balance'), 'class': 'number o_account_coa_column_contrast'},
+		]
+
+		header2 += [
+			{'name': _('Debit'), 'class': 'number o_account_coa_column_contrast'},
+			{'name': _('Credit'), 'class': 'number o_account_coa_column_contrast'},
+			{'name': _('Balance'), 'class': 'number o_account_coa_column_contrast'},
+		]
+		return [header1, header2]
 
 	@api.model
 	def _get_lines(self, options, line_id=None):
@@ -86,6 +88,7 @@ class CustomTrialBalance(models.AbstractModel):
 		# Add lines, one per account.account record.
 		for account, periods_results in accounts_results:
 			sums = []
+			sums1 = []
 			account_balance = 0.0
 			for i, period_values in enumerate(reversed(periods_results)):
 				account_sum = period_values.get('sum', {})
@@ -114,17 +117,8 @@ class CustomTrialBalance(models.AbstractModel):
 
 			# Append the totals.
 			sums += [
-				account_balance > 0 and account_balance or 0.0,
-				account_balance < 0 and -account_balance or 0.0,
+				account_balance or 0.0
 			]
-			# if new_options.get('accumulative', False):
-			# 	sums += [
-			# 		account_balance or 0.0
-			# 	]
-			# else:
-			# 	sums += [
-			# 		0.0
-			# 	]
 
 			# account.account report line.
 			columns = []
@@ -180,3 +174,145 @@ class CustomTrialBalance(models.AbstractModel):
 			'model': 'res_company'
 		}
 		return self.env.ref('financierosv_sucursal.report_balance_pdf').report_action(self, data=data)
+
+	def print_xlsx(self, options):
+		return {
+			'type': 'ir_actions_account_report_download',
+			'data': {'model': self.env.context.get('model'),
+					 'options': json.dumps(options),
+					 'output_format': 'xlsx',
+					 'financial_id': self.env.context.get('id'),
+					 'allowed_company_ids': self.env.context.get('allowed_company_ids'),
+					 }
+		}
+
+	def get_xlsx(self, options, response=None):
+		output = io.BytesIO()
+		workbook = xlsxwriter.Workbook(output, {
+			'in_memory': True,
+			'strings_to_formulas': False,
+		})
+		sheet = workbook.add_worksheet(self._get_report_name()[:31])
+
+		date_default_col1_style = workbook.add_format(
+			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2, 'num_format': 'yyyy-mm-dd'})
+		date_default_style = workbook.add_format(
+			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
+		default_col1_style = workbook.add_format(
+			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2})
+		default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666'})
+		title_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'bottom': 2})
+		level_0_style = workbook.add_format(
+			{'font_name': 'Arial', 'bold': True, 'font_size': 13, 'bottom': 6, 'font_color': '#666666'})
+		level_1_style = workbook.add_format(
+			{'font_name': 'Arial', 'bold': True, 'font_size': 13, 'bottom': 1, 'font_color': '#666666'})
+		level_2_col1_style = workbook.add_format(
+			{'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666', 'indent': 1})
+		level_2_col1_total_style = workbook.add_format(
+			{'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666'})
+		level_2_style = workbook.add_format(
+			{'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666'})
+		level_3_col1_style = workbook.add_format(
+			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2})
+		level_3_col1_total_style = workbook.add_format(
+			{'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666', 'indent': 1})
+		level_3_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666'})
+
+		# Set the first column width to 50
+		sheet.set_column(0, 0, 50)
+
+		y_offset = 0
+		headers, lines = self.with_context(no_format=True, print_mode=True, prefetch_fields=False)._get_table(options)
+
+		tmp = [
+			{'name': 'Codigo', 'style': 'width: 10%'},
+			{'name': ' ', 'style': 'width: 90%'},
+			{'name': 'Saldo anterior', 'class': 'number o_account_coa_column_contrast'},
+			{'name': 'Débito', 'class': 'number o_account_coa_column_contrast'},
+			{'name': 'Crédito', 'class': 'number o_account_coa_column_contrast'},
+			{'name': 'Balance', 'class': 'number o_account_coa_column_contrast'}
+		]
+
+		headers[1] = tmp
+
+		# Add headers.
+		for header in headers:
+			x_offset = 0
+			for column in header:
+				column_name_formated = column.get('name', '').replace('<br/>', ' ').replace('&nbsp;', ' ')
+				colspan = column.get('colspan', 1)
+				if colspan == 1:
+					sheet.write(y_offset, x_offset, column_name_formated, title_style)
+				else:
+					sheet.merge_range(y_offset, x_offset, y_offset, x_offset + colspan - 1, column_name_formated,
+									  title_style)
+				x_offset += colspan
+			y_offset += 1
+
+		if options.get('hierarchy'):
+			lines = self._create_hierarchy(lines, options)
+		if options.get('selected_column'):
+			lines = self._sort_lines(lines, options)
+
+		# Add lines.
+		for y in range(0, len(lines)):
+			level = lines[y].get('level')
+			if lines[y].get('caret_options'):
+				style = level_3_style
+				col1_style = level_3_col1_style
+			elif level == 0:
+				y_offset += 1
+				style = level_0_style
+				col1_style = style
+			elif level == 1:
+				style = level_1_style
+				col1_style = style
+			elif level == 2:
+				style = level_2_style
+				col1_style = 'total' in lines[y].get('class', '').split(
+					' ') and level_2_col1_total_style or level_2_col1_style
+			elif level == 3:
+				style = level_3_style
+				col1_style = 'total' in lines[y].get('class', '').split(
+					' ') and level_3_col1_total_style or level_3_col1_style
+			else:
+				style = default_style
+				col1_style = default_col1_style
+
+			# write the first column, with a specific style to manage the indentation
+			cell_type, cell_value = self._get_cell_type_value(lines[y])
+			if cell_type == 'date':
+				sheet.write_datetime(y + y_offset, 0, cell_value, date_default_col1_style)
+			else:
+				sheet.write(y + y_offset, 0, cell_value, col1_style)
+
+			# write all the remaining cells
+			for x in range(1, len(lines[y]['columns']) + 1):
+				cell_type, cell_value = self._get_cell_type_value(lines[y]['columns'][x - 1])
+				if cell_type == 'date':
+					sheet.write_datetime(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_value,
+										 date_default_style)
+				else:
+					sheet.write(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_value, style)
+
+		workbook.close()
+		output.seek(0)
+		generated_file = output.read()
+		output.close()
+
+		return generated_file
+
+	def _get_cell_type_value(self, cell):
+		if 'date' not in cell.get('class', '') or not cell.get('name'):
+			# cell is not a date
+			return ('text', cell.get('name', ''))
+		if isinstance(cell['name'], (float, datetime.date, datetime.datetime)):
+			# the date is xlsx compatible
+			return ('date', cell['name'])
+		try:
+			# the date is parsable to a xlsx compatible date
+			lg = self.env['res.lang']._lang_get(self.env.user.lang) or get_lang(self.env)
+			return ('date', datetime.datetime.strptime(cell['name'], lg.date_format))
+		except:
+			# the date is not parsable thus is returned as text
+			return ('text', cell['name'])
