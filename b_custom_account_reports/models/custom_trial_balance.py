@@ -49,26 +49,27 @@ class CustomTrialBalance(models.AbstractModel):
 
 		return templates
 
-	@api.model
-	def _get_columns(self, options):
-		header1 = [
-					  {'name': '', 'style': 'width: 100%'},
-					  {'name': '', 'class': 'number', 'colspan': 1},
-				  ] + [
-					  {'name': options['date']['string'], 'class': 'number', 'colspan': 2},
-					  {'name': '', 'class': 'number', 'colspan': 1},
-				  ]
-		header2 = [
-			{'name': '', 'style': 'width: 100%'},
-			{'name': _('Previous balance'), 'class': 'number o_account_coa_column_contrast'},
-		]
-
-		header2 += [
-			{'name': _('Debit'), 'class': 'number o_account_coa_column_contrast'},
-			{'name': _('Credit'), 'class': 'number o_account_coa_column_contrast'},
-			{'name': _('Balance'), 'class': 'number o_account_coa_column_contrast'},
-		]
-		return [header1, header2]
+	# @api.model
+	# def _get_columns(self, options):
+	# 	header1 = [
+	# 				  {'name': '', 'style': 'width: 100%'},
+	# 				  {'name': '', 'class': 'number', 'colspan': 1},
+	# 			  ] + [
+	# 				  {'name': options['date']['string'], 'class': 'number', 'colspan': 2},
+	# 				  {'name': '', 'class': 'number', 'colspan': 1},
+	# 			  ]
+	# 	header2 = [
+	# 		{'name': '', 'style': 'width: 100%'},
+	# 		{'name': _('Previous balance'), 'class': 'number o_account_coa_column_contrast'},
+	# 	]
+	#
+	# 	header2 += [
+	# 		{'name': _('Debit'), 'class': 'number o_account_coa_column_contrast'},
+	# 		{'name': _('Credit'), 'class': 'number o_account_coa_column_contrast'},
+	# 		{'name': _('Debit'), 'class': 'number o_account_coa_column_contrast'},
+	# 		{'name': _('Credit'), 'class': 'number o_account_coa_column_contrast'},
+	# 	]
+	# 	return [header1, header2]
 
 	@api.model
 	def _get_lines(self, options, line_id=None):
@@ -112,14 +113,18 @@ class CustomTrialBalance(models.AbstractModel):
 				account_balance += sums[-2] - sums[-1]
 
 			# Append the totals.
-			if new_options.get('accumulative', False):
-				sums += [
-					account_balance or 0.0
-				]
-			else:
-				sums += [
-					0.0
-				]
+			sums += [
+				account_balance > 0 and account_balance or 0.0,
+				account_balance < 0 and -account_balance or 0.0,
+			]
+			# if new_options.get('accumulative', False):
+			# 	sums += [
+			# 		account_balance or 0.0
+			# 	]
+			# else:
+			# 	sums += [
+			# 		0.0
+			# 	]
 
 			# account.account report line.
 			columns = []
