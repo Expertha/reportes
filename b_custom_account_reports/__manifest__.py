@@ -41,7 +41,7 @@
 		'views/custom_search_extras_options.xml',
 		'views/custom_sheet_balance.xml',
 		'data/balance_sheet_report_data.xml',
-		'data/balance_trial_report_data.xml',
+		'data/ending_trial_balance_report.xml',
 		'data/result_state_report.xml'
 	],
 	'demo': [],

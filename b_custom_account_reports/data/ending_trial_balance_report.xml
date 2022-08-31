@@ -2,7 +2,7 @@
 <odoo>
     <data>
 
-        <record id="report_balance_trial" model="account.financial.html.report">
+        <record id="ending_trial_balance_report" model="account.financial.html.report">
             <field name="name">Balance Trial New</field>
             <field name="date_range" eval="True"/>
             <field name="analytic" eval="False"/>
@@ -13,7 +13,7 @@
         <record id="balance_trial_1000" model="account.financial.html.report.line">
             <field name="name">ACTIVO</field>
             <field name="code">trial_1</field>
-            <field name="financial_report_id" ref="report_balance_trial"/>
+            <field name="financial_report_id" ref="ending_trial_balance_report"/>
             <field name="formulas">trial_11 + trial_12</field>
             <field name="sequence" eval="0"/>
             <field name="level" eval="0"/>
@@ -160,7 +160,7 @@
         <record id="balance_trial_4100" model="account.financial.html.report.line">
             <field name="name">COSTOS Y GASTOS DE LA OPERACIÓN</field>
             <field name="code">trial_41</field>
-            <field name="financial_report_id" ref="report_balance_trial"/>
+            <field name="financial_report_id" ref="ending_trial_balance_report"/>
             <field name="formulas">trial_4101 + trial_4102</field>
             <field name="sequence" eval="4"/>
             <field name="level" eval="0"/>
@@ -170,7 +170,7 @@
             <field name="name">4101 COSTOS DE VENTA DE MERCADERIA</field>
             <field name="code">trial_4101</field>
             <field name="parent_id" ref="balance_trial_4100"/>
-            <field name="domain" eval="[('account_id.code','=like','41010%')]"/>
+            <field name="domain" eval="[('account_id.code','=like','4101%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
@@ -182,7 +182,7 @@
             <field name="name">4102 COSTOS POR SERVICIOS POR RESTAURANTE</field>
             <field name="code">trial_4102</field>
             <field name="parent_id" ref="balance_trial_4100"/>
-            <field name="domain" eval="[('account_id.code','=like','41020%')]"/>
+            <field name="domain" eval="[('account_id.code','=like','4102%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
@@ -193,7 +193,7 @@
         <record id="balance_trial_4200" model="account.financial.html.report.line">
             <field name="name">GASTOS OPERACIONALES</field>
             <field name="code">trial_42</field>
-            <field name="financial_report_id" ref="report_balance_trial"/>
+            <field name="financial_report_id" ref="ending_trial_balance_report"/>
             <field name="formulas">trial_4201 + trial_4202</field>
             <field name="sequence" eval="5"/>
             <field name="level" eval="0"/>
@@ -203,7 +203,7 @@
             <field name="name">4201 GASTOS DE ADMINISTRACIÓN</field>
             <field name="code">trial_4201</field>
             <field name="parent_id" ref="balance_trial_4200"/>
-            <field name="domain" eval="[('account_id.code','=like','42010%')]"/>
+            <field name="domain" eval="[('account_id.code','=like','4201%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
@@ -215,7 +215,28 @@
             <field name="name">4202 GASTOS DE VENTA</field>
             <field name="code">trial_4202</field>
             <field name="parent_id" ref="balance_trial_4200"/>
-            <field name="domain" eval="[('account_id.code','=like','42020%')]"/>
+            <field name="domain" eval="[('account_id.code','=like','4202%')]"/>
+            <field name="formulas">sum</field>
+            <field name="groupby">account_id</field>
+            <field name="show_domain">foldable</field>
+            <field name="sequence" eval="1"/>
+            <field name="level" eval="2"/>
+        </record>
+
+        <record id="balance_trial_4300" model="account.financial.html.report.line">
+            <field name="name">GASTOS NO OPERACIONALES</field>
+            <field name="code">trial_43</field>
+            <field name="financial_report_id" ref="ending_trial_balance_report"/>
+            <field name="formulas">trial_4301</field>
+            <field name="sequence" eval="5"/>
+            <field name="level" eval="0"/>
+        </record>
+
+        <record id="balance_trial_4301" model="account.financial.html.report.line">
+            <field name="name">GASTOS FINANCIEROS</field>
+            <field name="code">trial_4301</field>
+            <field name="parent_id" ref="balance_trial_4300"/>
+            <field name="domain" eval="[('account_id.code','=like','4301%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
@@ -226,7 +247,7 @@
         <record id="balance_trial_2000" model="account.financial.html.report.line">
             <field name="name">PASIVO</field>
             <field name="code">trial_2</field>
-            <field name="financial_report_id" ref="report_balance_trial"/>
+            <field name="financial_report_id" ref="ending_trial_balance_report"/>
             <field name="formulas">trial_21 + trial_22</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="0"/>
@@ -325,7 +346,7 @@
         <record id="balance_trial_3100" model="account.financial.html.report.line">
             <field name="name">CAPITAL, RESERVAS Y SUPERAVIT</field>
             <field name="code">trial_31</field>
-            <field name="financial_report_id" ref="report_balance_trial"/>
+            <field name="financial_report_id" ref="ending_trial_balance_report"/>
             <field name="formulas">trial_3101 + trial_3102 + trial_3103 + trial_3104 + trial_3105</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="0"/>
@@ -394,7 +415,7 @@
         <record id="balance_trial_4444" model="account.financial.html.report.line">
             <field name="name">TOTAL PASIVO + CAPITAL</field>
             <field name="code">trial_40</field>
-            <field name="financial_report_id" ref="report_balance_trial"/>
+            <field name="financial_report_id" ref="ending_trial_balance_report"/>
             <field name="formulas">trial_2 + trial_31</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="0"/>

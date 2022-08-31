@@ -25,16 +25,19 @@
 #
 ########################################################################
 
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 
 
-class CustomResultState(models.Model):
+class EndingTrialBalance(models.Model):
 	_inherit = "account.financial.html.report"
 
-	def print_pdf(self, options):
-		if self.id == self.env.ref('b_custom_account_reports.result_state_report').id:
+	filter_analytic = False
 
-			report_name = 'financierosv_sucursal.report_resultado_pdf'
+	def print_pdf(self, options):
+		if self.id == self.env.ref('b_custom_account_reports.report_balance_trial').id:
+
+			report_name = 'financierosv_sucursal.report_balance_pdf'
+			# report = self.env['ir.actions.report']._get_report_from_name(report_name)
 			date_from = fields.Date.from_string(options.get('date').get('date_from'))
 			date_to = fields.Date.from_string(options.get('date').get('date_to'))
 
@@ -43,7 +46,7 @@ class CustomResultState(models.Model):
 				'fechaf': date_to,
 				'date_year': 2022,
 				'date_month': 1,
-				'acum': options.get('accumulative', False),
+				'acum': options.get('accumulative', True),
 				'company_id': [self.env.company.id]
 			}
 			data = {
@@ -51,6 +54,6 @@ class CustomResultState(models.Model):
 				'form': form,
 				'model': 'res_company'
 			}
-			return self.env.ref('financierosv_sucursal.report_resultado_pdf').report_action(self, data=data)
+			return self.env.ref('financierosv_sucursal.report_general_pdf').report_action(self, data=data)
 		else:
-			return super(CustomResultState, self).print_pdf(options=options)
+			return super(EndingTrialBalance, self).print_pdf(options=options)

@@ -17,8 +17,7 @@
         <menuitem id="menu_custom_trial_balance" name="Custom Trial Balance"
                   parent="menu_custom_reports"
                   action="b_custom_account_reports.action_custom_trial_balance"/>
-
-
+        
     </data>
 
 </odoo>
