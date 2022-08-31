@@ -106,13 +106,25 @@
                                 <h3>
                                     <center>LOS RANCHOS DE EL SALVADOR, S.A. DE C.V.</center>
                                 </h3>
-                                <h6>
-                                    <center>BALANCE GENERAL DEL
-                                        <span class="transformacion3" t-esc="fecha11"/>
-                                        AL
-                                        <span class="transformacion3" t-esc="fecha22"/>
-                                    </center>
-                                </h6>
+                                <t t-if="year != 1900">
+                                    <h6>
+                                        <center>BALANCE GENERAL DEL
+                                            <span class="transformacion3" t-esc="fecha11"/>
+                                            AL
+                                            <span class="transformacion3" t-esc="fecha22"/>
+                                        </center>
+                                    </h6>
+                                </t>
+                                <t t-if="year == 1900">
+                                    <h6>
+                                        <center>BALANCE COMPROBACION DEL
+                                            <span class="transformacion3" t-esc="fecha11"/>
+                                            AL
+                                            <span class="transformacion3" t-esc="fecha22"/>
+                                        </center>
+                                    </h6>
+                                </t>
+
                                 <h6>
                                     <center>(Cifras expresadas en dólares de los Estados Unidos de América)</center>
                                 </h6>
@@ -192,6 +204,12 @@
                                         <td class="td2" style="border:none;"></td>
                                         <td class="td6" style="border:none;"></td>
                                     </tr>
+                                    <tr>
+                                        <td class="td1" style="border:none;color:#FFFFFF;">.</td>
+                                        <td class="td1" style="border:none;"></td>
+                                        <td class="td2" style="border:none;"></td>
+                                        <td class="td6" style="border:none;"></td>
+                                    </tr>
                                     <tr t-foreach="company.get_general_details1(company_id, year, month, acum, fechai, fechaf)"
                                         t-as="c">
                                         <td class="td1" style="border:none;"></td>
@@ -225,6 +243,92 @@
                                             style="border: black 2px solid;border-right:none;border-left:none;border-bottom:none;"></td>
                                         <td class="td6" style="border:none;"></td>
                                     </tr>
+                                    <tr>
+                                        <td class="td1" style="border:none;color:#FFFFFF;">.</td>
+                                        <td class="td1" style="border:none;"></td>
+                                        <td class="td2" style="border:none;"></td>
+                                        <td class="td6" style="border:none;"></td>
+                                    </tr>
+                                    <t t-if="year == 1900">
+                                        <tr t-foreach="company.get_general_details10(company_id,year,month,acum,fechai,fechaf)"
+                                            t-as="c">
+                                            <td class="td1" style="border:none;"></td>
+                                            <td class="td1" style="border:none;">
+                                                <strong>COSTOS Y GASTOS DE LA OPERACIÓN</strong>
+                                            </td>
+                                            <td class="td2" style="border:none;"></td>
+                                            <t t-set="totalc"
+                                               t-value=" c.get('previo10') + c.get('debe10') - c.get('haber10')"/>
+                                            <td class="td6" style="border:none;">
+                                                <span t-esc="'{0:,.2f}'.format(totalc)"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-foreach="company.get_general_details11(company_id, year, month, acum, fechai, fechaf)"
+                                            t-as="c">
+                                            <td class="td1" style="border:none;"></td>
+                                            <td class="td1" style="border:none;">
+                                                <span t-esc="c.get('name')"/>
+                                            </td>
+                                            <t t-set="totala"
+                                               t-value="c.get('previo11') + c.get('debe11') - c.get('haber11')"/>
+                                            <td class="td6" style="border:none;">
+                                                <span t-esc="'{0:,.2f}'.format(totala)"/>
+                                            </td>
+                                            <td class="td1" style="border:none;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td1" style="border:none;color:#FFFFFF;">.</td>
+                                            <td class="td1" style="border:none;"></td>
+                                            <td class="td2"
+                                                style="border: black 2px solid;border-right:none;border-left:none;border-bottom:none;"></td>
+                                            <td class="td6" style="border:none;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td1" style="border:none;color:#FFFFFF;">.</td>
+                                            <td class="td1" style="border:none;"></td>
+                                            <td class="td2" style="border:none;"></td>
+                                            <td class="td6" style="border:none;"></td>
+                                        </tr>
+                                        <tr t-foreach="company.get_general_details12(company_id,year,month,acum,fechai,fechaf)"
+                                            t-as="c">
+                                            <td class="td1" style="border:none;"></td>
+                                            <td class="td1" style="border:none;">
+                                                <strong>GASTOS OPERACIONALES</strong>
+                                            </td>
+                                            <td class="td2" style="border:none;"></td>
+                                            <t t-set="totalc"
+                                               t-value=" c.get('previo12') + c.get('debe12') - c.get('haber12')"/>
+                                            <td class="td6" style="border:none;">
+                                                <span t-esc="'{0:,.2f}'.format(totalc)"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-foreach="company.get_general_details13(company_id, year, month, acum, fechai, fechaf)"
+                                            t-as="c">
+                                            <td class="td1" style="border:none;"></td>
+                                            <td class="td1" style="border:none;">
+                                                <span t-esc="c.get('name')"/>
+                                            </td>
+                                            <t t-set="totala"
+                                               t-value="c.get('previo13') + c.get('debe13') - c.get('haber13')"/>
+                                            <td class="td6" style="border:none;">
+                                                <span t-esc="'{0:,.2f}'.format(totala)"/>
+                                            </td>
+                                            <td class="td1" style="border:none;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td1" style="border:none;color:#FFFFFF;">.</td>
+                                            <td class="td1" style="border:none;"></td>
+                                            <td class="td2"
+                                                style="border: black 2px solid;border-right:none;border-left:none;border-bottom:none;"></td>
+                                            <td class="td6" style="border:none;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="td1" style="border:none;color:#FFFFFF;">.</td>
+                                            <td class="td1" style="border:none;"></td>
+                                            <td class="td2" style="border:none;"></td>
+                                            <td class="td6" style="border:none;"></td>
+                                        </tr>
+                                    </t>
                                 </table>
                             </div>
                             <div class="col-6">
@@ -416,8 +520,8 @@
                                 </table>
                             </div>
                         </div>
-                        <br/>
-                        <br/>
+
+                        
                         <br/>
                         <br/>
                         <br/>

@@ -34,7 +34,7 @@ class EndingTrialBalance(models.Model):
 	filter_analytic = False
 
 	def print_pdf(self, options):
-		if self.id == self.env.ref('b_custom_account_reports.report_balance_trial').id:
+		if self.id == self.env.ref('b_custom_account_reports.ending_trial_balance_report').id:
 
 			report_name = 'financierosv_sucursal.report_balance_pdf'
 			# report = self.env['ir.actions.report']._get_report_from_name(report_name)
@@ -44,7 +44,7 @@ class EndingTrialBalance(models.Model):
 			form = {
 				'fechai': date_from,
 				'fechaf': date_to,
-				'date_year': 2022,
+				'date_year': 1900,
 				'date_month': 1,
 				'acum': options.get('accumulative', True),
 				'company_id': [self.env.company.id]
