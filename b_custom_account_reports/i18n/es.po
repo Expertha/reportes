@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-30 16:24+0000\n"
-"PO-Revision-Date: 2022-08-30 16:24+0000\n"
+"POT-Creation-Date: 2022-08-31 21:31+0000\n"
+"PO-Revision-Date: 2022-08-31 21:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -162,6 +162,11 @@ msgid "4202 GASTOS DE VENTA"
 msgstr ""
 
 #. module: b_custom_account_reports
+#: model:account.financial.html.report.line,name:b_custom_account_reports.balance_trial_5101
+msgid "5101 VENTAS"
+msgstr ""
+
+#. module: b_custom_account_reports
 #: model_terms:ir.ui.view,arch_db:b_custom_account_reports.custom_line_template
 #: model_terms:ir.ui.view,arch_db:b_custom_account_reports.custom_sheet_balance
 msgid ""
@@ -214,11 +219,9 @@ msgid "Balance"
 msgstr ""
 
 #. module: b_custom_account_reports
-#: model:account.financial.html.report,name:b_custom_account_reports.report_balance_trial
-#: model:ir.actions.client,name:b_custom_account_reports.account_financial_html_report_action_16
-#: model:ir.ui.menu,name:b_custom_account_reports.account_financial_html_report_menu_16
-msgid "Balance Trial New"
-msgstr "Balance de Comprobación Final"
+#: model:ir.actions.client,name:b_custom_account_reports.account_financial_html_report_action_28
+msgid "Balance Trial New Report"
+msgstr ""
 
 #. module: b_custom_account_reports
 #: model:account.financial.html.report.line,name:b_custom_account_reports.balance_line_3100
@@ -254,6 +257,11 @@ msgid "CUENTAS DE RESULTADO DEUDORA"
 msgstr ""
 
 #. module: b_custom_account_reports
+#: model:account.financial.html.report.line,name:b_custom_account_reports.balance_trial_5100
+msgid "CUENTAS DE RESULTADO INGRESOS"
+msgstr ""
+
+#. module: b_custom_account_reports
 #: model:account.financial.html.report.line,name:b_custom_account_reports.result_state_5
 msgid "CUENTAS DE RESULTADOS ACREEDORAS"
 msgstr ""
@@ -262,7 +270,7 @@ msgstr ""
 #: code:addons/b_custom_account_reports/models/custom_trial_balance.py:0
 #, python-format
 msgid "Credit"
-msgstr "Crédito"
+msgstr ""
 
 #. module: b_custom_account_reports
 #: model:account.financial.html.report,name:b_custom_account_reports.report_balance_sheet
@@ -302,6 +310,15 @@ msgid "Debit"
 msgstr "Débito"
 
 #. module: b_custom_account_reports
+#: code:addons/b_custom_account_reports/models/expanded_balance_sheet.py:0
+#: model:account.financial.html.report,name:b_custom_account_reports.expanded_balance_sheet_report
+#: model:ir.actions.client,name:b_custom_account_reports.account_financial_html_report_action_29
+#: model:ir.ui.menu,name:b_custom_account_reports.account_financial_html_report_menu_29
+#, python-format
+msgid "Expanded Balance Sheet"
+msgstr "Balance General Ampliado"
+
+#. module: b_custom_account_reports
 #: model_terms:ir.ui.view,arch_db:b_custom_account_reports.custom_line_template
 #: model_terms:ir.ui.view,arch_db:b_custom_account_reports.custom_sheet_balance
 msgid "Folded"
@@ -318,11 +335,13 @@ msgid "GASTOS DE VENTA"
 msgstr ""
 
 #. module: b_custom_account_reports
+#: model:account.financial.html.report.line,name:b_custom_account_reports.balance_trial_4301
 #: model:account.financial.html.report.line,name:b_custom_account_reports.result_state_4301
 msgid "GASTOS FINANCIEROS"
 msgstr ""
 
 #. module: b_custom_account_reports
+#: model:account.financial.html.report.line,name:b_custom_account_reports.balance_trial_4300
 #: model:account.financial.html.report.line,name:b_custom_account_reports.result_state_43
 msgid "GASTOS NO OPERACIONALES"
 msgstr ""
@@ -412,9 +431,18 @@ msgid "SERVICIOS DE RESTAURANTE"
 msgstr ""
 
 #. module: b_custom_account_reports
+#: model:account.financial.html.report.line,name:b_custom_account_reports.balance_trial_5555
+msgid "TOTAL ACTIVO MAS COSTOS y GASTOS"
+msgstr ""
+
+#. module: b_custom_account_reports
 #: model:account.financial.html.report.line,name:b_custom_account_reports.balance_line_4000
-#: model:account.financial.html.report.line,name:b_custom_account_reports.balance_trial_4444
 msgid "TOTAL PASIVO + CAPITAL"
+msgstr ""
+
+#. module: b_custom_account_reports
+#: model:account.financial.html.report.line,name:b_custom_account_reports.balance_trial_4444
+msgid "TOTAL PASIVO + CAPITAL E INGRESOS"
 msgstr ""
 
 #. module: b_custom_account_reports
