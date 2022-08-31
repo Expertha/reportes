@@ -34,17 +34,14 @@ class ExpandedBalanceSheet(models.Model):
 	filter_analytic = False
 
 	def print_pdf(self, options):
-		if self.id == self.env.ref('b_custom_account_reports.ending_trial_balance_report').id:
-
-			report_name = 'financierosv_sucursal.report_balance_pdf'
-			# report = self.env['ir.actions.report']._get_report_from_name(report_name)
+		if self.id == self.env.ref('b_custom_account_reports.expanded_balance_sheet_report').id:
 			date_from = fields.Date.from_string(options.get('date').get('date_from'))
 			date_to = fields.Date.from_string(options.get('date').get('date_to'))
 
 			form = {
 				'fechai': date_from,
 				'fechaf': date_to,
-				'date_year': 1900,
+				'date_year': 0000,
 				'date_month': 1,
 				'acum': options.get('accumulative', True),
 				'company_id': [self.env.company.id]
@@ -59,4 +56,4 @@ class ExpandedBalanceSheet(models.Model):
 			return super(ExpandedBalanceSheet, self).print_pdf(options=options)
 
 	def _get_report_name(self):
-		return _('Balance Trial New Report')
+		return _('Expanded Balance Sheet')

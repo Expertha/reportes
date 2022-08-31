@@ -1355,3 +1355,87 @@ order by S2.code
 		if self._cr.description:  # Verify whether or not the query generated any tuple before fetching in order to avoid PogrammingError: No results when fetching
 			data = self._cr.dictfetchall()
 		return data
+
+	def get_general_details16(self, company_id, date_year, date_month, acum, fechai, fechaf):
+		data = {}
+		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
+	           select * from ( 
+	    select aa.code 
+	    ,aa.name as name 
+	    ,case when 3=1 then  (select COALESCE(sum(aml1.debit),0) - COALESCE(sum(aml1.credit),0)
+	    from account_account aa1
+	        inner join account_move_line aml1 on aa1.id=aml1.account_id
+	        inner join account_move am1 on aml1.move_id=am1.id
+	        where aa1.company_id=1  and aa1.code like aa.code ||'%' and 
+		 	COALESCE(am1.date,am1.invoice_date)<CAST('2022-08-01' as date) and 
+			am1.state in ('posted')) else 0 end as previo16
+	,(select COALESCE(sum(aml2.debit),0)
+	        from account_account aa2
+	        inner join account_move_line aml2 on aa2.id=aml2.account_id
+	        inner join account_move am2 on aml2.move_id=am2.id
+	        where aa2.company_id=1 and aa2.code like aa.code ||'%' and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('2022-08-01' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('2022-08-31' as date) and 
+	  		am2.state in ('posted') ) as debe16   
+	,(select COALESCE(sum(aml2.credit),0)
+	        from account_account aa2
+	        inner join account_move_line aml2 on aa2.id=aml2.account_id
+	        inner join account_move am2 on aml2.move_id=am2.id
+	        where aa2.company_id=1 and aa2.code like aa.code ||'%' and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('2022-08-01' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('2022-08-31' as date) and 
+	  		am2.state in ('posted') ) as haber16
+	from cuentas aa 
+	where aa.company_id= 1 and length(trim(aa.code))=2  and aa.code like '51%'
+	order by aa.code )S2
+	where S2.previo16<>0 or S2.debe16<>0 or S2.haber16<>0 
+	order by S2.code
+			        )""".format(company_id, date_year, date_month, acum, fechai, fechaf)
+		tools.drop_view_if_exists(self._cr, 'odoosv_financierosv_general_report')
+		self._cr.execute(sql)
+		self._cr.execute("SELECT * FROM public.odoosv_financierosv_general_report")
+		if self._cr.description:  # Verify whether or not the query generated any tuple before fetching in order to avoid PogrammingError: No results when fetching
+			data = self._cr.dictfetchall()
+		return data
+
+	def get_general_details17(self, company_id, date_year, date_month, acum, fechai, fechaf):
+		data = {}
+		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
+	           select * from ( 
+	    select aa.code 
+	    ,aa.name as name 
+	    ,case when 3=1 then  (select COALESCE(sum(aml1.debit),0) - COALESCE(sum(aml1.credit),0)
+	    from account_account aa1
+	        inner join account_move_line aml1 on aa1.id=aml1.account_id
+	        inner join account_move am1 on aml1.move_id=am1.id
+	        where aa1.company_id=1  and aa1.code like aa.code ||'%' and 
+		 	COALESCE(am1.date,am1.invoice_date)<CAST('2022-08-01' as date) and 
+			am1.state in ('posted')) else 0 end as previo17
+	,(select COALESCE(sum(aml2.debit),0)
+	        from account_account aa2
+	        inner join account_move_line aml2 on aa2.id=aml2.account_id
+	        inner join account_move am2 on aml2.move_id=am2.id
+	        where aa2.company_id=1 and aa2.code like aa.code ||'%' and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('2022-08-01' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('2022-08-31' as date) and 
+	  		am2.state in ('posted') ) as debe17
+	,(select COALESCE(sum(aml2.credit),0)
+	        from account_account aa2
+	        inner join account_move_line aml2 on aa2.id=aml2.account_id
+	        inner join account_move am2 on aml2.move_id=am2.id
+	        where aa2.company_id=1 and aa2.code like aa.code ||'%' and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('2022-08-01' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('2022-08-31' as date) and 
+	  		am2.state in ('posted') ) as haber17
+	from cuentas aa 
+	where aa.company_id= 1 and length(trim(aa.code))=4  and aa.code like '5101%'
+	order by aa.code )S2
+	where S2.previo17<>0 or S2.debe17<>0 or S2.haber17<>0 
+	order by S2.code
+			        )""".format(company_id, date_year, date_month, acum, fechai, fechaf)
+		tools.drop_view_if_exists(self._cr, 'odoosv_financierosv_general_report')
+		self._cr.execute(sql)
+		self._cr.execute("SELECT * FROM public.odoosv_financierosv_general_report")
+		if self._cr.description:  # Verify whether or not the query generated any tuple before fetching in order to avoid PogrammingError: No results when fetching
+			data = self._cr.dictfetchall()
+		return data
