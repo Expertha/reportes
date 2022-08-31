@@ -2,8 +2,8 @@
 <odoo>
     <data>
 
-        <record id="ending_trial_balance_report" model="account.financial.html.report">
-            <field name="name">Balance Trial New</field>
+        <record id="expanded_balance_sheet_report" model="account.financial.html.report">
+            <field name="name">Expanded Balance Sheet</field>
             <field name="date_range" eval="True"/>
             <field name="analytic" eval="False"/>
             <field name="unfold_all_filter" eval="True"/>
@@ -13,7 +13,7 @@
         <record id="balance_trial_1000" model="account.financial.html.report.line">
             <field name="name">ACTIVO</field>
             <field name="code">trial_1</field>
-            <field name="financial_report_id" ref="ending_trial_balance_report"/>
+            <field name="financial_report_id" ref="expanded_balance_sheet_report"/>
             <field name="formulas">trial_11 + trial_12</field>
             <field name="sequence" eval="0"/>
             <field name="level" eval="0"/>
@@ -160,7 +160,7 @@
         <record id="balance_trial_4100" model="account.financial.html.report.line">
             <field name="name">COSTOS Y GASTOS DE LA OPERACIÓN</field>
             <field name="code">trial_41</field>
-            <field name="financial_report_id" ref="ending_trial_balance_report"/>
+            <field name="financial_report_id" ref="expanded_balance_sheet_report"/>
             <field name="formulas">trial_4101 + trial_4102</field>
             <field name="sequence" eval="4"/>
             <field name="level" eval="0"/>
@@ -193,7 +193,7 @@
         <record id="balance_trial_4200" model="account.financial.html.report.line">
             <field name="name">GASTOS OPERACIONALES</field>
             <field name="code">trial_42</field>
-            <field name="financial_report_id" ref="ending_trial_balance_report"/>
+            <field name="financial_report_id" ref="expanded_balance_sheet_report"/>
             <field name="formulas">trial_4201 + trial_4202</field>
             <field name="sequence" eval="5"/>
             <field name="level" eval="0"/>
@@ -226,7 +226,7 @@
         <record id="balance_trial_4300" model="account.financial.html.report.line">
             <field name="name">GASTOS NO OPERACIONALES</field>
             <field name="code">trial_43</field>
-            <field name="financial_report_id" ref="ending_trial_balance_report"/>
+            <field name="financial_report_id" ref="expanded_balance_sheet_report"/>
             <field name="formulas">trial_4301</field>
             <field name="sequence" eval="5"/>
             <field name="level" eval="0"/>
@@ -247,7 +247,7 @@
         <record id="balance_trial_2000" model="account.financial.html.report.line">
             <field name="name">PASIVO</field>
             <field name="code">trial_2</field>
-            <field name="financial_report_id" ref="ending_trial_balance_report"/>
+            <field name="financial_report_id" ref="expanded_balance_sheet_report"/>
             <field name="formulas">trial_21 + trial_22</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="0"/>
@@ -346,7 +346,7 @@
         <record id="balance_trial_3100" model="account.financial.html.report.line">
             <field name="name">CAPITAL, RESERVAS Y SUPERAVIT</field>
             <field name="code">trial_31</field>
-            <field name="financial_report_id" ref="ending_trial_balance_report"/>
+            <field name="financial_report_id" ref="expanded_balance_sheet_report"/>
             <field name="formulas">trial_3101 + trial_3102 + trial_3103 + trial_3104 + trial_3105</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="0"/>
@@ -415,7 +415,7 @@
         <record id="balance_trial_4444" model="account.financial.html.report.line">
             <field name="name">TOTAL PASIVO + CAPITAL</field>
             <field name="code">trial_40</field>
-            <field name="financial_report_id" ref="ending_trial_balance_report"/>
+            <field name="financial_report_id" ref="expanded_balance_sheet_report"/>
             <field name="formulas">trial_2 + trial_31</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="0"/>

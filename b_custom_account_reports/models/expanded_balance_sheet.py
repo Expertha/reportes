@@ -28,7 +28,7 @@
 from odoo import fields, models, api, _
 
 
-class EndingTrialBalance(models.Model):
+class ExpandedBalanceSheet(models.Model):
 	_inherit = "account.financial.html.report"
 
 	filter_analytic = False
@@ -56,4 +56,7 @@ class EndingTrialBalance(models.Model):
 			}
 			return self.env.ref('financierosv_sucursal.report_general_pdf').report_action(self, data=data)
 		else:
-			return super(EndingTrialBalance, self).print_pdf(options=options)
+			return super(ExpandedBalanceSheet, self).print_pdf(options=options)
+
+	def _get_report_name(self):
+		return _('Balance Trial New Report')
