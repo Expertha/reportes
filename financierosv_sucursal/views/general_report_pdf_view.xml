@@ -204,12 +204,6 @@
                                         <td class="td2" style="border:none;"></td>
                                         <td class="td6" style="border:none;"></td>
                                     </tr>
-                                    <tr>
-                                        <td class="td1" style="border:none;color:#FFFFFF;">.</td>
-                                        <td class="td1" style="border:none;"></td>
-                                        <td class="td2" style="border:none;"></td>
-                                        <td class="td6" style="border:none;"></td>
-                                    </tr>
                                     <tr t-foreach="company.get_general_details1(company_id, year, month, acum, fechai, fechaf)"
                                         t-as="c">
                                         <td class="td1" style="border:none;"></td>
@@ -241,12 +235,6 @@
                                         <td class="td1" style="border:none;"></td>
                                         <td class="td2"
                                             style="border: black 2px solid;border-right:none;border-left:none;border-bottom:none;"></td>
-                                        <td class="td6" style="border:none;"></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="td1" style="border:none;color:#FFFFFF;">.</td>
-                                        <td class="td1" style="border:none;"></td>
-                                        <td class="td2" style="border:none;"></td>
                                         <td class="td6" style="border:none;"></td>
                                     </tr>
                                     <t t-if="year == 1900">
@@ -283,12 +271,6 @@
                                                 style="border: black 2px solid;border-right:none;border-left:none;border-bottom:none;"></td>
                                             <td class="td6" style="border:none;"></td>
                                         </tr>
-                                        <tr>
-                                            <td class="td1" style="border:none;color:#FFFFFF;">.</td>
-                                            <td class="td1" style="border:none;"></td>
-                                            <td class="td2" style="border:none;"></td>
-                                            <td class="td6" style="border:none;"></td>
-                                        </tr>
                                         <tr t-foreach="company.get_general_details12(company_id,year,month,acum,fechai,fechaf)"
                                             t-as="c">
                                             <td class="td1" style="border:none;"></td>
@@ -322,10 +304,37 @@
                                                 style="border: black 2px solid;border-right:none;border-left:none;border-bottom:none;"></td>
                                             <td class="td6" style="border:none;"></td>
                                         </tr>
+                                        <tr t-foreach="company.get_general_details14(company_id,year,month,acum,fechai,fechaf)"
+                                            t-as="c">
+                                            <td class="td1" style="border:none;"></td>
+                                            <td class="td1" style="border:none;">
+                                                <strong>GASTOS NO OPERACIONALES</strong>
+                                            </td>
+                                            <td class="td2" style="border:none;"></td>
+                                            <t t-set="totalc"
+                                               t-value=" c.get('previo14') + c.get('debe14') - c.get('haber14')"/>
+                                            <td class="td6" style="border:none;">
+                                                <span t-esc="'{0:,.2f}'.format(totalc)"/>
+                                            </td>
+                                        </tr>
+                                        <tr t-foreach="company.get_general_details15(company_id, year, month, acum, fechai, fechaf)"
+                                            t-as="c">
+                                            <td class="td1" style="border:none;"></td>
+                                            <td class="td1" style="border:none;">
+                                                <span t-esc="c.get('name')"/>
+                                            </td>
+                                            <t t-set="totala"
+                                               t-value="c.get('previo15') + c.get('debe15') - c.get('haber15')"/>
+                                            <td class="td6" style="border:none;">
+                                                <span t-esc="'{0:,.2f}'.format(totala)"/>
+                                            </td>
+                                            <td class="td1" style="border:none;"></td>
+                                        </tr>
                                         <tr>
                                             <td class="td1" style="border:none;color:#FFFFFF;">.</td>
                                             <td class="td1" style="border:none;"></td>
-                                            <td class="td2" style="border:none;"></td>
+                                            <td class="td2"
+                                                style="border: black 2px solid;border-right:none;border-left:none;border-bottom:none;"></td>
                                             <td class="td6" style="border:none;"></td>
                                         </tr>
                                     </t>
@@ -424,7 +433,6 @@
                                         </td>
                                         <td class="td1" style="border:none;"></td>
                                     </tr>
-
                                     <tr>
                                         <td class="td1" style="border:none;color:#FFFFFF;">.</td>
                                         <td class="td1" style="border:none;"></td>
@@ -482,6 +490,12 @@
                             <div class="col-6">
                                 <table class="table" style="border-color:#000000;border:5px;">
                                     <tr>
+                                        <td class="td1" style="border:none;color:#FFFFFF;">.</td>
+                                        <td class="td1" style="border:none;"></td>
+                                        <td class="td2" style="border:none;"></td>
+                                        <td class="td6" style="border:none;"></td>
+                                    </tr>
+                                    <tr>
                                         <td class="td1" style="border:none;"></td>
                                         <td class="td1" style="border:none;">
                                             <u>
@@ -500,6 +514,18 @@
                             </div>
                             <div class="col-6">
                                 <table class="table-bordered" style="border-color:#000000;border:5px;">
+                                    <tr>
+                                        <td class="td1" style="border:none;color:#FFFFFF;">.</td>
+                                        <td class="td1" style="border:none;"></td>
+                                        <td class="td2" style="border:none;"></td>
+                                        <td class="td6" style="border:none;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td1" style="border:none;color:#FFFFFF;">.</td>
+                                        <td class="td1" style="border:none;"></td>
+                                        <td class="td2" style="border:none;"></td>
+                                        <td class="td6" style="border:none;"></td>
+                                    </tr>
                                     <tr>
                                         <td class="td1" style="border:none;"></td>
                                         <td class="td1" style="border:none;">
@@ -520,9 +546,6 @@
                                 </table>
                             </div>
                         </div>
-
-                        
-                        <br/>
                         <br/>
                         <br/>
                         <br/>
