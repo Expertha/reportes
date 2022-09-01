@@ -224,10 +224,15 @@ class CustomTrialBalance(models.AbstractModel):
 
 		y_offset = 0
 		headers, lines = self.with_context(no_format=True, print_mode=True, prefetch_fields=False)._get_table(options)
+		for line in lines:
+			code = line.get('code', '')
+			new_column = {'name': code, 'class': '', 'style': 'width: 10%'}
+			columns = line.get('columns', [])
+			columns.insert(0, new_column)
 
 		tmp = [
-			{'name': 'Codigo', 'style': 'width: 10%'},
 			{'name': ' ', 'style': 'width: 90%'},
+			{'name': 'Código', 'style': 'width: 10%'},
 			{'name': 'Saldo anterior', 'class': 'number o_account_coa_column_contrast'},
 			{'name': 'Débito', 'class': 'number o_account_coa_column_contrast'},
 			{'name': 'Crédito', 'class': 'number o_account_coa_column_contrast'},
@@ -370,11 +375,12 @@ class CustomTrialBalance(models.AbstractModel):
 			for line in lines:
 				account = self.env['account.account'].browse(
 					line.get('account_id', self._get_caret_option_target_id(line.get('id'))))
-				codes = self.get_account_codes(account)  # id, name
+				codes = self.get_account_codes_custom(account)  # id, name
 				for code in codes:
 					hierarchy[code[0]]['id'] = self._get_generic_line_id('account.group', code[0],
 																		 parent_line_id=line['id'])
 					hierarchy[code[0]]['name'] = code[1]
+					hierarchy[code[0]]['code'] = code[2]
 					for i, column in enumerate(line['columns']):
 						if 'no_format_name' in column:
 							no_format = column['no_format_name']
@@ -417,3 +423,15 @@ class CustomTrialBalance(models.AbstractModel):
 		if account_lines:
 			new_lines.extend(compute_hierarchy(account_lines, current_level + 1, parent_id))
 		return new_lines
+
+	def get_account_codes_custom(self, account):
+		# A code is tuple(id, name)
+		codes = []
+		if account.group_id:
+			group = account.group_id
+			while group:
+				codes.append((group.id, group.display_name, account.code))
+				group = group.parent_id
+		else:
+			codes.append((0, _('(No Group)'), ' '))
+		return list(reversed(codes))
