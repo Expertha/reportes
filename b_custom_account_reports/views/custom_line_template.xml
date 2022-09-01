@@ -73,7 +73,7 @@
                                         <span t-att-data-id="line['id']" t-att-class="domainClass"
                                               t-att-title="line.get('title_hover')"
                                               t-att-data-account-code="line.get('code')">
-                                            <t t-esc="line.get('name')"/>
+                                            <t t-esc="line.get('name')"/> <!--aqui -->
                                             <i class="fa fa-caret-down no_print"/>
                                         </span>
                                     </a>
