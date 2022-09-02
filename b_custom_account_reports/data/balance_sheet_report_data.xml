@@ -26,6 +26,7 @@
             <field name="formulas">line_1101 + line_1103 + line_1104 + line_1105</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="1"/>
+            <field name="parent_id" ref="balance_line_1000"/>
         </record>
 
         <record id="balance_line_1101" model="account.financial.html.report.line">

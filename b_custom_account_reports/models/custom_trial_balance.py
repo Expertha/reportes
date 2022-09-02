@@ -218,11 +218,27 @@ class CustomTrialBalance(models.AbstractModel):
 		level_3_col1_total_style = workbook.add_format(
 			{'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666', 'indent': 1})
 		level_3_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666'})
+		company_name_style = workbook.add_format(
+			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 20, 'font_color': '#000000'})
+		period_style = workbook.add_format(
+			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 14, 'font_color': '#666666'})
+		note_style = workbook.add_format(
+			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 12, 'font_color': '#666666'})
+		signature_style = workbook.add_format(
+			{'font_name': 'Arial', 'align': 'center', 'valign': 'bottom', 'font_size': 12, 'font_color': '#000000'})
 
 		# Set the first column width to 50
 		sheet.set_column(0, 0, 50)
 
-		y_offset = 0
+		period = self._get_report_name() + ' DEL ' + options.get('date').get('date_from') + ' AL ' + options.get('date').get('date_to')
+
+		sheet.set_row(0, 30)
+		sheet.merge_range(0, 0, 0, 5, self.env.company.name, company_name_style)
+		sheet.set_row(1, 20)
+		sheet.merge_range(1, 0, 1, 5, period, period_style)
+		sheet.merge_range(2, 0, 2, 5, '(Valores expresados en dólares de los Estados Unidos de America)', note_style)
+
+		y_offset = 3
 		headers, lines = self.with_context(no_format=True, print_mode=True, prefetch_fields=False)._get_table(options)
 		for line in lines:
 			code = line.get('code', '')
@@ -301,6 +317,15 @@ class CustomTrialBalance(models.AbstractModel):
 				else:
 					sheet.write(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_value, style)
 
+		sheet.set_row(len(lines) + 10, 30)
+
+		sheet.write(len(lines) + 10, 0, 'F._________________________', signature_style)
+		sheet.merge_range(len(lines) + 10, 2, len(lines) + 10, 3, 'F._________________________', signature_style)
+		sheet.merge_range(len(lines) + 10, 4, len(lines) + 10, 5, 'F._________________________', signature_style)
+		sheet.write(len(lines) + 11, 0, 'Representante Legal', signature_style)
+		sheet.merge_range(len(lines) + 11, 2, len(lines) + 11, 3, 'Contador', signature_style)
+		sheet.merge_range(len(lines) + 11, 4, len(lines) + 11, 5, 'Auditor', signature_style)
+
 		workbook.close()
 		output.seek(0)
 		generated_file = output.read()
@@ -339,6 +364,7 @@ class CustomTrialBalance(models.AbstractModel):
 		def add_to_hierarchy(lines, key, level, parent_id, hierarchy):
 			val_dict = hierarchy[key]
 			unfolded = val_dict['id'] in options.get('unfolded_lines') or unfold_all
+			# val_dict['totals'][0] = val_dict['code']
 			# add the group totals
 			lines.append({
 				'id': val_dict['id'],
@@ -380,7 +406,7 @@ class CustomTrialBalance(models.AbstractModel):
 					hierarchy[code[0]]['id'] = self._get_generic_line_id('account.group', code[0],
 																		 parent_line_id=line['id'])
 					hierarchy[code[0]]['name'] = code[1]
-					hierarchy[code[0]]['code'] = code[2]
+					hierarchy[code[0]]['code'] = self.env['account.group'].browse(code[0]).code_prefix_start
 					for i, column in enumerate(line['columns']):
 						if 'no_format_name' in column:
 							no_format = column['no_format_name']
@@ -430,8 +456,11 @@ class CustomTrialBalance(models.AbstractModel):
 		if account.group_id:
 			group = account.group_id
 			while group:
-				codes.append((group.id, group.display_name, account.code))
+				codes.append((group.id, group.display_name, account.group_id.code_prefix_start))
 				group = group.parent_id
 		else:
 			codes.append((0, _('(No Group)'), ' '))
 		return list(reversed(codes))
+
+	def _get_report_name(self):
+		return ("Balance de Comprobación")

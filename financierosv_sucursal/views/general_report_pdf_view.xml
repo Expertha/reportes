@@ -369,6 +369,7 @@
                                         <td class="td2" style="border:none;"></td>
                                         <td class="td6" style="border:none;"></td>
                                     </tr>
+                                    <!-- PASIVO CORRIENTE -->
                                     <tr t-foreach="company.get_general_details2(company_id, year, month, acum, fechai, fechaf)"
                                         t-as="c">
                                         <td class="td1" style="border:none;"></td>
@@ -409,7 +410,7 @@
                                             style="border: none; color:#FFFFFF;"></td>
                                         <td class="td6" style="border:none;"></td>
                                     </tr>
-                                    <!--NO CORRIENTE-->
+                                    <!-- PASIVO NO CORRIENTE -->
                                     <tr t-foreach="company.get_general_details3(company_id, year, month, acum, fechai, fechaf)"
                                         t-as="c">
                                         <td class="td1" style="border:none;"></td>
@@ -581,7 +582,7 @@
                             </div>
                             <div class="col-6">
                                 <table class="table" style="border-color:#000000;border:5px;">
-                                    
+
                                     <tr>
                                         <td class="td1" style="border:none;color:#FFFFFF;">.</td>
                                         <td class="td1" style="border:none;"></td>
