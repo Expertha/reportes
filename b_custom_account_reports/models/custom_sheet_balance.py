@@ -38,6 +38,14 @@ class CustomSheetBalance(models.Model):
 	_inherit = "account.financial.html.report"
 
 	filter_analytic = False
+	filter_accumulative = False
+
+	@api.model
+	def _get_templates(self):
+		templates = super(CustomSheetBalance, self)._get_templates()
+		templates['search_template'] = 'b_custom_account_reports.custom_search_sheet'
+
+		return templates
 
 	def print_pdf(self, options):
 		if self.id == self.env.ref('b_custom_account_reports.report_balance_sheet').id:
@@ -52,7 +60,7 @@ class CustomSheetBalance(models.Model):
 				'fechaf': date_to,
 				'date_year': 2022,
 				'date_month': 1,
-				'acum': options.get('accumulative', True),
+				'acum': options.get('accumulative', False),
 				'company_id': [self.env.company.id]
 			}
 			data = {

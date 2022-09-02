@@ -1055,35 +1055,34 @@ order by S2.code
 		data = {}
 
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
-            select * from ( 
-    select aa.code 
-    ,aa.name as name
-    
-    ,case when {3}=1 then  (select COALESCE(sum(aml1.debit),0) - COALESCE(sum(aml1.credit),0)
+    select * from ( select aa.code,aa.name as name, case when {3}=1 then  (select COALESCE(sum(aml1.debit),0) - COALESCE(sum(aml1.credit),0)
     from account_account aa1
         inner join account_move_line aml1 on aa1.id=aml1.account_id
         inner join account_move am1 on aml1.move_id=am1.id
-        where aa1.company_id={0}  and aa1.code like aa.code ||'%'  and COALESCE(am1.date,am1.invoice_date)<CAST('{4}' as date) and am1.state in ('posted')) else 0 end as previo9
+        where aa1.company_id={0}  and aa1.code like aa.code ||'%' and 
+        COALESCE(am1.date,am1.invoice_date)<CAST('{4}' as date) and 
+        am1.state in ('posted')) else 0 end as previo9 
 ,(select COALESCE(sum(aml2.debit),0)
         from account_account aa2
         inner join account_move_line aml2 on aa2.id=aml2.account_id
         inner join account_move am2 on aml2.move_id=am2.id
-        where aa2.company_id={0} and aa2.code like aa.code ||'%'  and COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and am2.state in ('posted') ) as debe9     
+        where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
+        COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+        COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
+        am2.state in ('posted') ) as debe9     
 ,(select COALESCE(sum(aml2.credit),0)
         from account_account aa2
         inner join account_move_line aml2 on aa2.id=aml2.account_id
         inner join account_move am2 on aml2.move_id=am2.id
-        where aa2.company_id={0} and aa2.code like aa.code ||'%' and COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and am2.state in ('posted') ) as haber9
-
+        where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
+        COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+        COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
+        am2.state in ('posted') ) as haber9
 from cuentas aa 
 where aa.company_id= {0} and length(trim(aa.code))=4 and aa.code between '3100%' and  '3109%'
-order by aa.code
-
-)S2
+order by aa.code)S2
 where S2.previo9<>0 or S2.debe9<>0 or S2.haber9<>0 
-order by S2.code
-
-        )""".format(company_id, date_year, date_month, acum, fechai, fechaf)
+order by S2.code)""".format(company_id, date_year, date_month, acum, fechai, fechaf)
 		tools.drop_view_if_exists(self._cr, 'odoosv_financierosv_general_report')
 		self._cr.execute(sql)
 		self._cr.execute("SELECT * FROM public.odoosv_financierosv_general_report")
@@ -1093,6 +1092,7 @@ order by S2.code
 
 	def get_general_details10(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		data = {}
+		acum = 1
 
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
            select * from ( 
@@ -1103,29 +1103,27 @@ order by S2.code
         inner join account_move_line aml1 on aa1.id=aml1.account_id
         inner join account_move am1 on aml1.move_id=am1.id
         where aa1.company_id={0}  and aa1.code like aa.code ||'%' and 
-	 	COALESCE(am1.date,am1.invoice_date)<CAST({4} as date) and 
+	 	COALESCE(am1.date,am1.invoice_date)<CAST('{4}' as date) and 
 		am1.state in ('posted')) else 0 end as previo10
 ,(select COALESCE(sum(aml2.debit),0)
         from account_account aa2
         inner join account_move_line aml2 on aa2.id=aml2.account_id
         inner join account_move am2 on aml2.move_id=am2.id
         where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
   		am2.state in ('posted') ) as debe10     
 ,(select COALESCE(sum(aml2.credit),0)
         from account_account aa2
         inner join account_move_line aml2 on aa2.id=aml2.account_id
         inner join account_move am2 on aml2.move_id=am2.id
         where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
   		am2.state in ('posted') ) as haber10
 from cuentas aa 
-where aa2.company_id={0} and length(trim(aa.code))=2  and aa.code like '41%'
-order by aa.code
-
-)S2
+where aa.company_id={0} and length(trim(aa.code))=2 and aa.code like '41%'
+order by aa.code)S2
 where S2.previo10<>0 or S2.debe10<>0 or S2.haber10<>0 
 order by S2.code
         )""".format(company_id, date_year, date_month, acum, fechai, fechaf)
@@ -1138,6 +1136,7 @@ order by S2.code
 
 	def get_general_details11(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		data = {}
+		acum = 1
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
            select * from ( 
     select aa.code 
@@ -1147,26 +1146,26 @@ order by S2.code
         inner join account_move_line aml1 on aa1.id=aml1.account_id
         inner join account_move am1 on aml1.move_id=am1.id
         where aa1.company_id=1  and aa1.code like aa.code ||'%' and 
-	 	COALESCE(am1.date,am1.invoice_date)<CAST({4} as date) and 
+	 	COALESCE(am1.date,am1.invoice_date)<CAST('{4}' as date) and 
 		am1.state in ('posted')) else 0 end as previo11
 ,(select COALESCE(sum(aml2.debit),0)
         from account_account aa2
         inner join account_move_line aml2 on aa2.id=aml2.account_id
         inner join account_move am2 on aml2.move_id=am2.id
         where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
   		am2.state in ('posted') ) as debe11   
 ,(select COALESCE(sum(aml2.credit),0)
         from account_account aa2
         inner join account_move_line aml2 on aa2.id=aml2.account_id
         inner join account_move am2 on aml2.move_id=am2.id
         where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
   		am2.state in ('posted') ) as haber11
 from cuentas aa 
-where aa.company_id= {0} and length(trim(aa.code))=4  and aa.code between '4101%' and '4102%'
+where aa.company_id= {0} and length(trim(aa.code))=4  and aa.code between '4100%' and '4102%'
 order by aa.code
 
 )S2
@@ -1182,6 +1181,7 @@ order by S2.code
 
 	def get_general_details12(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		data = {}
+		acum = 1
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1191,26 +1191,26 @@ order by S2.code
 	        inner join account_move_line aml1 on aa1.id=aml1.account_id
 	        inner join account_move am1 on aml1.move_id=am1.id
 	        where aa1.company_id=1  and aa1.code like aa.code ||'%' and 
-		 	COALESCE(am1.date,am1.invoice_date)<CAST({4} as date) and 
+		 	COALESCE(am1.date,am1.invoice_date)<CAST('{4}' as date) and 
 			am1.state in ('posted')) else 0 end as previo12
 	,(select COALESCE(sum(aml2.debit),0)
 	        from account_account aa2
 	        inner join account_move_line aml2 on aa2.id=aml2.account_id
 	        inner join account_move am2 on aml2.move_id=am2.id
 	        where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-	  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-	  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
 	  		am2.state in ('posted') ) as debe12   
 	,(select COALESCE(sum(aml2.credit),0)
 	        from account_account aa2
 	        inner join account_move_line aml2 on aa2.id=aml2.account_id
 	        inner join account_move am2 on aml2.move_id=am2.id
 	        where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-	  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-	  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
 	  		am2.state in ('posted') ) as haber12
 	from cuentas aa 
-	where aa2.company_id={0} and length(trim(aa.code))=2  and aa.code like '42%'
+	where aa.company_id={0} and length(trim(aa.code))=2  and aa.code like '42%'
 	order by aa.code
 
 	)S2
@@ -1226,6 +1226,7 @@ order by S2.code
 
 	def get_general_details13(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		data = {}
+		acum = 1
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1235,26 +1236,26 @@ order by S2.code
 	        inner join account_move_line aml1 on aa1.id=aml1.account_id
 	        inner join account_move am1 on aml1.move_id=am1.id
 	        where aa1.company_id=1  and aa1.code like aa.code ||'%' and 
-		 	COALESCE(am1.date,am1.invoice_date)<CAST({4} as date) and 
+		 	COALESCE(am1.date,am1.invoice_date)<CAST('{4}' as date) and 
 			am1.state in ('posted')) else 0 end as previo13
 	,(select COALESCE(sum(aml2.debit),0)
 	        from account_account aa2
 	        inner join account_move_line aml2 on aa2.id=aml2.account_id
 	        inner join account_move am2 on aml2.move_id=am2.id
 	        where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-	  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-	  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
 	  		am2.state in ('posted') ) as debe13   
 	,(select COALESCE(sum(aml2.credit),0)
 	        from account_account aa2
 	        inner join account_move_line aml2 on aa2.id=aml2.account_id
 	        inner join account_move am2 on aml2.move_id=am2.id
 	        where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-	  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-	  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
 	  		am2.state in ('posted') ) as haber13
 	from cuentas aa 
-	where aa2.company_id={0} and length(trim(aa.code))=4  and aa.code like '42%'
+	where aa.company_id={0} and length(trim(aa.code))=4  and aa.code like '42%'
 	order by aa.code
 
 	)S2
@@ -1270,6 +1271,7 @@ order by S2.code
 
 	def get_general_details14(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		data = {}
+		acum = 1
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1279,26 +1281,26 @@ order by S2.code
 	        inner join account_move_line aml1 on aa1.id=aml1.account_id
 	        inner join account_move am1 on aml1.move_id=am1.id
 	        where aa1.company_id=1  and aa1.code like aa.code ||'%' and 
-		 	COALESCE(am1.date,am1.invoice_date)<CAST({4} as date) and 
+		 	COALESCE(am1.date,am1.invoice_date)<CAST('{4}' as date) and 
 			am1.state in ('posted')) else 0 end as previo14
 	,(select COALESCE(sum(aml2.debit),0)
 	        from account_account aa2
 	        inner join account_move_line aml2 on aa2.id=aml2.account_id
 	        inner join account_move am2 on aml2.move_id=am2.id
 	        where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-	  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-	  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
 	  		am2.state in ('posted') ) as debe14   
 	,(select COALESCE(sum(aml2.credit),0)
 	        from account_account aa2
 	        inner join account_move_line aml2 on aa2.id=aml2.account_id
 	        inner join account_move am2 on aml2.move_id=am2.id
 	        where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-	  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-	  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
 	  		am2.state in ('posted') ) as haber14
 	from cuentas aa 
-	where aa2.company_id={0} and length(trim(aa.code))=2  and aa.code like '43%'
+	where aa.company_id={0} and length(trim(aa.code))=2  and aa.code like '43%'
 	order by aa.code
 
 	)S2
@@ -1314,6 +1316,7 @@ order by S2.code
 
 	def get_general_details15(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		data = {}
+		acum = 1
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1323,26 +1326,26 @@ order by S2.code
 	        inner join account_move_line aml1 on aa1.id=aml1.account_id
 	        inner join account_move am1 on aml1.move_id=am1.id
 	        where aa1.company_id=1  and aa1.code like aa.code ||'%' and 
-		 	COALESCE(am1.date,am1.invoice_date)<CAST({4} as date) and 
+		 	COALESCE(am1.date,am1.invoice_date)<CAST('{4}' as date) and 
 			am1.state in ('posted')) else 0 end as previo15
 	,(select COALESCE(sum(aml2.debit),0)
 	        from account_account aa2
 	        inner join account_move_line aml2 on aa2.id=aml2.account_id
 	        inner join account_move am2 on aml2.move_id=am2.id
 	        where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-	  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-	  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
 	  		am2.state in ('posted') ) as debe15
 	,(select COALESCE(sum(aml2.credit),0)
 	        from account_account aa2
 	        inner join account_move_line aml2 on aa2.id=aml2.account_id
 	        inner join account_move am2 on aml2.move_id=am2.id
 	        where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-	  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-	  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
 	  		am2.state in ('posted') ) as haber15
 	from cuentas aa 
-	where aa2.company_id={0} and length(trim(aa.code))=4  and aa.code like '4301%'
+	where aa.company_id={0} and length(trim(aa.code))=4  and aa.code like '4301%'
 	order by aa.code
 
 	)S2
@@ -1358,6 +1361,7 @@ order by S2.code
 
 	def get_general_details16(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		data = {}
+		acum = 1
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1367,26 +1371,26 @@ order by S2.code
 	        inner join account_move_line aml1 on aa1.id=aml1.account_id
 	        inner join account_move am1 on aml1.move_id=am1.id
 	        where aa1.company_id=1  and aa1.code like aa.code ||'%' and 
-		 	COALESCE(am1.date,am1.invoice_date)<CAST({4} as date) and 
+		 	COALESCE(am1.date,am1.invoice_date)<CAST('{4}' as date) and 
 			am1.state in ('posted')) else 0 end as previo16
 	,(select COALESCE(sum(aml2.debit),0)
 	        from account_account aa2
 	        inner join account_move_line aml2 on aa2.id=aml2.account_id
 	        inner join account_move am2 on aml2.move_id=am2.id
 	        where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-	  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-	  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
 	  		am2.state in ('posted') ) as debe16   
 	,(select COALESCE(sum(aml2.credit),0)
 	        from account_account aa2
 	        inner join account_move_line aml2 on aa2.id=aml2.account_id
 	        inner join account_move am2 on aml2.move_id=am2.id
 	        where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-	  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-	  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
 	  		am2.state in ('posted') ) as haber16
 	from cuentas aa 
-	where aa2.company_id={0} and length(trim(aa.code))=2  and aa.code like '51%'
+	where aa.company_id={0} and length(trim(aa.code))=2  and aa.code like '51%'
 	order by aa.code )S2
 	where S2.previo16<>0 or S2.debe16<>0 or S2.haber16<>0 
 	order by S2.code
@@ -1400,6 +1404,7 @@ order by S2.code
 
 	def get_general_details17(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		data = {}
+		acum = 1
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1409,26 +1414,26 @@ order by S2.code
 	        inner join account_move_line aml1 on aa1.id=aml1.account_id
 	        inner join account_move am1 on aml1.move_id=am1.id
 	        where aa1.company_id=1  and aa1.code like aa.code ||'%' and 
-		 	COALESCE(am1.date,am1.invoice_date)<CAST({4} as date) and 
+		 	COALESCE(am1.date,am1.invoice_date)<CAST('{4}' as date) and 
 			am1.state in ('posted')) else 0 end as previo17
 	,(select COALESCE(sum(aml2.debit),0)
 	        from account_account aa2
 	        inner join account_move_line aml2 on aa2.id=aml2.account_id
 	        inner join account_move am2 on aml2.move_id=am2.id
 	        where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-	  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-	  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
 	  		am2.state in ('posted') ) as debe17
 	,(select COALESCE(sum(aml2.credit),0)
 	        from account_account aa2
 	        inner join account_move_line aml2 on aa2.id=aml2.account_id
 	        inner join account_move am2 on aml2.move_id=am2.id
 	        where aa2.company_id={0} and aa2.code like aa.code ||'%' and 
-	  		COALESCE(am2.date,am2.invoice_date)>=CAST({4} as date) and 
-	  		COALESCE(am2.date,am2.invoice_date)<=CAST({5} as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)>=CAST('{4}' as date) and 
+	  		COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
 	  		am2.state in ('posted') ) as haber17
 	from cuentas aa 
-	where aa2.company_id={0} and length(trim(aa.code))=4  and aa.code like '5101%'
+	where aa.company_id={0} and length(trim(aa.code))=4  and aa.code like '5101%'
 	order by aa.code )S2
 	where S2.previo17<>0 or S2.debe17<>0 or S2.haber17<>0 
 	order by S2.code
