@@ -1444,3 +1444,37 @@ order by S2.code
 		if self._cr.description:  # Verify whether or not the query generated any tuple before fetching in order to avoid PogrammingError: No results when fetching
 			data = self._cr.dictfetchall()
 		return data
+
+	def get_reserva_legal(self, company_id, date_year, date_month, acum, fechai, fechaf):
+		data = {}
+		sql = """SELECT aa.name, aml.debit, aml.credit, aml.balance
+        		 FROM account_account aa
+        			INNER JOIN account_move_line aml on aa.id=aml.account_id
+        			INNER JOIN account_move am on aml.move_id=am.id
+				WHERE aml.company_id={0} AND aa.code LIKE '310301' AND move_name LIKE 'CIERRE%' AND
+					 COALESCE(am.date,am.invoice_date)>=CAST('{4}' as date) AND 
+				     COALESCE(am.date,am.invoice_date)<=CAST('{5}' as date) AND am.state in ('posted') 
+		""".format(company_id, date_year, date_month, acum, fechai, fechaf)
+		tools.drop_view_if_exists(self._cr, 'odoosv_financierosv_resultado_report')
+		self._cr.execute(sql)
+		self._cr.execute(sql)
+		if self._cr.description:
+			data = self._cr.dictfetchall()
+		return data
+
+	def get_impuesto_renta(self, company_id, date_year, date_month, acum, fechai, fechaf):
+		data = {}
+		sql = """SELECT aa.name, aml.debit, aml.credit, aml.balance
+        		 FROM account_account aa
+        			INNER JOIN account_move_line aml on aa.id=aml.account_id
+        			INNER JOIN account_move am on aml.move_id=am.id
+				WHERE aml.company_id={0} AND aa.code LIKE '21060401' AND move_name LIKE 'CIERRE%' AND
+					 COALESCE(am.date,am.invoice_date)>=CAST('{4}' as date) AND 
+				     COALESCE(am.date,am.invoice_date)<=CAST('{5}' as date) AND am.state in ('posted') 
+		""".format(company_id, date_year, date_month, acum, fechai, fechaf)
+		tools.drop_view_if_exists(self._cr, 'odoosv_financierosv_resultado_report')
+		self._cr.execute(sql)
+		self._cr.execute(sql)
+		if self._cr.description:
+			data = self._cr.dictfetchall()
+		return data

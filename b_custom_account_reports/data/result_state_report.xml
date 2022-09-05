@@ -138,16 +138,40 @@
         <record id="result_state_02" model="account.financial.html.report.line">
             <field name="name">RESERVA LEGAL 7%</field>
             <field name="code">state_02</field>
-            <field name="parent_id" ref="result_state_report"/>
-            <field name="domain" eval="[('account_id.code','=like','310301')]"/>
-            <field name="formulas">sum</field>
-            <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="financial_report_id" ref="result_state_report"/>
+            <field name="domain" eval="[ ('account_id.code','=like','310301'), ('move_name','=like','CIERRE%')]"/>
+            <field name="formulas">-sum</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="0"/>
-            <field name="special_date_changer">strict_range</field>
         </record>
 
+        <record id="result_state_33" model="account.financial.html.report.line">
+            <field name="name">UTILIDAD ANTES IMPUESTOS</field>
+            <field name="code">state_33</field>
+            <field name="financial_report_id" ref="result_state_report"/>
+            <field name="formulas">state_01 - state_02</field>
+            <field name="sequence" eval="2"/>
+            <field name="level" eval="0"/>
+        </record>
+
+        <record id="result_state_04" model="account.financial.html.report.line">
+            <field name="name">IMPUESTOS SOBRE LA RENTA</field>
+            <field name="code">state_04</field>
+            <field name="financial_report_id" ref="result_state_report"/>
+            <field name="domain" eval="[ ('account_id.code','=like','21060401'), ('move_name','=like','CIERRE%')]"/>
+            <field name="formulas">-sum</field>
+            <field name="sequence" eval="2"/>
+            <field name="level" eval="0"/>
+        </record>
+
+        <record id="result_state_05" model="account.financial.html.report.line">
+            <field name="name">UTILIDADES DEL EJERCICIO</field>
+            <field name="code">state_05</field>
+            <field name="financial_report_id" ref="result_state_report"/>
+            <field name="formulas">state_33 - state_04</field>
+            <field name="sequence" eval="2"/>
+            <field name="level" eval="0"/>
+        </record>
 
     </data>
 </odoo>
