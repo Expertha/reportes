@@ -9,15 +9,27 @@
             <field name="context" eval="{'model': 'custom.trial.balance'}"/>
         </record>
 
+        <!-- Custom General Ledger Report Action -->
+        <record id="action_custom_ledger_report" model="ir.actions.client">
+            <field name="name">Custom General Ledger Report</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'custom.journal.ledger'}"/>
+        </record>
+
         <menuitem id="menu_custom_reports" name="Custom Reports"
                   parent="account.menu_finance_reports"
                   sequence="0"/>
 
-        <!-- Account Balance Trial Menuitems -->
+        <!-- Account Balance Trial Menu  -->
         <menuitem id="menu_custom_trial_balance" name="Custom Trial Balance"
                   parent="menu_custom_reports"
                   action="b_custom_account_reports.action_custom_trial_balance"/>
-        
+
+        <!-- Custom General Ledger Menu -->
+        <menuitem id="menu_custom_ledger_report" name="Custom Journal Ledger Report"
+                  parent="menu_custom_reports"
+                  action="b_custom_account_reports.action_custom_ledger_report"/>
+
     </data>
 
 </odoo>
