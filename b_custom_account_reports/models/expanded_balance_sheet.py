@@ -76,6 +76,7 @@ class ExpandedBalanceSheet(models.Model):
 		}
 
 	def get_xlsx(self, options, response=None):
+
 		output = io.BytesIO()
 		workbook = xlsxwriter.Workbook(output, {
 			'in_memory': True,
@@ -95,7 +96,8 @@ class ExpandedBalanceSheet(models.Model):
 		level_2_col1_total_style = workbook.add_format({'font_name': 'Arial', 'bold': False, 'font_size': 11, 'font_color': '#666666'})
 		level_2_style = workbook.add_format({'font_name': 'Arial', 'bold': False, 'font_size': 10, 'font_color': '#666666'})
 		level_3_col1_style = workbook.add_format({'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666', 'indent': 2})
-		level_3_col1_total_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'font_size': 11, 'font_color': '#666666', 'indent': 1})
+		level_3_col1_total_style = workbook.add_format(
+			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'font_color': '#666666', 'indent': 1})
 		level_3_style = workbook.add_format({'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666'})
 		company_name_style = workbook.add_format(
 			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 20, 'font_color': '#000000'})
@@ -193,6 +195,15 @@ class ExpandedBalanceSheet(models.Model):
 					else:
 						sheet.write_number(yy + yy_offset, 4, cell_value, style)
 				yy = yy + 1
+
+		sheet.set_row(len(lines), 40)
+		sheet.merge_range(40, 0, 40, 4, 'F  __________________________                                 '
+										'F  __________________________                                 '
+										'F  __________________________', signature_style)
+
+		sheet.merge_range(41, 0, 41, 4,
+						  '                                  Representante Legal                                                                                                   Contador                                                                                                                        Auditor',
+						  '')
 
 		workbook.close()
 		output.seek(0)

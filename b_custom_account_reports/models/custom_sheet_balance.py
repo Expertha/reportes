@@ -73,15 +73,16 @@ class CustomSheetBalance(models.Model):
 			return super(CustomSheetBalance, self).print_pdf(options=options)
 
 	def print_xlsx(self, options):
-		return {
-			'type': 'ir_actions_account_report_download',
-			'data': {'model': self.env.context.get('model'),
-					 'options': json.dumps(options),
-					 'output_format': 'xlsx',
-					 'financial_id': self.env.context.get('id'),
-					 'allowed_company_ids': self.env.context.get('allowed_company_ids'),
-					 }
-		}
+		if self.id == self.env.ref('b_custom_account_reports.report_balance_sheet').id:
+			return {
+				'type': 'ir_actions_account_report_download',
+				'data': {'model': self.env.context.get('model'),
+						 'options': json.dumps(options),
+						 'output_format': 'xlsx',
+						 'financial_id': self.env.context.get('id'),
+						 'allowed_company_ids': self.env.context.get('allowed_company_ids'),
+						 }
+			}
 
 	def get_xlsx(self, options, response=None):
 		output = io.BytesIO()
