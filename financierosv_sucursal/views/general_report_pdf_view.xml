@@ -65,6 +65,8 @@
                         <t t-set="company" t-value="null"/>
                         <t t-set="mes" t-value="null"/>
                         <t t-set="acum" t-value="null"/>
+                        <t t-set="totalc" t-value="float(0.00)"/>
+
                         <t t-set="total1" t-value="float(0.00)"/>
                         <t t-set="total" t-value="float(0.00)"/>
                         <t t-set="total2" t-value="float(0.00)"/>
@@ -93,14 +95,10 @@
                             <t t-set="fechai" t-value="(data.get('form').get('fechai'))"/>
                             <t t-set="fechaf" t-value="(data.get('form').get('fechaf'))"/>
                             <t t-set="company" t-value="o"/>
-
-
                             <t t-set="fecha1" t-value="datetime.datetime.strptime(fechai, '%Y-%m-%d')"/>
                             <t t-set="fecha2" t-value="datetime.datetime.strptime(fechaf, '%Y-%m-%d')"/>
-
                             <t t-set="fecha11" t-value="fecha1.strftime('%d %b, %Y')"/>
                             <t t-set="fecha22" t-value="fecha2.strftime('%d %b, %Y')"/>
-
 
                             <div class="encabezado">
                                 <h3>

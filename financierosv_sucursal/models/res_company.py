@@ -1184,8 +1184,7 @@ order by S2.code
 		 Obtiene el resumen de los GASTOS OPERACIONALES del anio fiscal
 		"""
 		data = {}
-		year = datetime.now().year
-		fechai = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d')
+		acum = 3
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1232,9 +1231,8 @@ order by S2.code
 		"""
 		Obtiene los GASTOS OPERACIONALES del anio fiscal
 		"""
-		data = {}
-		year = datetime.now().year
-		fechai = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d')
+		acum = 3
+
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1279,9 +1277,7 @@ order by S2.code
 
 	def get_general_details14(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		""" GASTOS NO OPERACIONALES """
-		data = {}
-		year = datetime.now().year
-		fechai = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d')
+		acum = 3
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1326,9 +1322,8 @@ order by S2.code
 
 	def get_general_details15(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		""" GASTOS NO OPERACIONALES """
-		data = {}
-		year = datetime.now().year
-		fechai = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d')
+		acum = 3
+
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1374,8 +1369,8 @@ order by S2.code
 	def get_general_details16(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		""" Se obtiene el Ingreso del año Fiscal. """
 		data = {}
-		year = datetime.now().year
-		fechai = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d')
+		acum = 3
+
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1418,8 +1413,8 @@ order by S2.code
 
 	def get_general_details17(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		data = {}
-		year = datetime.now().year
-		fechai = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d')
+		acum = 3
+		
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
