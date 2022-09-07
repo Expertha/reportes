@@ -30,7 +30,6 @@
                 file="financierosv_sucursal.odoosv_general_report_pdf"
                 name="financierosv_sucursal.odoosv_general_report_pdf"
                 menu="False"
-                paperformat="financierosv_sucursal.paperformat_sheet_balance"
         />
 
         <report
