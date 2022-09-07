@@ -454,6 +454,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="6"/>
             <field name="level" eval="1"/>
+            <field name="special_date_changer">from_fiscalyear</field>
         </record>
 
         <record id="balance_trial_4444" model="account.financial.html.report.line">

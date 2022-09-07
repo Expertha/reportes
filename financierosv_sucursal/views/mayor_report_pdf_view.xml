@@ -135,10 +135,13 @@
                                                 Saldo anterior
                                             </td>
                                             <td style="text-align: right;">
+                                                0.00
+                                            </td>
+                                            <td style="text-align: right;">0.00</td>
+                                            <td style="text-align: right;">
                                                 <span t-esc="company.currency_id.symbol"/>
                                                 <span t-esc="'{0:.2f}'.format(c.get('previo'))"/>
                                             </td>
-                                            <td></td>
                                         </tr>
                                         <t t-foreach="company.get_mayor_details1(company_id, year, month, acum, fechai, fechaf, c.get('code'))"
                                            t-as="s">
@@ -159,6 +162,10 @@
                                                     <span t-esc="company.currency_id.symbol"/>
                                                     <span t-esc="'{0:.2f}'.format(s.get('credit'))"/>
                                                 </td>
+                                                <!--- 1 - saldo_anterior + debe - haber
+                                                <t t-if="c.get('code') in ('1101', '1103', '1104', '1105')">
+                                                    <t t-set="saldo" t-value="c.get('previo') + s.get('debit') - s.get('credit')"/>
+                                                </t>-->
                                                 <t t-set="saldo" t-value="s.get('debit') - s.get('credit')"/>
                                                 <t t-set="saldoTotal" t-value="saldoTotal + saldo"/>
                                                 <td style="text-align: right;">

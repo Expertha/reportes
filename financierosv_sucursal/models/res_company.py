@@ -1369,7 +1369,8 @@ order by S2.code
 	def get_general_details16(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		""" Se obtiene el Ingreso del año Fiscal. """
 		data = {}
-		acum = 3
+		year = datetime.now().year
+		fechai = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d')
 
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
@@ -1413,8 +1414,9 @@ order by S2.code
 
 	def get_general_details17(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		data = {}
-		acum = 3
-		
+		year = datetime.now().year
+		fechai = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d')
+
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
