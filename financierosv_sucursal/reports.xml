@@ -180,13 +180,14 @@
             <field name="format">Letter</field>
             <field name="orientation">Portrait</field>
             <field name="margin_top">5</field>
-            <field name="margin_bottom">5</field>
+            <field name="margin_bottom">10</field>
             <field name="margin_left">5</field>
             <field name="margin_right">10</field>
             <field name="header_line" eval="False"/>
             <field name="header_spacing">0</field>
             <field name="dpi">90</field>
-            <field name="report_ids" eval="[(6,0,[ref('financierosv_sucursal.report_auxiliar_pdf'),])]"/>
+            <field name="report_ids" eval="[(6,0,[ref('financierosv_sucursal.report_auxiliar_pdf'),
+                                                    ref('financierosv_sucursal.report_mayor_pdf'),])]"/>
         </record>
         <!--
                 <record id="paperformat_book_consumer_report_pdf" model="report.paperformat">

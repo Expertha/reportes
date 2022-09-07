@@ -34,33 +34,22 @@ from odoo.tools.misc import xlsxwriter
 from odoo.tools import config, date_utils, get_lang
 
 
-class CustomSheetBalance(models.Model):
+class ExpandedBalanceSheet(models.Model):
 	_inherit = "account.financial.html.report"
 
 	filter_analytic = False
-	filter_accumulative = False
-
-	@api.model
-	def _get_templates(self):
-		templates = super(CustomSheetBalance, self)._get_templates()
-		templates['search_template'] = 'b_custom_account_reports.custom_search_sheet'
-
-		return templates
 
 	def print_pdf(self, options):
-		if self.id == self.env.ref('b_custom_account_reports.report_balance_sheet').id:
-
-			report_name = 'financierosv_sucursal.report_balance_pdf'
-			# report = self.env['ir.actions.report']._get_report_from_name(report_name)
+		if self.id == self.env.ref('b_custom_account_reports.expanded_balance_sheet_report').id:
 			date_from = fields.Date.from_string(options.get('date').get('date_from'))
 			date_to = fields.Date.from_string(options.get('date').get('date_to'))
 
 			form = {
 				'fechai': date_from,
 				'fechaf': date_to,
-				'date_year': 2022,
+				'date_year': 0000,
 				'date_month': 1,
-				'acum': options.get('accumulative', False),
+				'acum': options.get('accumulative', True),
 				'company_id': [self.env.company.id]
 			}
 			data = {
@@ -70,21 +59,24 @@ class CustomSheetBalance(models.Model):
 			}
 			return self.env.ref('financierosv_sucursal.report_general_pdf').report_action(self, data=data)
 		else:
-			return super(CustomSheetBalance, self).print_pdf(options=options)
+			return super(ExpandedBalanceSheet, self).print_pdf(options=options)
+
+	def _get_report_name(self):
+		return _('Expanded Balance Sheet')
 
 	def print_xlsx(self, options):
-		if self.id == self.env.ref('b_custom_account_reports.report_balance_sheet').id:
-			return {
-				'type': 'ir_actions_account_report_download',
-				'data': {'model': self.env.context.get('model'),
-						 'options': json.dumps(options),
-						 'output_format': 'xlsx',
-						 'financial_id': self.env.context.get('id'),
-						 'allowed_company_ids': self.env.context.get('allowed_company_ids'),
-						 }
-			}
+		return {
+			'type': 'ir_actions_account_report_download',
+			'data': {'model': self.env.context.get('model'),
+					 'options': json.dumps(options),
+					 'output_format': 'xlsx',
+					 'financial_id': self.env.context.get('id'),
+					 'allowed_company_ids': self.env.context.get('allowed_company_ids'),
+					 }
+		}
 
 	def get_xlsx(self, options, response=None):
+
 		output = io.BytesIO()
 		workbook = xlsxwriter.Workbook(output, {
 			'in_memory': True,
@@ -104,7 +96,8 @@ class CustomSheetBalance(models.Model):
 		level_2_col1_total_style = workbook.add_format({'font_name': 'Arial', 'bold': False, 'font_size': 11, 'font_color': '#666666'})
 		level_2_style = workbook.add_format({'font_name': 'Arial', 'bold': False, 'font_size': 10, 'font_color': '#666666'})
 		level_3_col1_style = workbook.add_format({'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666', 'indent': 2})
-		level_3_col1_total_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'font_size': 11, 'font_color': '#666666', 'indent': 1})
+		level_3_col1_total_style = workbook.add_format(
+			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'font_color': '#666666', 'indent': 1})
 		level_3_style = workbook.add_format({'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666'})
 		company_name_style = workbook.add_format(
 			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 20, 'font_color': '#000000'})
@@ -174,7 +167,7 @@ class CustomSheetBalance(models.Model):
 			# write the first column, with a specific style to manage the indentation
 			cell_type, cell_value = self._get_cell_type_value(lines[y])
 
-			if y in range(0, 16):
+			if y in range(0, 28):
 				if cell_type == 'date':
 					sheet.write_datetime(y + y_offset, 0, cell_value, date_default_col1_style)
 				else:
@@ -203,12 +196,12 @@ class CustomSheetBalance(models.Model):
 						sheet.write_number(yy + yy_offset, 4, cell_value, style)
 				yy = yy + 1
 
-		sheet.set_row(len(lines), 30)
-		sheet.merge_range(30, 0, 30, 4, 'F  __________________________                                 '
+		sheet.set_row(len(lines), 40)
+		sheet.merge_range(40, 0, 40, 4, 'F  __________________________                                 '
 										'F  __________________________                                 '
 										'F  __________________________', signature_style)
 
-		sheet.merge_range(31, 0, 31, 4,
+		sheet.merge_range(41, 0, 41, 4,
 						  '                                  Representante Legal                                                                                                   Contador                                                                                                                        Auditor',
 						  '')
 

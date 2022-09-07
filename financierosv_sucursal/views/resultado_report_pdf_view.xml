@@ -92,6 +92,9 @@
                         <t t-set="total10" t-value="float(0.00)"/>
                         <t t-set="total11" t-value="float(0.00)"/>
                         <t t-set="total12" t-value="float(0.00)"/>
+                        <t t-set="totaluo" t-value="float(0.00)"/>
+                        <t t-set="totalrl" t-value="float(0.00)"/>
+                        <t t-set="totalai" t-value="float(0.00)"/>
                         <t t-set="fechai" t-value="2022-12-1"/>
                         <t t-set="fechaf" t-value="2022-12-1"/>
                         <t t-set="fecha1" t-value="2022-12-1"/>
@@ -376,168 +379,184 @@
                                 <td class="td6" style="border:none;"></td>
                             </tr>
                             <tr>
+                                <td class="td1" style="border:none;">
+                                    <br/>
+                                </td>
+                                <td class="td2" style="border:none;">
+                                    <br/>
+                                </td>
+                                <td class="td4" style="border:none;">
+                                    <br/>
+                                </td>
+                                <td class="td5" style="border:none;">
+                                    <br/>
+                                </td>
+                                <td class="td6" style="border:none;">
+                                    <br/>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="td1" style="border:none;"></td>
                                 <td class="td2" style="border:none;">
                                     <b>
                                         <strong>UTILIDAD DE OPERACIÓN</strong>
                                     </b>
+
                                 </td>
-                                <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
                                 <td class="td4" style="border:none;"></td>
                                 <td class="td5" style="border:none;"></td>
-                                <t t-set="total" t-value=" total0 - total10"/>
-                                <td class="td6"
-                                    style="border: black 1px solid;border-right:none;border-left:none;border-top:none;">
-                                    <strong t-esc="'{0:,.2f}'.format(total)"/>
+                                <t t-set="totaluo" t-value=" total0 - total10"/>
+                                <td class="td6" style="border: black 1px solid;border-right:none;border-left:none;border-top:none;">
+                                    <strong t-esc="'{0:,.2f}'.format(totaluo)"/>
                                 </td>
                             </tr>
                             <tr>
+                                <td class="td1" style="border:none;">
+                                    <br/>
+                                </td>
+                                <td class="td2" style="border:none;">
+                                    <br/>
+                                </td>
+                                <td class="td4" style="border:none;">
+                                    <br/>
+                                </td>
+                                <td class="td5" style="border:none;">
+                                    <br/>
+                                </td>
+                                <td class="td6" style="border:none;">
+                                    <br/>
+                                </td>
+                            </tr>
+                            <tr t-foreach="company.get_reserva_legal(company_id, year, month, acum, fechai, fechaf)"
+                                t-as="c">
                                 <td class="td1" style="border:none;"></td>
                                 <td class="td2" style="border:none;">
-                                    <strong>MAS:</strong>
+                                    <b>
+                                        <strong>
+                                            <span t-esc="c.get('name')"/>
+                                        </strong>
+                                    </b>
                                 </td>
-                                <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
+                                <t t-set="totalrl" t-value="c.get('credit')"/>
                                 <td class="td4" style="border:none;"></td>
                                 <td class="td5" style="border:none;"></td>
-                                <t t-set="total" t-value=" total7 - total10"/>
-                                <td class="td6" style="border:none;"></td>
+                                <td class="td6" style="border: black 1px solid;border-right:none;border-left:none;border-top:none;">
+                                    <span t-esc="'{0:,.2f}'.format(totalrl)"/>
+                                </td>
                             </tr>
                             <tr>
-                                <td class="td1" style="border:none;"></td>
-                                <td class="td2" style="border:none;">
-                                    <span>Menos::</span>
+                                <td class="td1" style="border:none;">
+                                    <br/>
                                 </td>
-                                <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
-                                <td class="td4" style="border:none;"></td>
-                                <td class="td5" style="border:none;"></td>
-                                <t t-set="total" t-value=" total7 - total10"/>
-                                <td class="td6" style="border:none;"></td>
-                            </tr>
-                            <tr>
-                                <td class="td1" style="border:none;"></td>
                                 <td class="td2" style="border:none;">
-                                    <strong>RESERVA LEGAL 7%</strong>
+                                    <br/>
                                 </td>
-                                <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
-                                <td class="td4" style="border:none;"></td>
-                                <td class="td5" style="border:none;"></td>
-                                <t t-set="total" t-value=" total7 - total10"/>
-                                <td class="td6" style="border:none;"></td>
+                                <td class="td4" style="border:none;">
+                                    <br/>
+                                </td>
+                                <td class="td5" style="border:none;">
+                                    <br/>
+                                </td>
+                                <td class="td6" style="border:none;">
+                                    <br/>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="td1" style="border:none;"></td>
                                 <td class="td2" style="border:none;">
                                     <strong>UTILIDAD ANTES DE IMPUESTO</strong>
                                 </td>
-                                <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
                                 <td class="td4" style="border:none;"></td>
                                 <td class="td5" style="border:none;"></td>
-                                <t t-set="total" t-value=" total7 - total10"/>
-                                <td class="td6" style="border:none;"></td>
-                            </tr>
-                            <tr>
-                                <td class="td1" style="border:none;"></td>
-                                <td class="td2" style="border:none;">
-                                    <strong>MAS:</strong>
+                                <t t-set="totalai" t-value="totaluo - totalrl"/>
+                                <td class="td6"
+                                    style="border: black 1px solid;border-right:none;border-left:none;border-top:none;">
+                                    <strong t-esc="'{0:,.2f}'.format(totalai)"/>
                                 </td>
-                                <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
-                                <td class="td4" style="border:none;"></td>
-                                <td class="td5" style="border:none;"></td>
-                                <t t-set="total" t-value=" total7 - total10"/>
-                                <td class="td6" style="border:none;"></td>
                             </tr>
                             <tr>
-                                <td class="td1" style="border:none;"></td>
-                                <td class="td2" style="border:none;">
-                                    <b>
-                                        <strong>GASTOS NO DEDUCIBLES</strong>
-                                    </b>
+                                <td class="td1" style="border:none;">
+                                    <br/>
                                 </td>
-                                <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
-                                <td class="td4" style="border:none;"></td>
-                                <td class="td5" style="border:none;"></td>
-                                <t t-set="total" t-value=" total7 - total10"/>
-                                <td class="td6" style="border:none;"></td>
-                            </tr>
-                            <tr>
-                                <td class="td1" style="border:none;"></td>
                                 <td class="td2" style="border:none;">
-                                    <span>GASTOS NO RECONOCIDOS-EJER.ANTERIOR</span>
+                                    <br/>
                                 </td>
-                                <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
-                                <td class="td4" style="border:none;"></td>
-                                <td class="td5" style="border:none;"></td>
-                                <t t-set="total" t-value=" total7 - total10"/>
-                                <td class="td6" style="border:none;"></td>
-                            </tr>
-                            <tr>
-                                <td class="td1" style="border:none;"></td>
-                                <td class="td2" style="border:none;">
-                                    <strong>UTILIDAD NETA ANTES DE IMP. S/LA</strong>
+                                <td class="td4" style="border:none;">
+                                    <br/>
                                 </td>
-                                <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
-                                <td class="td4" style="border:none;"></td>
-                                <td class="td5" style="border:none;"></td>
-                                <t t-set="total" t-value=" total7 - total10"/>
-                                <td class="td6" style="border:none;"></td>
-                            </tr>
-                            <tr>
-                                <td class="td1" style="border:none;"></td>
-                                <td class="td2" style="border:none;">
-                                    <strong>Menos:</strong>
+                                <td class="td5" style="border:none;">
+                                    <br/>
                                 </td>
-                                <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
-                                <td class="td4" style="border:none;"></td>
-                                <td class="td5" style="border:none;"></td>
-                                <t t-set="total" t-value=" total7 - total10"/>
-                                <td class="td6" style="border:none;"></td>
-                            </tr>
-                            <tr>
-                                <td class="td1" style="border:none;"></td>
-                                <td class="td2" style="border:none;">
-                                    <strong>IMPUESTO SOBRE LA RENTA</strong>
+                                <td class="td6" style="border:none;">
+                                    <br/>
                                 </td>
-                                <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
-                                <td class="td4" style="border:none;"></td>
-                                <td class="td5" style="border:none;"></td>
-                                <t t-set="total" t-value=" total7 - total10"/>
-                                <td class="td6" style="border:none;"></td>
                             </tr>
-                            <tr>
-                                <td class="td1" style="border:none;"></td>
-                                <td class="td2" style="border:none;">
-                                    <strong>Menos:</strong>
-                                </td>
-                                <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
-                                <td class="td4" style="border:none;"></td>
-                                <td class="td5" style="border:none;"></td>
-                                <t t-set="total" t-value=" total7 - total10"/>
-                                <td class="td6" style="border:none;"></td>
-                            </tr>
-                            <tr>
+                            <tr t-foreach="company.get_impuesto_renta(company_id, year, month, acum, fechai, fechaf)"
+                                t-as="c">
                                 <td class="td1" style="border:none;"></td>
                                 <td class="td2" style="border:none;">
                                     <b>
-                                        <strong>GASTOS NO DEDUCIBLES</strong>
+                                        <strong>
+                                            IMPUESTO SOBRE LA RENTA:
+                                            <!--<span t-esc="c.get('name')"/>-->
+                                        </strong>
                                     </b>
                                 </td>
-                                <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
+                                <t t-set="totalir" t-value="c.get('credit')"/>
                                 <td class="td4" style="border:none;"></td>
                                 <td class="td5" style="border:none;"></td>
-                                <t t-set="total" t-value=" total7 - total10"/>
-                                <td class="td6" style="border:none;"></td>
-                            </tr>
-                            <tr>
-                                <td class="td1" style="border:none;"></td>
-                                <td class="td2" style="border:none;">
-                                    <span>GASTOS NO RECONOCIDOS-EJER.ANTERIOR</span>
+                                <td class="td6" style="border: black 1px solid;border-right:none;border-left:none;border-top:none;">
+                                    <span t-esc="'{0:,.2f}'.format(totalir)"/>
                                 </td>
-                                <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
-                                <td class="td4" style="border:none;"></td>
-                                <td class="td5" style="border:none;"></td>
-                                <t t-set="total" t-value=" total7 - total10"/>
-                                <td class="td6" style="border:none;"></td>
                             </tr>
+                            <t t-set="totalUE" t-value="totalai - totalir"/>
+                            <tr>
+                                <td class="td1" style="border:none;">
+                                    <br/>
+                                </td>
+                                <td class="td2" style="border:none;">
+                                    <br/>
+                                </td>
+                                <td class="td4" style="border:none;">
+                                    <br/>
+                                </td>
+                                <td class="td5" style="border:none;">
+                                    <br/>
+                                </td>
+                                <td class="td6" style="border:none;">
+                                    <br/>
+                                </td>
+                            </tr>
+                            <t t-if="totalUE &gt; 0">
+                                <tr>
+                                    <td class="td1" style="border:none;"></td>
+                                    <td class="td2" style="border:none;">
+                                        <strong>UTILIDADES DEL EJERCICIO:</strong>
+                                    </td>
+                                    <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
+                                    <td class="td4" style="border:none;"></td>
+                                    <td class="td5" style="border:none;"></td>
+                                    <td class="td6"
+                                        style="border: black 1px solid;border-right:none;border-left:none;border-top:none;">
+                                        <strong t-esc="'{0:,.2f}'.format(totalUE)"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-if="totalUE &lt; 0">
+                                <tr>
+                                    <td class="td1" style="border:none;"></td>
+                                    <td class="td2" style="border:none;">
+                                        <strong>PERDIDAS DEL EJERCICIO:</strong>
+                                    </td>
+                                    <!--<td class="td3"><span t-esc="'{0:.2f}'.format(c.get('previo'))"/></td>-->
+                                    <td class="td4" style="border:none;"></td>
+                                    <td class="td5" style="border:none;"></td>
+                                    <td class="td6"
+                                        style="border: black 1px solid;border-right:none;border-left:none;border-top:none;">
+                                        <strong t-esc="'{0:,.2f}'.format(totalUE)"/>
+                                    </td>
+                                </tr>
+                            </t>
                         </table>
 
                     </div>
