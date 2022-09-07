@@ -114,24 +114,24 @@ order by S1.code
 
 	def get_mayor_details1(self, company_id, date_year, date_month, acum, fechai, fechaf, cuenta):
 		data = {}
-
+		cuenta = cuenta + '%'
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_mayor_report AS (
-            select * from ( 
-select am1.date     
-                ,sum(aml.debit) as debit
-                ,sum(aml.credit) as credit
-from account_move_line aml
+            SELECT * FROM ( 
+				select am1.date, sum(aml.debit) as debit ,sum(aml.credit) as credit
+				from account_move_line aml
                 inner join account_move am1 on aml.move_id=am1.id
                 inner Join account_account aa on aa.id=aml.account_id
                 inner Join account_group ag on ag.id=aa.group_id
-                where am1.company_id= {0} and aa.code like ag.code_prefix_start ||'%' and COALESCE(am1.date,am1.invoice_date)>=CAST('{4}' as date) and COALESCE(am1.date,am1.invoice_date)<=CAST('{5}' as date)    and am1.state in ('posted')
-                and ag.code_prefix_start = '{6}'
-
-group by am1.date            
-order by am1.date
-)S
-
-        )""".format(company_id, date_year, date_month, acum, fechai, fechaf, cuenta)
+                where am1.company_id= {0} and 
+                	aa.code like ag.code_prefix_start ||'%' and 
+                	COALESCE(am1.date,am1.invoice_date)>=CAST('{4}' as date) and 
+                	COALESCE(am1.date,am1.invoice_date)<=CAST('{5}' as date) and 
+                	am1.state in ('posted')
+                and ag.code_prefix_start LIKE '{6}'	
+                group by am1.date            
+				order by am1.date
+			)S
+		)""".format(company_id, date_year, date_month, acum, fechai, fechaf, cuenta)
 		tools.drop_view_if_exists(self._cr, 'odoosv_financierosv_mayor_report')
 		self._cr.execute(sql)
 		self._cr.execute("SELECT * FROM public.odoosv_financierosv_mayor_report")
@@ -1180,8 +1180,12 @@ order by S2.code
 		return data
 
 	def get_general_details12(self, company_id, date_year, date_month, acum, fechai, fechaf):
+		"""
+		 Obtiene el resumen de los GASTOS OPERACIONALES del anio fiscal
+		"""
 		data = {}
-		acum = 1
+		year = datetime.now().year
+		fechai = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d')
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1225,8 +1229,12 @@ order by S2.code
 		return data
 
 	def get_general_details13(self, company_id, date_year, date_month, acum, fechai, fechaf):
+		"""
+		Obtiene los GASTOS OPERACIONALES del anio fiscal
+		"""
 		data = {}
-		acum = 1
+		year = datetime.now().year
+		fechai = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d')
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1270,8 +1278,10 @@ order by S2.code
 		return data
 
 	def get_general_details14(self, company_id, date_year, date_month, acum, fechai, fechaf):
+		""" GASTOS NO OPERACIONALES """
 		data = {}
-		acum = 1
+		year = datetime.now().year
+		fechai = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d')
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1315,8 +1325,10 @@ order by S2.code
 		return data
 
 	def get_general_details15(self, company_id, date_year, date_month, acum, fechai, fechaf):
+		""" GASTOS NO OPERACIONALES """
 		data = {}
-		acum = 1
+		year = datetime.now().year
+		fechai = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d')
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1360,8 +1372,10 @@ order by S2.code
 		return data
 
 	def get_general_details16(self, company_id, date_year, date_month, acum, fechai, fechaf):
+		""" Se obtiene el Ingreso del año Fiscal. """
 		data = {}
-		acum = 1
+		year = datetime.now().year
+		fechai = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d')
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1404,7 +1418,8 @@ order by S2.code
 
 	def get_general_details17(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		data = {}
-		acum = 1
+		year = datetime.now().year
+		fechai = datetime.strptime(str(year) + '-01-01', '%Y-%m-%d')
 		sql = """CREATE OR REPLACE VIEW odoosv_financierosv_general_report AS (
 	           select * from ( 
 	    select aa.code 
@@ -1463,6 +1478,9 @@ order by S2.code
 		return data
 
 	def get_impuesto_renta(self, company_id, date_year, date_month, acum, fechai, fechaf):
+		"""
+		 Obtiene el Impuesto sobre la renta
+		"""
 		data = {}
 		sql = """SELECT aa.name, aml.debit, aml.credit, aml.balance
         		 FROM account_account aa
