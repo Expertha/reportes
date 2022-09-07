@@ -198,10 +198,10 @@
                                                 </b>
                                             </td>
                                             <td style="width:15%;text-align: right;">
-                                                <b>
+                                                <!--<b>
                                                     <span t-esc="company.currency_id.symbol"/>
                                                     <span t-esc="'{0:.2f}'.format(saldoTotal)"/>
-                                                </b>
+                                                </b>-->
                                             </td>
                                         </tr>
                                     </table>

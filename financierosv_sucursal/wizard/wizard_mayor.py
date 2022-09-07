@@ -22,11 +22,43 @@ class wizard_sv_mayor_report(models.TransientModel):
 
 	# stock_location_id=fields.Many2one('stock.location', string="Sucursal", help="Sucursal de la que se desea el Libro de IVA",default=lambda self: self.env.user.sucursal_id.id)
 
+	def print_xlsx(self):
+		options = ''
+		return {
+			'type': 'ir_actions_account_report_download',
+			'data': {'model': self.env.context.get('model'),
+					
+					 'output_format': 'xlsx',
+					 'financial_id': self.env.context.get('id'),
+					 'allowed_company_ids': self.env.context.get('allowed_company_ids'),
+					 }
+		}
+
 	def print_mayor_report(self):
 		datas = {'ids': self._ids,
 				 'form': self.read()[0],
 				 'model': 'wizard.sv.mayor.report'}
 		return self.env.ref('financierosv_sucursal.report_mayor_pdf').report_action(self, data=datas)
+
+	# def generate_excel_report(self):
+	# 	filename = 'filename.xls'
+	# 	workbook = xlwt.Workbook(encoding="UTF-8")
+	# 	worksheet = workbook.add_sheet('Sheet 1')
+	# 	style = xlwt.easyxf('font: bold True, name Arial;)
+	# 	worksheet.write_merge(0, 1, 0, 3, 'your data that you want to show into excelsheet', style)
+	# 	fp = StringIO()
+	# 	workbook.save(fp)
+	# 	record_id = self.env['wizard.excel.report'].create({'excel_file': base64.encodestring(fp.getvalue()),
+	# 														'file_name': filename}, )
+	# 	fp.close()
+	# 	return {'view_mode': 'form',
+	# 			'res_id': record_id,
+	# 			'res_model': 'wizard.excel.report',
+	# 			'view_type': 'form',
+	# 			'type': 'ir.actions.act_window',
+	# 			'context': context,
+	# 			'target': 'new',
+	# 			}
 
 	def print_mayor_xlsx(self):
 		options = {
