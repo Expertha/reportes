@@ -19,7 +19,7 @@
                     <footer>
                         <button name="print_mayor_report" string="Imprimir" type="object" default_focus="1" class="oe_highlight"/>
                         or
-                        <button name="print_xlsx" string="Exportar a XLSX" type="object" class="oe_highlight"/>
+                        <button name="button_export_xlsx" string="Exportar a XLSX" type="object" class="oe_highlight"/>
                         or
                         <button string="Cancelar" class="oe_link" special="cancel"/>
                     </footer>
