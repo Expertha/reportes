@@ -51,6 +51,7 @@
                 name="financierosv_sucursal.odoosv_auxiliar_report_pdf"
                 menu="False"
         />
+
         <!--
                 <report
                     id="report_taxpayer_sales_pdf"
