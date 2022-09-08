@@ -154,7 +154,7 @@ class wizard_sv_mayor_report(models.TransientModel):
 		alignment4 = xlwt.Alignment()
 		alignment4.horz = xlwt.Alignment.HORZ_CENTER
 		bold_style_date.alignment = alignment4
-		bold_style_date.num_format_str = 'DD-MM-YY'
+		bold_style_date.num_format_str = 'DD/MM/YYYY'
 
 		accounts = self._get_accounts(options)
 
@@ -163,39 +163,49 @@ class wizard_sv_mayor_report(models.TransientModel):
 			name = account.get('code') + ' ' + account.get('name')
 			page_1.write_merge(row, row, 0, 4, name, bold_style)
 			row += 1
-			page_1.write(row, 0, _('FECHA'), bold_style)
-			page_1.write(row, 1, _('DESCRIPCIÓN'), bold_style)
-			page_1.write(row, 2, _('DEBE'), bold_style)
-			page_1.write(row, 3, _('HABER'), bold_style)
-			page_1.write(row, 4, _('SALDO'), bold_style)
-			
-	def records_page_3(self, page_3, partner_ids):
+			page_1.write(row, 0, 'FECHA', bold_style)
+			page_1.write(row, 1, 'DESCRIPCIÓN', bold_style)
+			page_1.write(row, 2, 'DEBE', bold_style)
+			page_1.write(row, 3, 'HABER', bold_style)
+			page_1.write(row, 4, 'SALDO', bold_style)
 
-		row = 1
-		for provider in provider_ids:
-			today = fields.Date.today()
-			date = format_date(self.env, fields.Date.to_string(today),
-							   date_format='dd/MM/YYYY')
-			addr = []
-			address = ''
-			if provider.street:
-				addr.append(provider.street)
-			if provider.street2:
-				addr.append(provider.street2)
-			if addr:
-				address = ', '.join(addr)
-			page_3.write(row, 1, provider.name, bold_style)
-			page_3.write(row, 2, '', bold_style_date)
-			page_3.write(row, 3, provider.vat or '', bold_style)
-			page_3.write(row, 4, address, bold_style)
-			page_3.write(row, 5, provider.city or '', bold_style)
-			page_3.write(row, 6, provider.state_id.name or '', bold_style)
-			page_3.write(row, 7, provider.country_id.name or '', bold_style)
-			page_3.write(row, 8, provider.zip or '', bold_style)
-			page_3.write(row, 9, 0.0, bold_style_percent)
-			page_3.write(row, 10, '', bold_style)
-			page_3.write(row, 11, '', bold_style_date)
-			row += 1
+			options['code'] = account.get('code')
+			details = self._get_account_details(options)
+
+			for item in details:
+				page_1.write(row + 1, 0, item.get('date'), bold_style_date)
+				page_1.write(row + 1, 1, 'Movimientos Diarios', bold_style)
+				page_1.write(row + 1, 2, item.get('debit'), bold_style_num)
+				page_1.write(row + 1, 3, item.get('credit'), bold_style_num)
+				page_1.write(row + 1, 4, _('SALDO'), bold_style_num)
+				row += 1
+
+	# def records_page_3(self, page_3, partner_ids):
+	# 	row = 1
+	# 	for provider in provider_ids:
+	# 		today = fields.Date.today()
+	# 		date = format_date(self.env, fields.Date.to_string(today),
+	# 						   date_format='dd/MM/YYYY')
+	# 		addr = []
+	# 		address = ''
+	# 		if provider.street:
+	# 			addr.append(provider.street)
+	# 		if provider.street2:
+	# 			addr.append(provider.street2)
+	# 		if addr:
+	# 			address = ', '.join(addr)
+	# 		page_3.write(row, 1, provider.name, bold_style)
+	# 		page_3.write(row, 2, '', bold_style_date)
+	# 		page_3.write(row, 3, provider.vat or '', bold_style)
+	# 		page_3.write(row, 4, address, bold_style)
+	# 		page_3.write(row, 5, provider.city or '', bold_style)
+	# 		page_3.write(row, 6, provider.state_id.name or '', bold_style)
+	# 		page_3.write(row, 7, provider.country_id.name or '', bold_style)
+	# 		page_3.write(row, 8, provider.zip or '', bold_style)
+	# 		page_3.write(row, 9, 0.0, bold_style_percent)
+	# 		page_3.write(row, 10, '', bold_style)
+	# 		page_3.write(row, 11, '', bold_style_date)
+	# 		row += 1
 
 	def generate_xls(self):
 		options = {'ids': self._ids,
