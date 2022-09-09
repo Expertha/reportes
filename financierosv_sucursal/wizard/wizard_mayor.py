@@ -114,24 +114,19 @@ class wizard_sv_mayor_report(models.TransientModel):
 
 		page_1 = wbk.add_sheet('Libro Mayor Diario', cell_overwrite_ok=True)
 		page_1.set_horz_split_pos(1)
-		page_1.panes_frozen = True
+		page_1.panes_frozen = False
 		page_1.remove_splits = True
 		page_1.col(0).width = 256 * 20
 		page_1.col(1).width = 256 * 40
 		page_1.col(2).width = 256 * 20
 		page_1.col(3).width = 256 * 20
 		page_1.col(4).width = 256 * 20
-		# page_1.row(0).height_mismatch = True
 		page_1.row(0).height = 40 * 20
-		# page_1.row(1).height_mismatch = True
 
 		date_from = fields.Date.to_string(options.get('form').get('fechai'))
 		date_to = fields.Date.to_string(options.get('form').get('fechaf'))
 
 		period = self._get_report_name() + ' DEL ' + date_from + ' AL ' + date_to
-
-		# sheet_name.write_merge(fila_inicial, fila_final, columna_inicial, columna_final,)
-		# ws1.write_merge(0, 10, 0, 1, )
 
 		page_1.write_merge(0, 0, 0, 4, self.env.company.name, bold_style)
 		page_1.write_merge(1, 1, 0, 4, period, bold_style_period)
@@ -227,9 +222,11 @@ class wizard_sv_mayor_report(models.TransientModel):
 
 			options['code'] = account.get('code')
 			details = self._get_account_details(options)
+			flag = False
 
 			i = row + 1
 			for item in details:
+				flag = True
 				formula_saldo = "C%d-D%d" % (row + 1, row + 1)
 				formula_debe = "SUM(C%d:C%d)" % (i, row + 1)
 				formula_haber = "SUM(D%d:D%d)" % (i, row + 1)
@@ -240,11 +237,16 @@ class wizard_sv_mayor_report(models.TransientModel):
 				page_1.write(row, 4, xlwt.Formula(formula_saldo), bold_style_num)
 				row += 1
 
-			formula_saldo = "C%d-D%d" % (row + 1, row + 1)
+			if flag:
+				subtotal_debe = formula_debe
+				subtotal_haber = formula_haber
+			else:
+				subtotal_haber = subtotal_debe = '0.00'
+
 			page_1.write(row, 0, '', bold_style_date)
 			page_1.write(row, 1, 'Subtotal', bold_style_subtotal)
-			page_1.write(row, 2, xlwt.Formula(formula_debe), bold_style_num)
-			page_1.write(row, 3, xlwt.Formula(formula_haber), bold_style_num)
+			page_1.write(row, 2, xlwt.Formula(subtotal_debe), bold_style_num)
+			page_1.write(row, 3, xlwt.Formula(subtotal_haber), bold_style_num)
 			page_1.write(row, 4, '', bold_style_num)
 			row += 1
 

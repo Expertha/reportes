@@ -201,23 +201,24 @@ class CustomTrialBalance(models.AbstractModel):
 			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
 		default_col1_style = workbook.add_format(
 			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2})
-		default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666'})
+		default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666'})
 		title_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'bottom': 2})
 		level_0_style = workbook.add_format(
-			{'font_name': 'Arial', 'bold': True, 'font_size': 13, 'bottom': 6, 'font_color': '#666666'})
+			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'bottom': 6, 'font_color': '#666666'})
 		level_1_style = workbook.add_format(
-			{'font_name': 'Arial', 'bold': True, 'font_size': 13, 'bottom': 1, 'font_color': '#666666'})
+			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'bottom': 1, 'font_color': '#666666'})
 		level_2_col1_style = workbook.add_format(
-			{'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666', 'indent': 1})
+			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'font_color': '#666666', 'indent': 1})
 		level_2_col1_total_style = workbook.add_format(
-			{'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666'})
+			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'font_color': '#666666'})
 		level_2_style = workbook.add_format(
-			{'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666'})
+			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'font_color': '#666666'})
 		level_3_col1_style = workbook.add_format(
 			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2})
 		level_3_col1_total_style = workbook.add_format(
-			{'font_name': 'Arial', 'bold': True, 'font_size': 12, 'font_color': '#666666', 'indent': 1})
-		level_3_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666'})
+			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'font_color': '#666666', 'indent': 1})
+		level_3_style = workbook.add_format({'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666'})
+
 		company_name_style = workbook.add_format(
 			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 20, 'font_color': '#000000'})
 		period_style = workbook.add_format(
@@ -225,7 +226,10 @@ class CustomTrialBalance(models.AbstractModel):
 		note_style = workbook.add_format(
 			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 12, 'font_color': '#666666'})
 		signature_style = workbook.add_format(
-			{'font_name': 'Arial', 'align': 'center', 'valign': 'bottom', 'font_size': 12, 'font_color': '#000000'})
+			{'font_name': 'Arial', 'align': 'center', 'valign': 'bottom', 'font_size': 11, 'font_color': '#000000'})
+
+		code_style = workbook.add_format(
+			{'font_name': 'Arial', 'valign': 'left', 'font_size': 11, 'font_color': '#000000'})
 
 		# Set the first column width to 50
 		sheet.set_column(0, 0, 50)
@@ -240,15 +244,15 @@ class CustomTrialBalance(models.AbstractModel):
 
 		y_offset = 3
 		headers, lines = self.with_context(no_format=True, print_mode=True, prefetch_fields=False)._get_table(options)
-		for line in lines:
-			code = line.get('code', '')
-			new_column = {'name': code, 'class': '', 'style': 'width: 10%'}
-			columns = line.get('columns', [])
-			columns.insert(0, new_column)
+		# for line in lines:
+		# code = line.get('code', '')
+		# new_column = {'name': code, 'class': '', 'style': 'width: 10%'}
+		# columns = line.get('columns', [])
+		# columns.insert(0, new_column)
 
 		tmp = [
 			{'name': 'code', 'style': 'width: 10%'},
-			{'name': ' ', 'style': 'width: 90%'},
+			{'name': 'Name', 'style': 'width: 90%'},
 			{'name': 'Saldo anterior', 'class': 'number o_account_coa_column_contrast'},
 			{'name': 'Débito', 'class': 'number o_account_coa_column_contrast'},
 			{'name': 'Crédito', 'class': 'number o_account_coa_column_contrast'},
@@ -264,6 +268,7 @@ class CustomTrialBalance(models.AbstractModel):
 				column_name_formated = column.get('name', '').replace('<br/>', ' ').replace('&nbsp;', ' ')
 				colspan = column.get('colspan', 1)
 				if colspan == 1:
+					sheet.set_column(x_offset, 100)
 					sheet.write(y_offset, x_offset, column_name_formated, title_style)
 				else:
 					sheet.merge_range(y_offset, x_offset, y_offset, x_offset + colspan - 1, column_name_formated,
@@ -301,12 +306,19 @@ class CustomTrialBalance(models.AbstractModel):
 				style = default_style
 				col1_style = default_col1_style
 
-			# write the first column, with a specific style to manage the indentation
+			# cell_type, cell_value = self._get_cell_type_value(lines[y])
+			sheet.write(y + y_offset, 0, lines[y].get('code'), code_style)
+
 			cell_type, cell_value = self._get_cell_type_value(lines[y])
 			if cell_type == 'date':
-				sheet.write_datetime(y + y_offset, 0, cell_value, date_default_col1_style)
+				sheet.write_datetime(y + y_offset, 1, cell_value, date_default_col1_style)
 			else:
-				sheet.write(y + y_offset, 0, cell_value, col1_style)
+				cell_value = cell_value.split(' ', 1)
+				if len(cell_value) == 1:
+					cuenta = cell_value[0]
+				else:
+					cuenta = cell_value[1]
+				sheet.write(y + y_offset, 1, cuenta, col1_style)
 
 			# write all the remaining cells
 			for x in range(1, len(lines[y]['columns']) + 1):
@@ -315,14 +327,14 @@ class CustomTrialBalance(models.AbstractModel):
 					sheet.write_datetime(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_value,
 										 date_default_style)
 				else:
-					sheet.write(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_value, style)
+					sheet.write(y + y_offset, x + lines[y].get('colspan', 1), cell_value, style)
 
 		sheet.set_row(len(lines) + 10, 30)
 
-		sheet.write(len(lines) + 10, 0, 'F._________________________', signature_style)
+		sheet.write(len(lines) + 10, 1, 'F._________________________', signature_style)
 		sheet.merge_range(len(lines) + 10, 2, len(lines) + 10, 3, 'F._________________________', signature_style)
 		sheet.merge_range(len(lines) + 10, 4, len(lines) + 10, 5, 'F._________________________', signature_style)
-		sheet.write(len(lines) + 11, 0, 'Representante Legal', signature_style)
+		sheet.write(len(lines) + 11, 1, 'Representante Legal', signature_style)
 		sheet.merge_range(len(lines) + 11, 2, len(lines) + 11, 3, 'Contador', signature_style)
 		sheet.merge_range(len(lines) + 11, 4, len(lines) + 11, 5, 'Auditor', signature_style)
 
@@ -334,6 +346,7 @@ class CustomTrialBalance(models.AbstractModel):
 		return generated_file
 
 	def _get_cell_type_value(self, cell):
+
 		if 'date' not in cell.get('class', '') or not cell.get('name'):
 			# cell is not a date
 			return ('text', cell.get('name', ''))
@@ -364,7 +377,6 @@ class CustomTrialBalance(models.AbstractModel):
 		def add_to_hierarchy(lines, key, level, parent_id, hierarchy):
 			val_dict = hierarchy[key]
 			unfolded = val_dict['id'] in options.get('unfolded_lines') or unfold_all
-			# val_dict['totals'][0] = val_dict['code']
 			# add the group totals
 			lines.append({
 				'id': val_dict['id'],
