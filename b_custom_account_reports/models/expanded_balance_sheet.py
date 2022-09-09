@@ -35,10 +35,9 @@ from odoo.tools import config, date_utils, get_lang
 
 
 class ExpandedBalanceSheet(models.Model):
-	_name = "expanded.balance.sheet"
 	_inherit = "account.financial.html.report"
 
-	# position = fields.Integer()
+	position = fields.Integer()
 
 	filter_analytic = False
 
@@ -65,12 +64,7 @@ class ExpandedBalanceSheet(models.Model):
 			return super(ExpandedBalanceSheet, self).print_pdf(options=options)
 
 	def _get_report_name(self):
-		if self.id == self.env.ref('b_custom_account_reports.expanded_balance_sheet_report').id:
-			return _('Expanded Balance Sheet')
-		if self.id == self.env.ref('b_custom_account_reports.report_balance_sheet').id:
-			return _('Balance Sheet')
-		if self.id == self.env.ref('b_custom_account_reports.result_state_report').id:
-			return _('Estado de Resultado Personalizado')
+		return _('Expanded Balance Sheet')
 
 	def print_xlsx(self, options):
 		return {

@@ -58,10 +58,6 @@
                         <t t-set="total1" t-value="float(0.00)"/>
                         <t t-set="total2" t-value="float(0.00)"/>
                         <t t-set="saldo" t-value="float(0.00)"/>
-                        <t t-set="debeTotalGeneral" t-value="float(0.00)"/>
-                        <t t-set="debeTotal" t-value="float(0.00)"/>
-                        <t t-set="haberTotalGeneral" t-value="float(0.00)"/>
-                        <t t-set="haberTotal" t-value="float(0.00)"/>
                         <t t-set="fechai" t-value="2022-12-1"/>
                         <t t-set="fechaf" t-value="2022-12-1"/>
                         <t t-set="fecha1" t-value="2022-12-1"/>
@@ -151,8 +147,6 @@
                                            t-as="s">
                                             <t t-set="debeTotal" t-value="debeTotal + s.get('debit')"/>
                                             <t t-set="haberTotal" t-value="haberTotal + s.get('credit')"/>
-                                            <t t-set="debeTotalGeneral" t-value="debeTotalGeneral + debeTotal"/>
-                                            <t t-set="haberTotalGeneral" t-value="haberTotalGeneral + haberTotal"/>
                                             <tr>
                                                 <td>
                                                     <span t-esc="s.get('date').strftime('%d/%m/%Y')"/>
@@ -168,6 +162,10 @@
                                                     <span t-esc="company.currency_id.symbol"/>
                                                     <span t-esc="'{0:.2f}'.format(s.get('credit'))"/>
                                                 </td>
+                                                <!--- 1 - saldo_anterior + debe - haber
+                                                <t t-if="c.get('code') in ('1101', '1103', '1104', '1105')">
+                                                    <t t-set="saldo" t-value="c.get('previo') + s.get('debit') - s.get('credit')"/>
+                                                </t>-->
                                                 <t t-set="saldo" t-value="s.get('debit') - s.get('credit')"/>
                                                 <t t-set="saldoTotal" t-value="saldoTotal + saldo"/>
                                                 <td style="text-align: right;">
@@ -179,7 +177,6 @@
                                     </table>
                                 </div>
                             </div>
-                            <!-- Muestra el Subtotal de cada Cuenta-->
                             <div style="row">
                                 <div style="col-12">
                                     <table style="width:100%;">
@@ -200,48 +197,19 @@
                                                     <span t-esc="'{0:.2f}'.format(haberTotal)"/>
                                                 </b>
                                             </td>
-                                            <td style="width:15%;text-align: right;"></td>
+                                            <td style="width:15%;text-align: right;">
+                                                <!--<b>
+                                                    <span t-esc="company.currency_id.symbol"/>
+                                                    <span t-esc="'{0:.2f}'.format(saldoTotal)"/>
+                                                </b>-->
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
                             </div>
                             <br/>
+                            <!--<div style="page-break-after: always;"></div>-->
                         </t>
-                        <!-- Muestra el TOTAL GENERAL-->
-                        <br/>
-                        <br/>
-                        <br/>
-                        <br/>
-                        <br/>
-                        <div style="row">
-                            <div style="col-12">
-                                <table style="width:70%;">
-                                    <tr>
-                                        <td style="width:40%; text-align: right; text-size: 30;">
-                                            <h6>
-                                                <b>TOTALES</b>
-                                            </h6>
-                                        </td>
-                                        <td style="width:15%;text-align: right; text-size: 30;">
-                                            <h6>
-                                                <b>
-                                                    <span t-esc="company.currency_id.symbol"/>
-                                                    <span t-esc="'{0:.2f}'.format(debeTotalGeneral)"/>
-                                                </b>
-                                            </h6>
-                                        </td>
-                                        <td style="width:15%;text-align: right;ext-size: 30;">
-                                            <h6>
-                                                <b>
-                                                    <span t-esc="company.currency_id.symbol"/>
-                                                    <span t-esc="'{0:.2f}'.format(haberTotalGeneral)"/>
-                                                </b>
-                                            </h6>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
                         <div class="footer" style="font-size: 8pt; top:10px;">
                             <div class="text-center" style="border-top: 1px solid black;">
                                 <span class="page"/>

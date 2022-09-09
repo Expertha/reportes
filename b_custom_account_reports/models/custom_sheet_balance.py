@@ -35,10 +35,7 @@ from odoo.tools import config, date_utils, get_lang
 
 
 class CustomSheetBalance(models.Model):
-	_name = "custom.sheet.balance"
 	_inherit = "account.financial.html.report"
-
-	position = fields.Integer()
 
 	filter_analytic = False
 	filter_accumulative = False
@@ -50,7 +47,7 @@ class CustomSheetBalance(models.Model):
 
 		return templates
 
-	def print_pdf_balance(self, options):
+	def print_pdf(self, options):
 		if self.id == self.env.ref('b_custom_account_reports.report_balance_sheet').id:
 
 			report_name = 'financierosv_sucursal.report_balance_pdf'
@@ -87,7 +84,7 @@ class CustomSheetBalance(models.Model):
 						 }
 			}
 
-	def print_xlsx_balance(self, options, response=None):
+	def get_xlsx(self, options, response=None):
 		output = io.BytesIO()
 		workbook = xlsxwriter.Workbook(output, {
 			'in_memory': True,
@@ -177,7 +174,7 @@ class CustomSheetBalance(models.Model):
 			# write the first column, with a specific style to manage the indentation
 			cell_type, cell_value = self._get_cell_type_value(lines[y])
 
-			if lines[y].get('position') == 1:
+			if y in range(0, 16):
 				if cell_type == 'date':
 					sheet.write_datetime(y + y_offset, 0, cell_value, date_default_col1_style)
 				else:
