@@ -7,7 +7,7 @@
                 <form string="Report XLS" create="false" edit="false">
                     <sheet>
                         <group>
-                            <label for="file" string="Save the file with '.xls' extension."/>
+                            <label for="file" string="Guarde el archivo con la extensión '.xlsx'."/>
                             <field name="file_name" invisible="1"/>
                             <field name="file" readonly="1" widget="binary" filename="file_name" nolabel="1"/>
                         </group>
@@ -37,9 +37,9 @@
                     </group>
                     <footer>
                         <button name="print_mayor_report" string="Imprimir" type="object" default_focus="1" class="btn btn-primary"/>
-                        or
+
                         <button name="generate_xls" string="Generate XLS" type="object" class="btn btn-secondary"/>
-                        or
+
                         <button string="Cancelar" special="cancel" class="btn btn-secondary"/>
                     </footer>
                 </form>

@@ -181,6 +181,13 @@ class wizard_sv_mayor_report(models.TransientModel):
 		alignment5.vert = xlwt.Alignment.VERT_CENTER
 		bold_style_center.alignment = alignment5
 
+		bold_style_subtotal = xlwt.XFStyle()
+		bold_style_subtotal.font = font
+		alignment6 = xlwt.Alignment()
+		alignment6.horz = xlwt.Alignment.HORZ_RIGHT
+		alignment6.vert = xlwt.Alignment.VERT_CENTER
+		bold_style_subtotal.alignment = alignment6
+
 		bold_style_account = xlwt.XFStyle()
 		bold_style_account.font = font
 		bold_style_account.alignment = alignment
@@ -191,14 +198,11 @@ class wizard_sv_mayor_report(models.TransientModel):
 		borders.bottom = 4
 		bold_style_account.borders.bottom_colour = 0x3A
 		bold_style_account.borders = borders
-		temp = xlwt.easyxf('font: bold off, color black; \
+
+		header = xlwt.easyxf('font: bold off, color black; \
 						   borders: top_color black, bottom_color black, right_color black, left_color black,\
                            left thin, right thin, top thin, bottom thin;\
                      		pattern: pattern solid, fore_color white; align: horiz centre')
-
-		# bold_style_account = xlwt.easyxf('font: bold on, color black; \
-		# 						   borders: left thin, right thin, top thin, bottom thin;\
-		#                      		pattern: pattern solid, fore_color white; align: horiz left')
 
 		accounts = self._get_accounts(options)
 
@@ -208,14 +212,14 @@ class wizard_sv_mayor_report(models.TransientModel):
 			page_1.row(row).height = 20 * 20
 			page_1.write_merge(row, row, 0, 4, name, bold_style_account)
 			row += 1
-			page_1.write(row, 0, 'FECHA', temp)
-			page_1.write(row, 1, 'DESCRIPCIÓN', temp)
-			page_1.write(row, 2, 'DEBE', temp)
-			page_1.write(row, 3, 'HABER', temp)
-			page_1.write(row, 4, 'SALDO', temp)
+			page_1.write(row, 0, _('DATE'), header)
+			page_1.write(row, 1, _('DESCRIPTION'), header)
+			page_1.write(row, 2, _('DEBIT'), header)
+			page_1.write(row, 3, _('CREDIT'), header)
+			page_1.write(row, 4, _('BALANCE'), header)
 			row += 1
 			page_1.write(row, 0, '', bold_style)
-			page_1.write(row, 1, 'Saldo Anterior', bold_style)
+			page_1.write(row, 1, _('Previous balance'), bold_style)
 			page_1.write(row, 2, '0.00', bold_style_num)
 			page_1.write(row, 3, '0.00', bold_style_num)
 			page_1.write(row, 4, account.get('previo'), bold_style_num)
@@ -224,14 +228,25 @@ class wizard_sv_mayor_report(models.TransientModel):
 			options['code'] = account.get('code')
 			details = self._get_account_details(options)
 
+			i = row + 1
 			for item in details:
 				formula_saldo = "C%d-D%d" % (row + 1, row + 1)
+				formula_debe = "SUM(C%d:C%d)" % (i, row + 1)
+				formula_haber = "SUM(D%d:D%d)" % (i, row + 1)
 				page_1.write(row, 0, item.get('date'), bold_style_date)
-				page_1.write(row, 1, 'Movimientos Diarios', bold_style)
+				page_1.write(row, 1, _('MOVEMENT JOURNALS'), bold_style)
 				page_1.write(row, 2, item.get('debit'), bold_style_num)
 				page_1.write(row, 3, item.get('credit'), bold_style_num)
 				page_1.write(row, 4, xlwt.Formula(formula_saldo), bold_style_num)
 				row += 1
+
+			formula_saldo = "C%d-D%d" % (row + 1, row + 1)
+			page_1.write(row, 0, '', bold_style_date)
+			page_1.write(row, 1, 'Subtotal', bold_style_subtotal)
+			page_1.write(row, 2, xlwt.Formula(formula_debe), bold_style_num)
+			page_1.write(row, 3, xlwt.Formula(formula_haber), bold_style_num)
+			page_1.write(row, 4, '', bold_style_num)
+			row += 1
 
 	def generate_xls(self):
 		options = {'ids': self._ids,
