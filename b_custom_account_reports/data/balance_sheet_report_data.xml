@@ -17,6 +17,7 @@
             <field name="formulas">line_11 + line_12</field>
             <field name="sequence" eval="0"/>
             <field name="level" eval="0"/>
+            <field name="position" eval="1"/>
         </record>
 
         <record id="balance_line_1100" model="account.financial.html.report.line">
@@ -27,6 +28,7 @@
             <field name="sequence" eval="1"/>
             <field name="level" eval="1"/>
             <field name="parent_id" ref="balance_line_1000"/>
+            <field name="position" eval="1"/>
         </record>
 
         <record id="balance_line_1101" model="account.financial.html.report.line">
@@ -39,6 +41,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="1"/>
         </record>
 
         <record id="balance_line_1103" model="account.financial.html.report.line">
@@ -51,6 +54,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="1"/>
         </record>
 
         <record id="balance_line_1104" model="account.financial.html.report.line">
@@ -63,6 +67,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="4"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="1"/>
         </record>
 
         <record id="balance_line_1105" model="account.financial.html.report.line">
@@ -75,6 +80,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="5"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="1"/>
         </record>
 
         <record id="balance_line_1200" model="account.financial.html.report.line">
@@ -84,6 +90,7 @@
             <field name="formulas">line_1201 + line_1202 + line_1203 + line_1204 + line_1206 + line_1209</field>
             <field name="sequence" eval="9"/>
             <field name="level" eval="1"/>
+            <field name="position" eval="1"/>
         </record>
 
         <record id="balance_line_1201" model="account.financial.html.report.line">
@@ -96,6 +103,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="10"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="1"/>
         </record>
 
         <record id="balance_line_1202" model="account.financial.html.report.line">
@@ -108,6 +116,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="10"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="1"/>
         </record>
 
         <record id="balance_line_1203" model="account.financial.html.report.line">
@@ -120,6 +129,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="11"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="1"/>
         </record>
 
         <record id="balance_line_1204" model="account.financial.html.report.line">
@@ -132,6 +142,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="12"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="1"/>
         </record>
 
         <record id="balance_line_1206" model="account.financial.html.report.line">
@@ -144,6 +155,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="13"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="1"/>
         </record>
 
         <record id="balance_line_1209" model="account.financial.html.report.line">
@@ -156,6 +168,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="14"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="1"/>
         </record>
 
         <record id="balance_line_2000" model="account.financial.html.report.line">
@@ -165,6 +178,7 @@
             <field name="formulas">line_21 + line_22</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="0"/>
+            <field name="position" eval="2"/>
         </record>
 
         <record id="balance_line_2100" model="account.financial.html.report.line">
@@ -174,6 +188,7 @@
             <field name="formulas">line_2102 + line_2103 + line_2105 + line_2106 + line_2109</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="1"/>
+            <field name="position" eval="2"/>
         </record>
 
         <record id="balance_line_2102" model="account.financial.html.report.line">
@@ -186,6 +201,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="2"/>
         </record>
 
         <record id="balance_line_2103" model="account.financial.html.report.line">
@@ -198,6 +214,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="2"/>
         </record>
 
         <record id="balance_line_2105" model="account.financial.html.report.line">
@@ -210,6 +227,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="2"/>
         </record>
 
         <record id="balance_line_2106" model="account.financial.html.report.line">
@@ -222,6 +240,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="4"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="2"/>
         </record>
 
         <record id="balance_line_2109" model="account.financial.html.report.line">
@@ -234,6 +253,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="5"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="2"/>
         </record>
 
         <record id="balance_line_2200" model="account.financial.html.report.line">
@@ -243,6 +263,7 @@
             <field name="formulas">line_2201</field>
             <field name="sequence" eval="6"/>
             <field name="level" eval="1"/>
+            <field name="position" eval="2"/>
         </record>
 
         <record id="balance_line_2201" model="account.financial.html.report.line">
@@ -255,6 +276,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="7"/>
             <field name="level" eval="2"/>
+            <field name="position" eval="2"/>
         </record>
 
 
@@ -265,6 +287,7 @@
             <field name="formulas">line_3101 + line_3102 + line_3103 + line_3104 + line_3105</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="0"/>
+            <field name="position" eval="2"/>
         </record>
 
         <record id="balance_line_3101" model="account.financial.html.report.line">
@@ -277,6 +300,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="1"/>
+            <field name="position" eval="2"/>
         </record>
 
         <record id="balance_line_3102" model="account.financial.html.report.line">
@@ -289,6 +313,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="1"/>
+            <field name="position" eval="2"/>
         </record>
 
         <record id="balance_line_3103" model="account.financial.html.report.line">
@@ -301,6 +326,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="4"/>
             <field name="level" eval="1"/>
+            <field name="position" eval="2"/>
         </record>
 
         <record id="balance_line_3104" model="account.financial.html.report.line">
@@ -313,6 +339,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="5"/>
             <field name="level" eval="1"/>
+            <field name="position" eval="2"/>
         </record>
 
         <record id="balance_line_3105" model="account.financial.html.report.line">
@@ -325,6 +352,7 @@
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="6"/>
             <field name="level" eval="1"/>
+            <field name="position" eval="2"/>
         </record>
 
         <record id="balance_line_4000" model="account.financial.html.report.line">
@@ -334,6 +362,7 @@
             <field name="formulas">line_2 + line_31</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="0"/>
+            <field name="position" eval="2"/>
         </record>
 
     </data>

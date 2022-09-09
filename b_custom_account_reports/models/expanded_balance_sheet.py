@@ -37,6 +37,8 @@ from odoo.tools import config, date_utils, get_lang
 class ExpandedBalanceSheet(models.Model):
 	_inherit = "account.financial.html.report"
 
+	position = fields.Integer()
+
 	filter_analytic = False
 
 	def print_pdf(self, options):
@@ -167,7 +169,7 @@ class ExpandedBalanceSheet(models.Model):
 			# write the first column, with a specific style to manage the indentation
 			cell_type, cell_value = self._get_cell_type_value(lines[y])
 
-			if y in range(0, 28):
+			if lines[y].get('position') == 1:
 				if cell_type == 'date':
 					sheet.write_datetime(y + y_offset, 0, cell_value, date_default_col1_style)
 				else:
@@ -226,3 +228,118 @@ class ExpandedBalanceSheet(models.Model):
 		except:
 			# the date is not parsable thus is returned as text
 			return ('text', cell['name'])
+
+	@api.model
+	def _get_financial_line_report_line(self, options, financial_line, solver, groupby_keys):
+		''' Create the report line for an account.financial.html.report.line record.
+		:param options:             The report options.
+		:param financial_line:      An account.financial.html.report.line record.
+		:param solver_results:      An instance of the FormulaSolver class.
+		:param groupby_keys:        The sorted encountered keys in the solver.
+		:return:                    The dictionary corresponding to a line to be rendered.
+		'''
+		results = solver.get_results(financial_line)['formula']
+
+		is_leaf = solver.is_leaf(financial_line)
+		has_lines = solver.has_move_lines(financial_line)
+		has_something_to_unfold = is_leaf and has_lines and bool(financial_line.groupby)
+
+		# Compute if the line is unfoldable or not.
+		is_unfoldable = has_something_to_unfold and financial_line.show_domain == 'foldable'
+
+		# Compute the id of the report line we'll generate
+		report_line_id = self._get_generic_line_id('account.financial.html.report.line', financial_line.id)
+
+		# Compute if the line is unfolded or not.
+		# /!\ Take care about the case when the line is unfolded but not unfoldable with show_domain == 'always'.
+		if not has_something_to_unfold or financial_line.show_domain == 'never':
+			is_unfolded = False
+		elif financial_line.show_domain == 'always':
+			is_unfolded = True
+		elif financial_line.show_domain == 'foldable' and (report_line_id in options['unfolded_lines'] or options.get('unfold_all')):
+			is_unfolded = True
+		else:
+			is_unfolded = False
+
+		# Standard columns.
+		columns = []
+		for key in groupby_keys:
+			amount = results.get(key, 0.0)
+			columns.append({'name': self._format_cell_value(financial_line, amount), 'no_format': amount, 'class': 'number'})
+
+		# Growth comparison column.
+		if self._display_growth_comparison(options):
+			columns.append(self._compute_growth_comparison_column(options,
+																  columns[0]['no_format'],
+																  columns[1]['no_format'],
+																  green_on_positive=financial_line.green_on_positive
+																  ))
+
+		financial_report_line = {
+			'id': report_line_id,
+			'name': financial_line.name,
+			'model_ref': ('account.financial.html.report.line', financial_line.id),
+			'level': financial_line.level,
+			'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
+			'columns': columns,
+			'unfoldable': is_unfoldable,
+			'unfolded': is_unfolded,
+			'page_break': financial_line.print_on_new_page,
+			'action_id': financial_line.action_id.id,
+			'position': financial_line.position,
+		}
+
+		# Only run the checks in debug mode
+		if self.user_has_groups('base.group_no_one'):
+			# If a financial line has a control domain, a check is made to detect any potential discrepancy
+			if financial_line.control_domain:
+				if not financial_line._check_control_domain(options, results, self):
+					# If a discrepancy is found, a check is made to see if the current line is
+					# missing items or has items appearing more than once.
+					has_missing = solver._has_missing_control_domain(options, financial_line)
+					has_excess = solver._has_excess_control_domain(options, financial_line)
+					financial_report_line['has_missing'] = has_missing
+					financial_report_line['has_excess'] = has_excess
+					# In either case, the line is colored in red.
+					# The ids of the missing / excess report lines are stored in the options for the top yellow banner
+					if has_missing:
+						financial_report_line['class'] += ' alert alert-danger'
+						options.setdefault('control_domain_missing_ids', [])
+						options['control_domain_missing_ids'].append(financial_line.id)
+					if has_excess:
+						financial_report_line['class'] += ' alert alert-danger'
+						options.setdefault('control_domain_excess_ids', [])
+						options['control_domain_excess_ids'].append(financial_line.id)
+
+		# Debug info columns.
+		if self._display_debug_info(options):
+			columns.append(self._compute_debug_info_column(options, solver, financial_line))
+
+		# Custom caret_options for tax report.
+		if self.tax_report and financial_line.domain and not financial_line.action_id:
+			financial_report_line['caret_options'] = 'tax.report.line'
+
+		return financial_report_line
+
+	@api.model
+	def _get_financial_total_section_report_line(self, options, financial_report_line):
+		''' Create the total report line.
+		:param options:                 The report options.
+		:param financial_report_line:   The line dictionary created by the '_get_financial_line_report_line' method.
+		:return:                        The dictionary corresponding to a line to be rendered.
+		'''
+		return {
+			'id': self._get_generic_line_id('account.financial.html.report.line', None, parent_line_id=financial_report_line['id'], markup='total'),
+			'name': _('Total') + ' ' + financial_report_line['name'],
+			'level': financial_report_line['level'] + 1,
+			'parent_id': financial_report_line['id'],
+			'class': 'total',
+			'columns': financial_report_line['columns'],
+			'position': financial_report_line['position']
+		}
+
+
+class ExpandedBalanceSheetLine(models.Model):
+	_inherit = "account.financial.html.report.line"
+
+	position = fields.Integer()
