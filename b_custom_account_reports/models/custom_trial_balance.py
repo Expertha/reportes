@@ -135,8 +135,8 @@ class CustomTrialBalance(models.AbstractModel):
 
 			lines.append({
 				'id': self._get_generic_line_id('account.account', account.id),
-				'name': name,
 				'code': account.code,
+				'name': name,
 				'title_hover': name,
 				'columns': columns,
 				'unfoldable': False,
@@ -247,8 +247,8 @@ class CustomTrialBalance(models.AbstractModel):
 			columns.insert(0, new_column)
 
 		tmp = [
+			{'name': 'code', 'style': 'width: 10%'},
 			{'name': ' ', 'style': 'width: 90%'},
-			{'name': 'Código', 'style': 'width: 10%'},
 			{'name': 'Saldo anterior', 'class': 'number o_account_coa_column_contrast'},
 			{'name': 'Débito', 'class': 'number o_account_coa_column_contrast'},
 			{'name': 'Crédito', 'class': 'number o_account_coa_column_contrast'},
@@ -368,6 +368,7 @@ class CustomTrialBalance(models.AbstractModel):
 			# add the group totals
 			lines.append({
 				'id': val_dict['id'],
+				'code': val_dict['code'],
 				'name': val_dict['name'],
 				'title_hover': val_dict['name'],
 				'unfoldable': True,
