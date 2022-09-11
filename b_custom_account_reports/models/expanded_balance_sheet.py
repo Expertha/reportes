@@ -37,7 +37,7 @@ from odoo.tools import config, date_utils, get_lang
 class ExpandedBalanceSheet(models.Model):
 	_inherit = "account.financial.html.report"
 
-	position = fields.Integer()
+	position = fields.Integer(help="Indicates the position where it will be printed in the excel file")
 
 	filter_analytic = False
 
@@ -64,7 +64,10 @@ class ExpandedBalanceSheet(models.Model):
 			return super(ExpandedBalanceSheet, self).print_pdf(options=options)
 
 	def _get_report_name(self):
-		return _('Expanded Balance Sheet')
+		if self.id == self.env.ref('b_custom_account_reports.expanded_balance_sheet_report').id:
+			return _('Balance de Comprobación')
+		else:
+			return super(ExpandedBalanceSheet, self)._get_report_name()
 
 	def print_xlsx(self, options):
 		return {
@@ -112,14 +115,20 @@ class ExpandedBalanceSheet(models.Model):
 
 		# Set the first column width to 50
 		sheet.set_column(0, 0, 50)
+		sheet.set_row(0, 30)
 
 		period = self._get_report_name() + ' DEL ' + options.get('date').get('date_from') + ' AL ' + options.get('date').get('date_to')
 
-		sheet.set_row(0, 30)
-		sheet.merge_range(0, 0, 0, 4, self.env.company.name, company_name_style)
-		sheet.set_row(1, 20)
-		sheet.merge_range(1, 0, 1, 4, period, period_style)
-		sheet.merge_range(2, 0, 2, 4, '(Valores expresados en dólares de los Estados Unidos de America)', note_style)
+		if self._get_report_name() == 'Estado de Resultado Personalizado':
+			sheet.merge_range(0, 0, 0, 1, self.env.company.name, company_name_style)
+			sheet.set_row(1, 20)
+			sheet.merge_range(1, 0, 1, 1, period, period_style)
+			sheet.merge_range(2, 0, 2, 1, '(Valores expresados en dólares de los Estados Unidos de America)', note_style)
+		else:
+			sheet.merge_range(0, 0, 0, 4, self.env.company.name, company_name_style)
+			sheet.set_row(1, 20)
+			sheet.merge_range(1, 0, 1, 4, period, period_style)
+			sheet.merge_range(2, 0, 2, 4, '(Valores expresados en dólares de los Estados Unidos de America)', note_style)
 
 		y_offset = 3
 		headers, lines = self.with_context(no_format=True, print_mode=True, prefetch_fields=False)._get_table(options)
@@ -198,14 +207,14 @@ class ExpandedBalanceSheet(models.Model):
 						sheet.write_number(yy + yy_offset, 4, cell_value, style)
 				yy = yy + 1
 
-		sheet.set_row(len(lines), 40)
-		sheet.merge_range(40, 0, 40, 4, 'F  __________________________                                 '
-										'F  __________________________                                 '
-										'F  __________________________', signature_style)
-
-		sheet.merge_range(41, 0, 41, 4,
-						  '                                  Representante Legal                                                                                                   Contador                                                                                                                        Auditor',
-						  '')
+		# sheet.set_row(len(lines), 40)
+		# sheet.merge_range(40, 0, 40, 4, 'F  __________________________                                 '
+		# 								'F  __________________________                                 '
+		# 								'F  __________________________', signature_style)
+		#
+		# sheet.merge_range(41, 0, 41, 4,
+		# 				  '                                  Representante Legal                                                                                                   Contador                                                                                                                        Auditor',
+		# 				  '')
 
 		workbook.close()
 		output.seek(0)
@@ -342,4 +351,4 @@ class ExpandedBalanceSheet(models.Model):
 class ExpandedBalanceSheetLine(models.Model):
 	_inherit = "account.financial.html.report.line"
 
-	position = fields.Integer()
+	position = fields.Integer(help="Indicates the position where it will be printed in the excel file")
