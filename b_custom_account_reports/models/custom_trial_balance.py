@@ -198,7 +198,9 @@ class CustomTrialBalance(models.AbstractModel):
 		date_default_col1_style = workbook.add_format(
 			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2, 'num_format': 'yyyy-mm-dd'})
 		date_default_style = workbook.add_format(
-			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
+			{'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
+		number_default_style = workbook.add_format(
+			{'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666', 'num_format': '#,##0.00'})
 		default_col1_style = workbook.add_format(
 			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2})
 		default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666'})
@@ -245,8 +247,8 @@ class CustomTrialBalance(models.AbstractModel):
 		headers, lines = self.with_context(no_format=True, print_mode=True, prefetch_fields=False)._get_table(options)
 
 		tmp = [
-			{'name': 'Código', 'style': 'width: 10%'},
-			{'name': 'Cuenta', 'style': 'width: 90%'},
+			{'name': 'Código', 'style': '10%'},
+			{'name': 'Cuenta', 'style': '90%'},
 			{'name': 'Saldo anterior', 'class': 'number o_account_coa_column_contrast'},
 			{'name': 'Débito', 'class': 'number o_account_coa_column_contrast'},
 			{'name': 'Crédito', 'class': 'number o_account_coa_column_contrast'},
@@ -262,7 +264,7 @@ class CustomTrialBalance(models.AbstractModel):
 				column_name_formated = column.get('name', '').replace('<br/>', ' ').replace('&nbsp;', ' ')
 				colspan = column.get('colspan', 1)
 				if colspan == 1:
-					sheet.set_column(x_offset, 100)
+					sheet.set_column(y_offset, x_offset, 40)
 					sheet.write(y_offset, x_offset, column_name_formated, title_style)
 				else:
 					sheet.merge_range(y_offset, x_offset, y_offset, x_offset + colspan - 1, column_name_formated,
@@ -317,20 +319,30 @@ class CustomTrialBalance(models.AbstractModel):
 			# write all the remaining cells
 			for x in range(1, len(lines[y]['columns']) + 1):
 				cell_type, cell_value = self._get_cell_type_value(lines[y]['columns'][x - 1])
-				if cell_type == 'date':
-					sheet.write_datetime(y + y_offset, x + lines[y].get('colspan', 1), cell_value,
-										 date_default_style)
+				if cell_type == 'number':
+					sheet.write_number(y + y_offset, x + lines[y].get('colspan', 1), cell_value,
+									   number_default_style)
 				else:
 					sheet.write(y + y_offset, x + lines[y].get('colspan', 1), cell_value, style)
 
 		sheet.set_row(len(lines) + 10, 30)
 
-		sheet.write(len(lines) + 10, 1, 'F._________________________', signature_style)
-		sheet.merge_range(len(lines) + 10, 2, len(lines) + 10, 3, 'F._________________________', signature_style)
-		sheet.merge_range(len(lines) + 10, 4, len(lines) + 10, 5, 'F._________________________', signature_style)
-		sheet.write(len(lines) + 11, 1, 'Representante Legal', signature_style)
-		sheet.merge_range(len(lines) + 11, 2, len(lines) + 11, 3, 'Contador', signature_style)
-		sheet.merge_range(len(lines) + 11, 4, len(lines) + 11, 5, 'Auditor', signature_style)
+		sheet.merge_range(len(lines) + 10, 0, len(lines) + 10, 5, 'F._________________________                                           '
+																  'F._________________________                                           '
+																  'F._________________________', signature_style)
+
+		sheet.merge_range(len(lines) + 11, 0, len(lines) + 11, 5,
+						  '                    Representante Legal                                             '
+						  '                                                                 Contador          '
+						  '                                                                                                            '
+						  'Auditor  ', '')
+
+		# sheet.write(len(lines) + 10, 1, 'F._________________________', signature_style)
+		# sheet.merge_range(len(lines) + 10, 2, len(lines) + 10, 3, 'F._________________________', signature_style)
+		# sheet.merge_range(len(lines) + 10, 4, len(lines) + 10, 5, 'F._________________________', signature_style)
+		# sheet.write(len(lines) + 11, 1, 'Representante Legal', signature_style)
+		# sheet.merge_range(len(lines) + 11, 2, len(lines) + 11, 3, 'Contador', signature_style)
+		# sheet.merge_range(len(lines) + 11, 4, len(lines) + 11, 5, 'Auditor', signature_style)
 
 		workbook.close()
 		output.seek(0)
@@ -340,7 +352,10 @@ class CustomTrialBalance(models.AbstractModel):
 		return generated_file
 
 	def _get_cell_type_value(self, cell):
-
+		if 'no_format_name' in cell:
+			return ('number', cell.get('no_format_name', ''))
+		if 'number' in cell.get('class', ''):
+			return ('number', cell.get('name', ''))
 		if 'date' not in cell.get('class', '') or not cell.get('name'):
 			# cell is not a date
 			return ('text', cell.get('name', ''))
