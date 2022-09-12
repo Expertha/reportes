@@ -25,11 +25,17 @@
 #
 ########################################################################
 
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 
 
 class CustomResultState(models.Model):
 	_inherit = "account.financial.html.report"
+
+	def _get_report_name(self):
+		if self.id == self.env.ref('b_custom_account_reports.expanded_balance_sheet_report').id:
+			return _('Estado de Resultado')
+		else:
+			return super(CustomResultState, self)._get_report_name()
 
 	def print_pdf(self, options):
 		if self.id == self.env.ref('b_custom_account_reports.result_state_report').id:

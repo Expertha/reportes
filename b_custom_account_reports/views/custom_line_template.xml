@@ -24,6 +24,9 @@
                     t-att-data-parent-id="line.get('parent_id', False)"
                     t-att="{k: v for k, v in line.items() if k.startswith('data-')}"
                     t-att-style="line.get('style', '')">
+                    <!--<td style="width: 10%">-->
+                    <!--<span t-esc="line.get('code')"/>-->
+                    <!--</td>-->
                     <td t-att-data-id="line['id']"
                         t-att-class="'o_account_report_name_ellipsis o_account_report_line o_account_report_line_indent ' + (line.get('unfoldable') and 'js_account_report_foldable o_foldable_total' or '') + ' ' + line.get('name_class', '')"
                         t-att-data-unfolded="line.get('unfolded', False)"
