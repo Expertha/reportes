@@ -1486,3 +1486,13 @@ order by S2.code
 			data = self._cr.dictfetchall()
 
 		return data
+
+	def get_account_type(self, account_code):
+		data = {}
+		sql = """SELECT internal_group FROM account_account WHERE code LIKE '{0}%' LIMIT 1""".format(account_code)
+		self._cr.execute(sql)
+		self._cr.execute(sql)
+		if self._cr.description:
+			data = self._cr.dictfetchall()
+
+		return data

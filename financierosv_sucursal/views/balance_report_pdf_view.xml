@@ -40,6 +40,7 @@
                         <t t-set="company" t-value="null"/>
                         <t t-set="mes" t-value="null"/>
                         <t t-set="acum" t-value="null"/>
+                        <t t-set="saldo" t-value="float(0.00)"/>
                         <t t-set="fechai" t-value="2022-12-1"/>
                         <t t-set="fechaf" t-value="2022-12-1"/>
                         <t t-set="fecha1" t-value="2022-12-1"/>
@@ -104,9 +105,21 @@
                                 <td class="td5" style="border:none;">
                                     <span t-esc="'{0:,.2f}'.format(c.get('haber'))"/>
                                 </td>
+                                <t t-set="account_type" t-value="company.get_account_type(c.get('code'))"/>
+
+                                <!--CUENTAS DE SALDO = SALDO_ANTERIOR + c.get('debe') -  c.get('haber')-->
+                                <t t-if="company.get_account_type(c.get('code'))[0].get('internal_group') in ('asset', 'expense')">
+                                    <t t-set="saldo" t-value="c.get('previo') + c.get('debe') - c.get('haber')"/>
+                                </t>
+
+                                <!--CUENTAS DE SALDO = SALDO_ANTERIOR + c.get('haber') - c.get('debe')-->
+                                <t t-if="company.get_account_type(c.get('code'))[0].get('internal_group') in ('equity', 'income', 'liability')">
+                                    <t t-set="saldo" t-value="c.get('previo') + c.get('haber') - c.get('debe')"/>
+                                </t>
+
                                 <t t-set="total" t-value="c.get('previo') + c.get('debe') - c.get('haber')"/>
                                 <td class="td6" style="border:none;">
-                                    <span t-esc="'{0:,.2f}'.format(total)"/>
+                                    <span t-esc="'{0:,.2f}'.format(saldo)"/>
                                 </td>
                             </tr>
                         </table>

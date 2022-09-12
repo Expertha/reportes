@@ -166,22 +166,16 @@
                                                     <span t-esc="company.currency_id.symbol"/>
                                                     <span t-esc="'{0:.2f}'.format(s.get('credit'))"/>
                                                 </td>
-                                                <!--CUENTAS DE ACTIVOS CON 1xxx-->
-                                                <t t-if="c.get('code') in ('1101','1103','1104', '1105', '1201','1202','1203', '1204', '1206', '1209')">
-                                                    <t t-set="saldo" t-value="c.get('previo') + s.get('debit') - s.get('credit')"/>
+                                                <!--CUENTAS DE SALDO = SALDO_ANTERIOR + c.get('debe') -  c.get('haber')-->
+                                                <t t-if="company.get_account_type(c.get('code'))[0].get('internal_group') in ('asset', 'expense')">
+                                                    <t t-set="saldo" t-value="c.get('previo') + c.get('debe') - c.get('haber')"/>
                                                 </t>
-                                                <!--CUENTAS DE COSTOS y GASTOS CON 4xxxx -->
-                                                <t t-if="c.get('code') in ('4101', '4102', '4201', '4202', '4301', '4501')">
-                                                    <t t-set="saldo" t-value="c.get('previo') + s.get('debit') - s.get('credit')"/>
+
+                                                <!--CUENTAS DE SALDO = SALDO_ANTERIOR + c.get('haber') - c.get('debe')-->
+                                                <t t-if="company.get_account_type(c.get('code'))[0].get('internal_group') in ('equity', 'income', 'liability')">
+                                                    <t t-set="saldo" t-value="c.get('previo') + c.get('haber') - c.get('debe')"/>
                                                 </t>
-                                                <!--CUENTAS DE CAPITAL y INGRESOS CON 3xxxx y 5xxxx -->
-                                                <t t-if="c.get('code') in ('3101', '3102', '3103', '3104', '3105', '5101', '5301')">
-                                                    <t t-set="saldo" t-value="c.get('previo') + s.get('credit') -  s.get('debit') "/>
-                                                </t>
-                                                <!--CUENTAS DE PASIVOS CON 2xxx -->
-                                                <t t-if="c.get('code') in ('2102', '2103', '2105', '2106', '2107', '2109', '2201')">
-                                                    <t t-set="saldo" t-value="c.get('previo') + s.get('credit') -  s.get('debit') "/>
-                                                </t>
+                                                
                                                 <!--<t t-set="saldo" t-value="c.get('previo') + s.get('debit') - s.get('credit')"/>-->
                                                 <td style="text-align: right;">
                                                     <span t-esc="company.currency_id.symbol"/>
