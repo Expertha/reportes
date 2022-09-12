@@ -1467,7 +1467,7 @@ order by S2.code
 					 COALESCE(am.date,am.invoice_date)>=CAST('{4}' as date) AND 
 				     COALESCE(am.date,am.invoice_date)<=CAST('{5}' as date) AND am.state in ('posted') 
 		""".format(company_id, date_year, date_month, acum, fechai, fechaf)
-		tools.drop_view_if_exists(self._cr, 'odoosv_financierosv_resultado_report')
+		# tools.drop_view_if_exists(self._cr, 'odoosv_financierosv_resultado_report')
 		self._cr.execute(sql)
 		self._cr.execute(sql)
 		if self._cr.description:
@@ -1487,9 +1487,10 @@ order by S2.code
 					 COALESCE(am.date,am.invoice_date)>=CAST('{4}' as date) AND 
 				     COALESCE(am.date,am.invoice_date)<=CAST('{5}' as date) AND am.state in ('posted') 
 		""".format(company_id, date_year, date_month, acum, fechai, fechaf)
-		tools.drop_view_if_exists(self._cr, 'odoosv_financierosv_resultado_report')
+		# tools.drop_view_if_exists(self._cr, 'odoosv_financierosv_resultado_report')
 		self._cr.execute(sql)
 		self._cr.execute(sql)
 		if self._cr.description:
 			data = self._cr.dictfetchall()
+
 		return data

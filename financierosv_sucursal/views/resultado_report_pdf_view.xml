@@ -95,6 +95,7 @@
                         <t t-set="totaluo" t-value="float(0.00)"/>
                         <t t-set="totalrl" t-value="float(0.00)"/>
                         <t t-set="totalai" t-value="float(0.00)"/>
+                        <t t-set="totalir" t-value="float(0.00)"/>
                         <t t-set="fechai" t-value="2022-12-1"/>
                         <t t-set="fechaf" t-value="2022-12-1"/>
                         <t t-set="fecha1" t-value="2022-12-1"/>
@@ -433,7 +434,8 @@
                                 <td class="td2" style="border:none;">
                                     <b>
                                         <strong>
-                                            <span t-esc="c.get('name')"/>
+                                            <!--<span t-esc="c.get('name')"/>-->
+                                            RESERVA LEGAL 7%
                                         </strong>
                                     </b>
                                 </td>
