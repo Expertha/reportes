@@ -159,6 +159,15 @@ class wizard_sv_mayor_report(models.TransientModel):
 		bold_style_num.alignment = alignment2
 		bold_style_num.num_format_str = '#,##0.00'
 
+		bold_style_total = xlwt.XFStyle()
+		font2 = xlwt.Font()
+		font2.name = 'Calibri'
+		font2.height = 20 * 11
+		font2.bold = True
+		bold_style_total.font = font2
+		bold_style_total.alignment = alignment2
+		bold_style_total.num_format_str = '#,##0.00'
+
 		bold_style_percent = xlwt.XFStyle()
 		bold_style_percent.font = font
 		alignment3 = xlwt.Alignment()
@@ -182,7 +191,7 @@ class wizard_sv_mayor_report(models.TransientModel):
 		bold_style_center.alignment = alignment5
 
 		bold_style_subtotal = xlwt.XFStyle()
-		bold_style_subtotal.font = font
+		bold_style_subtotal.font = font2
 		alignment6 = xlwt.Alignment()
 		alignment6.horz = xlwt.Alignment.HORZ_RIGHT
 		alignment6.vert = xlwt.Alignment.VERT_CENTER
@@ -229,24 +238,40 @@ class wizard_sv_mayor_report(models.TransientModel):
 			details = self._get_account_details(options)
 
 			i = row + 1
+			flag = False
 			for item in details:
-				formula_saldo = "C%d-D%d" % (row + 1, row + 1)
-				formula_debe = "SUM(C%d:C%d)" % (i, row + 1)
-				formula_haber = "SUM(D%d:D%d)" % (i, row + 1)
+				flag = True
+				saldo = account.get('previo') + item.get('debit') - item.get('credit')
+				formula_debe = "SUBTOTAL(9,C%d:C%d)" % (i, row + 1)
+				formula_haber = "SUBTOTAL(9,D%d:D%d)" % (i, row + 1)
 				page_1.write(row, 0, item.get('date'), bold_style_date)
 				page_1.write(row, 1, _('MOVEMENT JOURNALS'), bold_style)
 				page_1.write(row, 2, item.get('debit'), bold_style_num)
 				page_1.write(row, 3, item.get('credit'), bold_style_num)
-				page_1.write(row, 4, xlwt.Formula(formula_saldo), bold_style_num)
+				page_1.write(row, 4, saldo, bold_style_num)
 				row += 1
 
-			formula_saldo = "C%d-D%d" % (row + 1, row + 1)
+			if flag:
+				subtotal_debe = formula_debe
+				subtotal_haber = formula_haber
+			else:
+				subtotal_haber = subtotal_debe = '0.00'
+
 			page_1.write(row, 0, '', bold_style_date)
 			page_1.write(row, 1, 'Subtotal', bold_style_subtotal)
-			page_1.write(row, 2, xlwt.Formula(formula_debe), bold_style_num)
-			page_1.write(row, 3, xlwt.Formula(formula_haber), bold_style_num)
+			page_1.write(row, 2, xlwt.Formula(subtotal_debe), bold_style_total)
+			page_1.write(row, 3, xlwt.Formula(subtotal_haber), bold_style_total)
 			page_1.write(row, 4, '', bold_style_num)
 			row += 1
+
+		total_debe = "SUBTOTAL(9,C%d:C%d)" % (7, row)
+		total_haber = "SUBTOTAL(9,D%d:D%d)" % (7, row)
+		row += 5
+		page_1.write(row, 0, '', bold_style_date)
+		page_1.write(row, 1, 'TOTALES', bold_style_subtotal)
+		page_1.write(row, 2, xlwt.Formula(total_debe), bold_style_total)
+		page_1.write(row, 3, xlwt.Formula(total_haber), bold_style_total)
+		page_1.write(row, 4, '', bold_style_num)
 
 	def generate_xls(self):
 		options = {'ids': self._ids,
