@@ -143,8 +143,18 @@
                                             </td>
                                             <td style="text-align: right;">0.00</td>
                                             <td style="text-align: right;">
-                                                <span t-esc="company.currency_id.symbol"/>
-                                                <span t-esc="'{0:.2f}'.format(c.get('previo'))"/>
+                                                <!--CUENTAS DE SALDO = SALDO_ANTERIOR + s.get('debe') -  s.get('haber')-->
+                                                <t t-if="company.get_type_account(c.get('code')) in ('asset', 'expense')">
+                                                    <span t-esc="company.currency_id.symbol"/>
+                                                    <span t-esc="'{0:.2f}'.format(c.get('previo'))"/>
+                                                </t>
+
+                                                <!--CUENTAS DE SALDO = SALDO_ANTERIOR + s.get('haber') - s.get('debe')-->
+                                                <t t-if="company.get_type_account(c.get('code')) in ('equity', 'income', 'liability')">
+                                                    <span t-esc="company.currency_id.symbol"/>
+                                                    <span t-esc="'{0:.2f}'.format(c.get('previo') * -1)"/>
+                                                </t>
+
                                             </td>
                                         </tr>
                                         <t t-foreach="company.get_mayor_details1(company_id, year, month, acum, fechai, fechaf, c.get('code'))"
@@ -173,7 +183,8 @@
 
                                                 <!--CUENTAS DE SALDO = SALDO_ANTERIOR + s.get('haber') - s.get('debe')-->
                                                 <t t-if="company.get_type_account(c.get('code')) in ('equity', 'income', 'liability')">
-                                                    <t t-set="saldo" t-value="c.get('previo') + s.get('credit') - s.get('debit')"/>
+                                                    <t t-set="previo" t-value="c.get('previo') * -1"/>
+                                                    <t t-set="saldo" t-value="previo + s.get('credit') - s.get('debit')"/>
                                                 </t>
 
                                                 <!--<t t-set="saldo" t-value="c.get('previo') + s.get('debit') - s.get('credit')"/>-->
