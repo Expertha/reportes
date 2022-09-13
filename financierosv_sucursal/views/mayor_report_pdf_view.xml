@@ -168,12 +168,12 @@
                                                 </td>
                                                 <!--CUENTAS DE SALDO = SALDO_ANTERIOR + s.get('debe') -  s.get('haber')-->
                                                 <t t-if="company.get_type_account(c.get('code')) in ('asset', 'expense')">
-                                                    <t t-set="saldo" t-value="c.get('previo') + s.get('debe') - s.get('haber')"/>
+                                                    <t t-set="saldo" t-value="c.get('previo') + s.get('debit') - s.get('credit')"/>
                                                 </t>
 
                                                 <!--CUENTAS DE SALDO = SALDO_ANTERIOR + s.get('haber') - s.get('debe')-->
                                                 <t t-if="company.get_type_account(c.get('code')) in ('equity', 'income', 'liability')">
-                                                    <t t-set="saldo" t-value="c.get('previo') + s.get('haber') - s.get('debe')"/>
+                                                    <t t-set="saldo" t-value="c.get('previo') + s.get('credit') - s.get('debit')"/>
                                                 </t>
 
                                                 <!--<t t-set="saldo" t-value="c.get('previo') + s.get('debit') - s.get('credit')"/>-->
