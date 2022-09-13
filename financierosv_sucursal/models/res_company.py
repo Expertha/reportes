@@ -1487,12 +1487,12 @@ order by S2.code
 
 		return data
 
-	def get_account_type(self, account_code):
-		data = {}
-		sql = """SELECT internal_group FROM account_account WHERE code LIKE '{0}%' LIMIT 1""".format(account_code)
-		self._cr.execute(sql)
-		self._cr.execute(sql)
-		if self._cr.description:
-			data = self._cr.dictfetchall()
+	def get_type_account(self, account_code):
+		"""
+		Dado el codigo de la cuenta devuelve el grupo interno de la misma
+		:param account_code: account code
+		:return: internal group account
+		"""
+		account = self.env['account.account'].search([('code', 'like', '%s%%' % account_code)], limit=1)
 
-		return data
+		return account.internal_group

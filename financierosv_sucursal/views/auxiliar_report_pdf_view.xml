@@ -27,12 +27,22 @@
                             }
 
                             .cuentas {
-                            border-bottom: 1px solid black;
                             border-top: 1px solid black;
                             border-collapse;
                             padding: 6px;
                             width: 100%;
+                            height: 25px;
+                            }
+
+                            .details {
+                            border-top: 1px dashed #f6f6f6;
+                            }
+
+                            .tb-header {
+                            border: 1px solid black;
+                            border-collapse;
                             height: 20px;
+                            vertical-align:center;
                             }
 
                             .transformacion3 { text-transform: uppercase;}
@@ -109,54 +119,152 @@
                         </t>
                         <!--Fin encabezado-->
 
-
                         <t t-foreach="company.get_auxiliar_details(company_id, year, month, acum, fechai, fechaf)" t-as="c">
+                            <t t-set="debeTotal" t-value="float(0.00)"/>
+                            <t t-set="haberTotal" t-value="float(0.00)"/>
                             <div class="row">
                                 <div class="col-12">
                                     <table class="cuentas">
                                         <tr>
-                                            <td style="vertical-align: middle; ">
+                                            <td style="vertical-align: middle;">
                                                 <span t-esc="c.get('code')"/>
                                                 <span t-esc="c.get('name')"/>
                                             </td>
                                         </tr>
                                     </table>
-                                    <br/>
-                                    <br/>
                                 </div>
                             </div>
                             <div style="row">
                                 <div sytle="col-12">
                                     <table style="width:100%;">
-                                        <tr>
-                                            <td class="tb-header" style="width:10%;">
+                                        <tr class="tb-header">
+                                            <td style="width:10%;" class="tb-header">
                                                 <b>Fecha</b>
                                             </td>
-                                            <td class="tb-header" style="width:15%;">
+                                            <td style="width:10%;" class="tb-header">
                                                 <b>Partida</b>
                                             </td>
-                                            <td class="tb-header" style="width:10%;text-align: center;">
+                                            <td style="width:10%;" class="tb-header">
                                                 <b>Referencia</b>
                                             </td>
-                                            <td class="tb-header" style="width:15%;text-align: center;">
+                                            <td style="width:24%;" class="tb-header">
                                                 <b>Concepto</b>
                                             </td>
-                                            <td class="tb-header" style="width:20%;text-align: center;">
+                                            <td style="width:24%;" class="tb-header">
                                                 <b>Tipo Doc</b>
                                             </td>
-                                            <td class="tb-header" style="width:10%;text-align: center;">
+                                            <td style="width:7%;text-align: center;" class="tb-header">
                                                 <b>Debe</b>
                                             </td>
-                                            <td class="tb-header" style="width:10%;text-align: center;">
+                                            <td style="width:7%;text-align: center;" class="tb-header">
                                                 <b>Haber</b>
                                             </td>
-                                            <td class="tb-header" style="width:10%;text-align: center;">
+                                            <td style="width:8%;text-align: center;" class="tb-header">
                                                 <b>Saldo</b>
                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:10%;"></td>
+                                            <td style="width:10%;"></td>
+                                            <td style="width:10%;"></td>
+                                            <td style="width:24%;">
+                                                Saldo Anterior:
+                                            </td>
+                                            <td style="width:24%;"></td>
+                                            <td style="width:7%;text-align: right;">
+                                                0.00
+                                            </td>
+                                            <td style="width:7%;text-align: right;">
+                                                0.00
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <span t-esc="company.currency_id.symbol"/>
+                                                <span t-esc="'{0:.2f}'.format(c.get('previo'))"/>
+                                            </td>
+                                        </tr>
+                                        <t t-set="id" t-value="c.get('id')"/>
+                                        <t t-foreach="company.get_auxiliar_details1(company_id, year, month, acum, fechai, fechaf, id)"
+                                           t-as="s">
+                                            <t t-set="debeTotal" t-value="debeTotal + s.get('debit')"/>
+                                            <t t-set="haberTotal" t-value="haberTotal + s.get('credit')"/>
+                                            <tr class="details">
+                                                <td>
+                                                    <span t-esc="s.get('date').strftime('%d/%m/%Y')"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="s.get('name')"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="s.get('ref')"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="s.get('sv_concepto')"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="s.get('journal')"/>
+                                                </td>
+                                                <td style="text-align: right;">
+                                                    <span t-esc="company.currency_id.symbol"/>
+                                                    <span t-esc="'{0:.2f}'.format(s.get('debit'))"/>
+                                                </td>
+                                                <td style="text-align: right;">
+                                                    <span t-esc="company.currency_id.symbol"/>
+                                                    <span t-esc="'{0:.2f}'.format(s.get('credit'))"/>
+                                                </td>
+
+                                                <!--CUENTAS DE SALDO = SALDO_ANTERIOR + c.get('debe') -  c.get('haber')-->
+                                                <t t-if="company.get_type_account(c.get('code')) in ('asset', 'expense')">
+                                                    <t t-set="saldo" t-value="c.get('previo') + s.get('debit') - s.get('credit')"/>
+                                                </t>
+
+                                                <!--CUENTAS DE SALDO = SALDO_ANTERIOR + c.get('haber') - c.get('debe')-->
+                                                <t t-if="company.get_type_account(c.get('code')) not in ('asset', 'expense')">
+                                                    <t t-set="saldo" t-value="c.get('previo') + s.get('credit') - s.get('debit')"/>
+                                                </t>
+                                                <t t-set="total" t-value="s.get('debit') - s.get('credit')"/>
+                                                <td style="text-align: right; padding: 5px;">
+                                                    <span t-esc="company.currency_id.symbol"/>
+                                                    <span t-esc="'{0:.2f}'.format(saldo)"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- Muestra el Subtotal de cada Cuenta-->
+                            <div style="row">
+                                <div style="col-12">
+                                    <table style="width:100%;">
+                                        <tr class="border-black">
+                                            <td style="width:10%;">
+                                            </td>
+                                            <td style="width:10%;">
+                                            </td>
+                                            <td style="width:10%;">
+                                            </td>
+                                            <td style="width:24%;">
+                                            </td>
+                                            <td style="width:24%;">
+                                                <b>Subtotal</b>
+                                            </td>
+                                            <td style="width:7%;text-align: right;">
+                                                <b>
+                                                    <span t-esc="company.currency_id.symbol"/>
+                                                    <span t-esc="'{0:.2f}'.format(debeTotal)"/>
+                                                </b>
+                                            </td>
+                                            <td style="width:7%;text-align: right;">
+                                                <b>
+                                                    <span t-esc="company.currency_id.symbol"/>
+                                                    <span t-esc="'{0:.2f}'.format(haberTotal)"/>
+                                                </b>
+                                            </td>
+                                            <td></td>
                                         </tr>
                                     </table>
                                 </div>
                             </div>
+                            <br/>
                         </t>
 
 

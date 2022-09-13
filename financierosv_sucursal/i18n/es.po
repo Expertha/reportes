@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-08 23:30+0000\n"
-"PO-Revision-Date: 2022-09-08 23:30+0000\n"
+"POT-Creation-Date: 2022-09-13 15:57+0000\n"
+"PO-Revision-Date: 2022-09-13 15:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -33,6 +33,7 @@ msgid "(Valores expresados en dólares de los Estados Unidos de América)"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_mayor_report_pdf
 msgid "0.00"
 msgstr ""
@@ -46,6 +47,12 @@ msgid ""
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
+msgid "<b>Concepto</b>"
+msgstr ""
+
+#. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_mayor_report_pdf
 msgid "<b>Debe</b>"
 msgstr ""
@@ -56,23 +63,47 @@ msgid "<b>Descripcion</b>"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_mayor_report_pdf
 msgid "<b>Fecha</b>"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_mayor_report_pdf
 msgid "<b>Haber</b>"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
+msgid "<b>Partida</b>"
+msgstr ""
+
+#. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
+msgid "<b>Referencia</b>"
+msgstr ""
+
+#. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_mayor_report_pdf
 msgid "<b>Saldo</b>"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_mayor_report_pdf
 msgid "<b>Subtotal</b>"
+msgstr ""
+
+#. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_mayor_report_pdf
+msgid "<b>TOTALES</b>"
+msgstr ""
+
+#. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
+msgid "<b>Tipo Doc</b>"
 msgstr ""
 
 #. module: financierosv_sucursal
@@ -295,6 +326,7 @@ msgid "Cancelar"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.wizard_report_download_assistant_xls
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.wizard_report_download_xls
 msgid "Close"
 msgstr "Cerrar"
@@ -325,7 +357,8 @@ msgid "Compañia"
 msgstr ""
 
 #. module: financierosv_sucursal
-#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
+#: code:addons/financierosv_sucursal/wizard/wizard_auxiliar.py:0
+#, python-format
 msgid "Concepto"
 msgstr ""
 
@@ -339,6 +372,7 @@ msgid "Contador"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_assistant_xls__create_uid
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_xls__create_uid
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_auxiliar_report__create_uid
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_balance_report__create_uid
@@ -350,6 +384,7 @@ msgid "Created by"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_assistant_xls__create_date
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_xls__create_date
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_auxiliar_report__create_date
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_balance_report__create_date
@@ -371,6 +406,7 @@ msgid "Código"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: code:addons/financierosv_sucursal/wizard/wizard_auxiliar.py:0
 #: code:addons/financierosv_sucursal/wizard/wizard_mayor.py:0
 #, python-format
 msgid "DATE"
@@ -394,8 +430,9 @@ msgid "DESCRIPTION"
 msgstr "DESCRIPCIÓN"
 
 #. module: financierosv_sucursal
-#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
+#: code:addons/financierosv_sucursal/wizard/wizard_auxiliar.py:0
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_balance_report_pdf
+#, python-format
 msgid "Debe"
 msgstr ""
 
@@ -409,6 +446,7 @@ msgid "Diciembre"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_assistant_xls__display_name
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_xls__display_name
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_auxiliar_report__display_name
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_balance_report__display_name
@@ -472,11 +510,6 @@ msgid "Febrero"
 msgstr ""
 
 #. module: financierosv_sucursal
-#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
-msgid "Fecha"
-msgstr ""
-
-#. module: financierosv_sucursal
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_auxiliar_report__fechaf
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_balance_report__fechaf
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_general_report__fechaf
@@ -495,32 +528,44 @@ msgid "Fecha Inicial"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_assistant_xls__file
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_xls__file
 msgid "File"
-msgstr ""
+msgstr "Fichero"
 
 #. module: financierosv_sucursal
+#: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_assistant_xls__file_name
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_xls__file_name
 msgid "File name"
-msgstr ""
+msgstr "Nombre del archivo"
 
 #. module: financierosv_sucursal
+#: model:ir.model.fields,help:financierosv_sucursal.field_wizard_report_download_assistant_xls__file
 #: model:ir.model.fields,help:financierosv_sucursal.field_wizard_report_download_xls__file
 msgid "File to export"
 msgstr "Archivo a exportar"
 
 #. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.report_auxiliar_wizard_view
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.report_mayor_wizard_view
 msgid "Generate XLS"
 msgstr "Generar XLSX"
 
 #. module: financierosv_sucursal
-#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.wizard_report_download_assistant_xls
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.wizard_report_download_xls
+msgid "Guarde el archivo con la extensión '.xlsx'."
+msgstr ""
+
+#. module: financierosv_sucursal
+#: code:addons/financierosv_sucursal/wizard/wizard_auxiliar.py:0
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_balance_report_pdf
+#, python-format
 msgid "Haber"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_assistant_xls__id
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_xls__id
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_auxiliar_report__id
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_balance_report__id
@@ -591,6 +636,7 @@ msgid "LOS RANCHOS DE EL SALVADOR, S.A. de C.V."
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_assistant_xls____last_update
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_xls____last_update
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_auxiliar_report____last_update
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_balance_report____last_update
@@ -602,6 +648,7 @@ msgid "Last Modified on"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_assistant_xls__write_uid
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_xls__write_uid
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_auxiliar_report__write_uid
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_balance_report__write_uid
@@ -613,6 +660,7 @@ msgid "Last Updated by"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_assistant_xls__write_date
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_report_download_xls__write_date
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_auxiliar_report__write_date
 #: model:ir.model.fields,field_description:financierosv_sucursal.field_wizard_sv_balance_report__write_date
@@ -626,6 +674,12 @@ msgstr ""
 #. module: financierosv_sucursal
 #: model:ir.actions.report,name:financierosv_sucursal.report_auxiliar_pdf
 msgid "Libro Auxiliar"
+msgstr ""
+
+#. module: financierosv_sucursal
+#: code:addons/financierosv_sucursal/wizard/wizard_auxiliar.py:0
+#, python-format
+msgid "Libro Auxiliar Diario"
 msgstr ""
 
 #. module: financierosv_sucursal
@@ -661,6 +715,18 @@ msgstr ""
 #: code:addons/financierosv_sucursal/wizard/wizard_mayor.py:0
 #, python-format
 msgid "Libro Mayor diario.xlsx"
+msgstr ""
+
+#. module: financierosv_sucursal
+#: code:addons/financierosv_sucursal/wizard/wizard_auxiliar.py:0
+#, python-format
+msgid "Libro auxiliar diario Report"
+msgstr ""
+
+#. module: financierosv_sucursal
+#: code:addons/financierosv_sucursal/wizard/wizard_auxiliar.py:0
+#, python-format
+msgid "Libro auxiliar diario.xlsx"
 msgstr ""
 
 #. module: financierosv_sucursal
@@ -730,15 +796,28 @@ msgid "PERTENECIENTE AL MES DE:"
 msgstr ""
 
 #. module: financierosv_sucursal
-#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
+#: code:addons/financierosv_sucursal/wizard/wizard_auxiliar.py:0
+#, python-format
 msgid "Partida"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: code:addons/financierosv_sucursal/wizard/wizard_auxiliar.py:0
 #: code:addons/financierosv_sucursal/wizard/wizard_mayor.py:0
 #, python-format
 msgid "Previous balance"
-msgstr "Saldo Anterior"
+msgstr ""
+
+#. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_resultado_report_pdf
+msgid "RESERVA LEGAL 7%"
+msgstr ""
+
+#. module: financierosv_sucursal
+#: code:addons/financierosv_sucursal/wizard/wizard_auxiliar.py:0
+#, python-format
+msgid "Referencia"
+msgstr ""
 
 #. module: financierosv_sucursal
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_general_report_pdf
@@ -747,11 +826,13 @@ msgid "Rep. Legal"
 msgstr ""
 
 #. module: financierosv_sucursal
+#: model:ir.model,name:financierosv_sucursal.model_wizard_report_download_assistant_xls
 #: model:ir.model,name:financierosv_sucursal.model_wizard_report_download_xls
 msgid "Report Download XLS"
 msgstr "Descarga Informe XLSX"
 
 #. module: financierosv_sucursal
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.wizard_report_download_assistant_xls
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.wizard_report_download_xls
 msgid "Report XLS"
 msgstr "Reporte XLSX"
@@ -768,25 +849,25 @@ msgid "Representante Legal"
 msgstr ""
 
 #. module: financierosv_sucursal
-#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
+#: code:addons/financierosv_sucursal/wizard/wizard_auxiliar.py:0
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_balance_report_pdf
+#, python-format
 msgid "Saldo"
 msgstr ""
 
 #. module: financierosv_sucursal
-#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_balance_report_pdf
 msgid "Saldo Anterior"
 msgstr ""
 
 #. module: financierosv_sucursal
-#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_mayor_report_pdf
-msgid "Saldo anterior"
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_auxiliar_report_pdf
+msgid "Saldo Anterior:"
 msgstr ""
 
 #. module: financierosv_sucursal
-#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.wizard_report_download_xls
-msgid "Save the file with '.xls' extension."
+#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.odoosv_mayor_report_pdf
+msgid "Saldo anterior"
 msgstr ""
 
 #. module: financierosv_sucursal
@@ -796,6 +877,12 @@ msgstr ""
 #: model:ir.model.fields.selection,name:financierosv_sucursal.selection__wizard_sv_general_report__date_month__9
 #: model:ir.model.fields.selection,name:financierosv_sucursal.selection__wizard_sv_mayor_report__date_month__9
 msgid "Septiembre"
+msgstr ""
+
+#. module: financierosv_sucursal
+#: code:addons/financierosv_sucursal/wizard/wizard_auxiliar.py:0
+#, python-format
+msgid "Tipo Documento"
 msgstr ""
 
 #. module: financierosv_sucursal
@@ -859,10 +946,8 @@ msgid "octubre"
 msgstr ""
 
 #. module: financierosv_sucursal
-#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.report_auxiliar_wizard_view
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.report_balance_wizard_view
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.report_general_wizard_view
-#: model_terms:ir.ui.view,arch_db:financierosv_sucursal.report_mayor_wizard_view
 #: model_terms:ir.ui.view,arch_db:financierosv_sucursal.report_resultado_wizard_view
 msgid "or"
 msgstr ""

@@ -50,9 +50,9 @@ class wizard_sv_auxiliar_report(models.TransientModel):
 			acum = 0
 		fechai = options.get('form').get('fechai')
 		fechaf = options.get('form').get('fechaf')
-		cuenta = options.get('code')
+		account_id = options.get('id')
 
-		return self.env['res.company'].get_auxiliar_details1(company_id, date_year, date_month, acum, fechai, fechaf, cuenta)
+		return self.env['res.company'].get_auxiliar_details1(company_id, date_year, date_month, acum, fechai, fechaf, account_id)
 
 	def _get_report_name(self):
 		return _("Libro Auxiliar Diario")
@@ -62,8 +62,8 @@ class wizard_sv_auxiliar_report(models.TransientModel):
 		wbk = xlwt.Workbook()
 
 		# Page FACTURAS STORE
-		page_1 = self.style_page_1(wbk, options)
-		self.records_page_1(page_1, options)
+		page_1 = self.sytle_page_auxiliar(wbk, options)
+		self.records_page_auxiliar(page_1, options)
 
 		wbk.save(fl)
 		fl.seek(0)
@@ -71,7 +71,7 @@ class wizard_sv_auxiliar_report(models.TransientModel):
 		fl.close()
 		return file
 
-	def sytle_page_1(self, wbk, options):
+	def sytle_page_auxiliar(self, wbk, options):
 		font = xlwt.Font()
 		bold_style = xlwt.XFStyle()
 		font.name = 'Calibri'
@@ -111,10 +111,13 @@ class wizard_sv_auxiliar_report(models.TransientModel):
 		page_1.panes_frozen = True
 		page_1.remove_splits = True
 		page_1.col(0).width = 256 * 20
-		page_1.col(1).width = 256 * 40
+		page_1.col(1).width = 256 * 20
 		page_1.col(2).width = 256 * 20
-		page_1.col(3).width = 256 * 20
-		page_1.col(4).width = 256 * 20
+		page_1.col(3).width = 256 * 60
+		page_1.col(4).width = 256 * 40
+		page_1.col(5).width = 256 * 20
+		page_1.col(6).width = 256 * 20
+		page_1.col(7).width = 256 * 20
 		page_1.row(0).height = 40 * 20
 
 		date_from = fields.Date.to_string(options.get('form').get('fechai'))
@@ -122,22 +125,22 @@ class wizard_sv_auxiliar_report(models.TransientModel):
 
 		period = self._get_report_name() + ' DEL ' + date_from + ' AL ' + date_to
 
-		page_1.write_merge(0, 0, 0, 4, self.env.company.name, bold_style)
-		page_1.write_merge(1, 1, 0, 4, period, bold_style_period)
-		page_1.write_merge(2, 2, 0, 4, '(Valores expresados en dólares de los Estados Unidos de America)', bold_style_nota)
+		page_1.write_merge(0, 0, 0, 7, self.env.company.name, bold_style)
+		page_1.write_merge(1, 1, 0, 7, period, bold_style_period)
+		page_1.write_merge(2, 2, 0, 7, '(Valores expresados en dólares de los Estados Unidos de America)', bold_style_nota)
 
 		return page_1
 
-	def records_page_1(self, page_1, options):
+	def records_page_auxiliar(self, page_1, options):
 		font = xlwt.Font()
 		bold_style = xlwt.XFStyle()
 		font.name = 'Calibri'
 		font.height = 20 * 11
 		bold_style.font = font
 		alignment = xlwt.Alignment()
+		alignment.wrap = 1
 		alignment.horz = xlwt.Alignment.HORZ_LEFT
 		alignment.vert = xlwt.Alignment.VERT_CENTER
-		alignment.wrap = 1
 		bold_style.alignment = alignment
 
 		bold_style_num = xlwt.XFStyle()
@@ -199,42 +202,64 @@ class wizard_sv_auxiliar_report(models.TransientModel):
 		for account in accounts:
 			name = account.get('code') + ' ' + account.get('name')
 			page_1.row(row).height = 20 * 20
-			page_1.write_merge(row, row, 0, 4, name, bold_style_account)
-			row += 1
-			page_1.write(row, 0, _('DATE'), header)
-			page_1.write(row, 1, _('DESCRIPTION'), header)
-			page_1.write(row, 2, _('DEBIT'), header)
-			page_1.write(row, 3, _('CREDIT'), header)
-			page_1.write(row, 4, _('BALANCE'), header)
-			row += 1
-			page_1.write(row, 0, '', bold_style)
-			page_1.write(row, 1, _('Previous balance'), bold_style)
-			page_1.write(row, 2, '0.00', bold_style_num)
-			page_1.write(row, 3, '0.00', bold_style_num)
-			page_1.write(row, 4, account.get('previo'), bold_style_num)
+			page_1.write_merge(row, row, 0, 7, name, bold_style_account)
 			row += 1
 
-			options['code'] = account.get('code')
+			page_1.write(row, 0, _('DATE'), header)
+			page_1.write(row, 1, _('Partida'), header)
+			page_1.write(row, 2, _('Referencia'), header)
+			page_1.write(row, 3, _('Concepto'), header)
+			page_1.write(row, 4, _('Tipo Documento'), header)
+			page_1.write(row, 5, _('Debe'), header)
+			page_1.write(row, 6, _('Haber'), header)
+			page_1.write(row, 7, _('Saldo'), header)
+			row += 1
+			page_1.write(row, 0, '', bold_style)
+			page_1.write(row, 1, '', bold_style)
+			page_1.write(row, 2, '', bold_style)
+			page_1.write(row, 3, '', bold_style)
+			page_1.write(row, 4, _('Previous balance'), bold_style)
+			page_1.write(row, 5, '0.00', bold_style_num)
+			page_1.write(row, 6, '0.00', bold_style_num)
+			page_1.write(row, 7, account.get('previo'), bold_style_num)
+			row += 1
+
+			options['id'] = account.get('id')
 			details = self._get_account_details(options)
 
 			i = row + 1
+			flag = False
 			for item in details:
-				formula_saldo = "C%d-D%d" % (row + 1, row + 1)
-				formula_debe = "SUM(C%d:C%d)" % (i, row + 1)
-				formula_haber = "SUM(D%d:D%d)" % (i, row + 1)
+				flag = True
+				saldo = account.get('previo') + item.get('debit') - item.get('credit')
+				formula_debe = "SUBTOTAL(9,C%d:C%d)" % (i, row + 1)
+				formula_haber = "SUBTOTAL(9,D%d:D%d)" % (i, row + 1)
+				page_1.row(row).height = 30 * 20
 				page_1.write(row, 0, item.get('date'), bold_style_date)
-				page_1.write(row, 1, _('MOVEMENT JOURNALS'), bold_style)
-				page_1.write(row, 2, item.get('debit'), bold_style_num)
-				page_1.write(row, 3, item.get('credit'), bold_style_num)
-				page_1.write(row, 4, xlwt.Formula(formula_saldo), bold_style_num)
+				page_1.write(row, 1, item.get('name'), bold_style)
+				page_1.write(row, 2, item.get('ref'), bold_style)
+				page_1.write(row, 3, item.get('sv_concepto'), bold_style)
+				page_1.write(row, 4, item.get('journal'), bold_style)
+				page_1.write(row, 5, item.get('debit'), bold_style_num)
+				page_1.write(row, 6, item.get('credit'), bold_style_num)
+				page_1.write(row, 7, saldo, bold_style_num)
 				row += 1
+
+			if flag:
+				subtotal_debe = formula_debe
+				subtotal_haber = formula_haber
+			else:
+				subtotal_haber = subtotal_debe = '0.00'
 
 			formula_saldo = "C%d-D%d" % (row + 1, row + 1)
 			page_1.write(row, 0, '', bold_style_date)
-			page_1.write(row, 1, 'Subtotal', bold_style_subtotal)
-			page_1.write(row, 2, xlwt.Formula(formula_debe), bold_style_num)
-			page_1.write(row, 3, xlwt.Formula(formula_haber), bold_style_num)
-			page_1.write(row, 4, '', bold_style_num)
+			page_1.write(row, 1, '', bold_style_date)
+			page_1.write(row, 2, '', bold_style_date)
+			page_1.write(row, 3, '', bold_style_date)
+			page_1.write(row, 4, 'Subtotal', bold_style_subtotal)
+			page_1.write(row, 5, xlwt.Formula(subtotal_debe), bold_style_num)
+			page_1.write(row, 6, xlwt.Formula(subtotal_haber), bold_style_num)
+			page_1.write(row, 7, '', bold_style_num)
 			row += 1
 
 	def generate_xls(self):

@@ -251,11 +251,11 @@ class wizard_sv_mayor_report(models.TransientModel):
 				page_1.write(row, 4, saldo, bold_style_num)
 				row += 1
 
-				if flag:
-					subtotal_debe = formula_debe
-					subtotal_haber = formula_haber
-				else:
-					subtotal_haber = subtotal_debe = '0.00'
+			if flag:
+				subtotal_debe = formula_debe
+				subtotal_haber = formula_haber
+			else:
+				subtotal_haber = subtotal_debe = '0.00'
 
 			page_1.write(row, 0, '', bold_style_date)
 			page_1.write(row, 1, 'Subtotal', bold_style_subtotal)
