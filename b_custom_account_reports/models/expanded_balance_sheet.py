@@ -92,8 +92,6 @@ class ExpandedBalanceSheet(models.Model):
 		date_default_col1_style = workbook.add_format(
 			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2, 'num_format': '#,##0.00'})
 		date_default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
-		number_default_style = workbook.add_format(
-			{'font_name': 'Arial', 'font_size': 11, 'align': 'right', 'font_color': '#666666', 'num_format': '#,##0.00', 'indent': 1})
 
 		default_col1_style = workbook.add_format({'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666', 'indent': 2})
 		default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666'})
@@ -141,8 +139,11 @@ class ExpandedBalanceSheet(models.Model):
 			sheet.merge_range(2, 0, 2, 4, '(Valores expresados en dólares de los Estados Unidos de America)', note_style)
 
 		y_offset = 3
-		z_offset = 3
+		z_offset = 4
 		headers, lines = self.with_context(no_format=True, print_mode=True, prefetch_fields=False)._get_table(options)
+
+		col_one = list(filter(lambda item: item['position'] == 1, lines))
+		col_two = list(filter(lambda item: item['position'] == 2, lines))
 
 		# Add headers.
 		for header in headers:
@@ -162,8 +163,8 @@ class ExpandedBalanceSheet(models.Model):
 		if options.get('selected_column'):
 			lines = self._sort_lines(lines, options)
 
-		for y in range(0, len(lines)):
-			level = lines[y].get('level')
+		for y in range(0, len(col_one)):
+			level = col_one[y].get('level')
 			if lines[y].get('caret_options'):
 				style = level_3_style
 				col1_style = level_3_col1_style
@@ -179,18 +180,18 @@ class ExpandedBalanceSheet(models.Model):
 			elif level == 2:
 				style = level_2_style
 				style_number = number_2_style
-				col1_style = 'total' in lines[y].get('class', '').split(' ') and level_2_col1_total_style or level_2_col1_style
+				col1_style = 'total' in col_one[y].get('class', '').split(' ') and level_2_col1_total_style or level_2_col1_style
 			elif level == 3:
 				style = level_3_style
 				style_number = number_3_style
-				col1_style = 'total' in lines[y].get('class', '').split(' ') and level_3_col1_total_style or level_3_col1_style
+				col1_style = 'total' in col_one[y].get('class', '').split(' ') and level_3_col1_total_style or level_3_col1_style
 			else:
 				style = default_style
 				style_number = default_style
 				col1_style = default_col1_style
 
 			# write the first column, with a specific style to manage the indentation
-			cell_type, cell_value = self._get_cell_type_value(lines[y])
+			cell_type, cell_value = self._get_cell_type_value(col_one[y])
 
 			if cell_type == 'date':
 				sheet.write_datetime(y + y_offset, 0, cell_value, date_default_col1_style)
@@ -198,16 +199,16 @@ class ExpandedBalanceSheet(models.Model):
 				sheet.write(y + y_offset, 0, cell_value, col1_style)
 
 			# write all the remaining cells
-			for x in range(1, len(lines[y]['columns']) + 1):
-				cell_type, cell_value = self._get_cell_type_value(lines[y]['columns'][x - 1])
+			for x in range(1, len(col_one[y]['columns']) + 1):
+				cell_type, cell_value = self._get_cell_type_value(col_one[y]['columns'][x - 1])
 				if cell_type == 'number':
-					sheet.write_number(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_value, style_number)
+					sheet.write_number(y + y_offset, x + col_one[y].get('colspan', 1) - 1, cell_value, style_number)
 				else:
-					sheet.write(y + y_offset, x + lines[y].get('colspan', 1) - 1, cell_value, style)
+					sheet.write(y + y_offset, x + col_one[y].get('colspan', 1) - 1, cell_value, style)
 
-		for y in range(0, len(lines)):
-			level = lines[y].get('level')
-			if lines[y].get('caret_options'):
+		for y in range(0, len(col_two)):
+			level = col_two[y].get('level')
+			if col_two[y].get('caret_options'):
 				style = level_3_style
 				col1_style = level_3_col1_style
 			elif level == 0:
@@ -222,18 +223,18 @@ class ExpandedBalanceSheet(models.Model):
 			elif level == 2:
 				style = level_2_style
 				style_number = number_2_style
-				col1_style = 'total' in lines[y].get('class', '').split(' ') and level_2_col1_total_style or level_2_col1_style
+				col1_style = 'total' in col_two[y].get('class', '').split(' ') and level_2_col1_total_style or level_2_col1_style
 			elif level == 3:
 				style = level_3_style
 				style_number = number_3_style
-				col1_style = 'total' in lines[y].get('class', '').split(' ') and level_3_col1_total_style or level_3_col1_style
+				col1_style = 'total' in col_two[y].get('class', '').split(' ') and level_3_col1_total_style or level_3_col1_style
 			else:
 				style = default_style
 				style_number = default_style
 				col1_style = default_col1_style
 
 			# write the first column, with a specific style to manage the indentation
-			cell_type, cell_value = self._get_cell_type_value(lines[y])
+			cell_type, cell_value = self._get_cell_type_value(col_two[y])
 
 			if cell_type == 'date':
 				sheet.write_datetime(y + z_offset, 3, cell_value, date_default_col1_style)
@@ -241,36 +242,12 @@ class ExpandedBalanceSheet(models.Model):
 				sheet.write(y + z_offset, 3, cell_value, col1_style)
 
 			# write all the remaining cells
-			for x in range(1, len(lines[y]['columns']) + 1):
-				cell_type, cell_value = self._get_cell_type_value(lines[y]['columns'][x - 1])
+			for x in range(1, len(col_two[y]['columns']) + 1):
+				cell_type, cell_value = self._get_cell_type_value(col_two[y]['columns'][x - 1])
 				if cell_type == 'number':
-					sheet.write_number(y + z_offset, x + 3 + lines[y].get('colspan', 1) - 1, cell_value, style_number)
+					sheet.write_number(y + z_offset, x + 3 + col_two[y].get('colspan', 1) - 1, cell_value, style_number)
 				else:
-					sheet.write(y + z_offset, x + 3 + lines[y].get('colspan', 1) - 1, cell_value, style)
-
-		# yy_offset = 5
-		# if cell_type == 'date':
-		# 	sheet.write_datetime(yy + yy_offset, 3, cell_value, date_default_col1_style)
-		# else:
-		# 	sheet.write(yy + yy_offset, 3, cell_value, col1_style)
-		#
-		# # write all the remaining cells
-		# for xx in range(1, len(lines[yy]['columns']) + 1):
-		# 	cell_type, cell_value = self._get_cell_type_value(lines[yy]['columns'][xx - 1])
-		# 	if cell_type == 'date':
-		# 		sheet.write_datetime(yy + yy_offset, 4, cell_value, date_default_style)
-		# 	else:
-		# 		sheet.write_number(yy + yy_offset, 4, cell_value, style)
-		# yy = yy + 1
-
-		# sheet.set_row(len(lines), 40)
-		# sheet.merge_range(40, 0, 40, 4, 'F  __________________________                                 '
-		# 								'F  __________________________                                 '
-		# 								'F  __________________________', signature_style)
-		#
-		# sheet.merge_range(41, 0, 41, 4,
-		# 				  '                                  Representante Legal                                                                                                   Contador                                                                                                                        Auditor',
-		# 				  '')
+					sheet.write(y + z_offset, x + 3 + col_two[y].get('colspan', 1) - 1, cell_value, style)
 
 		workbook.close()
 		output.seek(0)
