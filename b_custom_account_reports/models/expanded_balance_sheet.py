@@ -70,6 +70,9 @@ class ExpandedBalanceSheet(models.Model):
 			return super(ExpandedBalanceSheet, self)._get_report_name()
 
 	def print_xlsx(self, options):
+		"""
+		Printing to pdf is redefined using the reports defined in the module "financierosv_sucursal"
+		"""
 		return {
 			'type': 'ir_actions_account_report_download',
 			'data': {'model': self.env.context.get('model'),
@@ -80,8 +83,10 @@ class ExpandedBalanceSheet(models.Model):
 					 }
 		}
 
-	def get_xlsx(self, options, response=None):
-
+	def get_xlsx(self, options):
+		"""
+		The excel file is created in memory with the data obtained from Odoo
+		"""
 		output = io.BytesIO()
 		workbook = xlsxwriter.Workbook(output, {
 			'in_memory': True,

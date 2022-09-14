@@ -1468,7 +1468,7 @@ order by S2.code
 
 	def get_impuesto_renta(self, company_id, date_year, date_month, acum, fechai, fechaf):
 		"""
-		 Obtiene el Impuesto sobre la renta
+		 Gets the Income Tax data for the account 21060401 and the journal name that starts with CIERRE
 		"""
 		data = {}
 		sql = """SELECT aa.name, aml.debit, aml.credit, aml.balance
@@ -1489,7 +1489,7 @@ order by S2.code
 
 	def get_type_account(self, account_code):
 		"""
-		Dado el codigo de la cuenta devuelve el grupo interno de la misma
+		Given the code of the account, it returns the internal group of the same
 		:param account_code: account code
 		:return: internal group account
 		"""

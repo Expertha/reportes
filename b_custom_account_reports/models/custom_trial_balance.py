@@ -156,8 +156,9 @@ class CustomTrialBalance(models.AbstractModel):
 		return lines
 
 	def print_pdf(self, options):
-		report_name = 'financierosv_sucursal.report_balance_pdf'
-		# report = self.env['ir.actions.report']._get_report_from_name(report_name)
+		"""
+		Printing to pdf is redefined using the reports defined in the module "financierosv_sucursal"
+		"""
 		date_from = fields.Date.from_string(options.get('date').get('date_from'))
 		date_to = fields.Date.from_string(options.get('date').get('date_to'))
 
@@ -177,6 +178,9 @@ class CustomTrialBalance(models.AbstractModel):
 		return self.env.ref('financierosv_sucursal.report_balance_pdf').report_action(self, data=data)
 
 	def print_xlsx(self, options):
+		"""
+		The printing to excel of the module from which it is inherited is redefined
+		"""
 		return {
 			'type': 'ir_actions_account_report_download',
 			'data': {'model': self.env.context.get('model'),
@@ -188,6 +192,9 @@ class CustomTrialBalance(models.AbstractModel):
 		}
 
 	def get_xlsx(self, options, response=None):
+		"""
+		The excel file is created in memory with the data obtained from Odoo
+		"""
 		output = io.BytesIO()
 		workbook = xlsxwriter.Workbook(output, {
 			'in_memory': True,
@@ -337,13 +344,6 @@ class CustomTrialBalance(models.AbstractModel):
 						  '                                                                                                            '
 						  'Auditor  ', '')
 
-		# sheet.write(len(lines) + 10, 1, 'F._________________________', signature_style)
-		# sheet.merge_range(len(lines) + 10, 2, len(lines) + 10, 3, 'F._________________________', signature_style)
-		# sheet.merge_range(len(lines) + 10, 4, len(lines) + 10, 5, 'F._________________________', signature_style)
-		# sheet.write(len(lines) + 11, 1, 'Representante Legal', signature_style)
-		# sheet.merge_range(len(lines) + 11, 2, len(lines) + 11, 3, 'Contador', signature_style)
-		# sheet.merge_range(len(lines) + 11, 4, len(lines) + 11, 5, 'Auditor', signature_style)
-
 		workbook.close()
 		output.seek(0)
 		generated_file = output.read()
@@ -352,6 +352,9 @@ class CustomTrialBalance(models.AbstractModel):
 		return generated_file
 
 	def _get_cell_type_value(self, cell):
+		"""
+		Returns the value of each cell and its format to print it in the excel file
+		"""
 		if 'no_format_name' in cell:
 			return ('number', cell.get('no_format_name', ''))
 		if 'number' in cell.get('class', ''):

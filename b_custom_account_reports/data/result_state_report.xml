@@ -147,7 +147,7 @@
             <field name="level" eval="0"/>
             <field name="position" eval="1"/>
         </record>
-
+        <!-- SE obtiene RESERVA LEGAL 7% dado la cuenta y el nombre del movimiento que se defina -->
         <record id="result_state_02" model="account.financial.html.report.line">
             <field name="name">RESERVA LEGAL 7%</field>
             <field name="code">state_02</field>
@@ -168,7 +168,7 @@
             <field name="level" eval="0"/>
             <field name="position" eval="1"/>
         </record>
-
+        <!-- SE obtiene los impuestos sobre la renta dado la cuenta y el nombre del movimiento que se defina -->
         <record id="result_state_04" model="account.financial.html.report.line">
             <field name="name">IMPUESTOS SOBRE LA RENTA</field>
             <field name="code">state_04</field>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
+        <!-- Reporte de Balance de comprobación -->
         <record id="expanded_balance_sheet_report" model="account.financial.html.report">
             <field name="name">Balance Trial</field>
             <field name="date_range" eval="True"/>
@@ -30,7 +30,7 @@
             <field name="level" eval="1"/>
             <field name="position" eval="1"/>
         </record>
-
+        <!-- Se SUMAN todas las cuentas que en su código comiencen con 11010 -->
         <record id="balance_trial_1101" model="account.financial.html.report.line">
             <field name="name">EFECTIVO Y EQUIVALENTES</field>
             <field name="code">trial_1101</field>

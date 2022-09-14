@@ -44,7 +44,6 @@ class CustomBalanceSituation(models.AbstractModel):
 	def _get_templates(self):
 		templates = super(CustomBalanceSituation, self)._get_templates()
 		templates['line_template'] = 'b_custom_account_reports.custom_sheet_balance'
-		# templates['search_template'] = 'b_custom_account_reports.search_template_custom'
 
 		return templates
 

@@ -41,6 +41,7 @@ class CustomSheetBalance(models.Model):
 	filter_accumulative = False
 
 	def _get_report_name(self):
+		""" Devuelve el nombre del reporte """
 		if self.id == self.env.ref('b_custom_account_reports.report_balance_sheet').id:
 			return _('Balance General')
 		else:
@@ -54,6 +55,9 @@ class CustomSheetBalance(models.Model):
 		return templates
 
 	def print_pdf(self, options):
+		"""
+		 Printing to pdf is redefined using the reports defined in the module "financierosv_sucursal"
+		"""
 		if self.id == self.env.ref('b_custom_account_reports.report_balance_sheet').id:
 
 			date_from = fields.Date.from_string(options.get('date').get('date_from'))
