@@ -2,19 +2,18 @@
 <odoo>
     <data>
         <!-- Reporte del Balance General -->
-        <record id="report_balance_sheet" model="account.financial.html.report">
+        <record forcecreate="True" id="report_balance_sheet" model="account.financial.html.report">
             <field name="name">Custom Balance Sheet</field>
             <field name="date_range" eval="True"/>
             <field name="analytic" eval="False"/>
             <field name="unfold_all_filter" eval="True"/>
             <field name='parent_id' ref='b_custom_account_reports.menu_custom_reports'/>
         </record>
-        <!-- Se definen la fórmula para el toral de activo la misma es Corriente + no Corriente -->
+        <!-- Se definen la fórmula para el total de activo la misma es Corriente + no Corriente -->
         <record id="balance_line_1000" model="account.financial.html.report.line">
             <field name="name">ACTIVO</field>
             <field name="code">line_1</field>
             <field name="financial_report_id" ref="report_balance_sheet"/>
-            <field name="formulas">line_11 + line_12</field>
             <field name="sequence" eval="0"/>
             <field name="level" eval="0"/>
             <field name="position" eval="1"/>
@@ -88,7 +87,7 @@
             <field name="code">line_12</field>
             <field name="parent_id" ref="balance_line_1000"/>
             <field name="formulas">line_1201 + line_1202 + line_1203 + line_1204 + line_1206 + line_1209</field>
-            <field name="sequence" eval="9"/>
+            <field name="sequence" eval="6"/>
             <field name="level" eval="1"/>
             <field name="position" eval="1"/>
         </record>
@@ -101,7 +100,7 @@
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="10"/>
+            <field name="sequence" eval="7"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
         </record>
@@ -114,7 +113,7 @@
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="10"/>
+            <field name="sequence" eval="8"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
         </record>
@@ -127,7 +126,7 @@
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="11"/>
+            <field name="sequence" eval="9"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
         </record>
@@ -140,7 +139,7 @@
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="12"/>
+            <field name="sequence" eval="10"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
         </record>
@@ -153,7 +152,7 @@
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="13"/>
+            <field name="sequence" eval="11"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
         </record>
@@ -166,17 +165,28 @@
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="14"/>
+            <field name="sequence" eval="12"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
         </record>
+
+        <record id="balance_line_1112" model="account.financial.html.report.line">
+            <field name="name">TOTAL ACTIVO</field>
+            <field name="code">line_1112</field>
+            <field name="financial_report_id" ref="report_balance_sheet"/>
+            <field name="formulas">line_11 + line_12</field>
+            <field name="sequence" eval="13"/>
+            <field name="level" eval="0"/>
+            <field name="position" eval="1"/>
+        </record>
+
         <!-- Se define el grupo de Pasivo -->
         <record id="balance_line_2000" model="account.financial.html.report.line">
             <field name="name">PASIVO</field>
             <field name="code">line_2</field>
             <field name="financial_report_id" ref="report_balance_sheet"/>
             <field name="formulas">line_21 + line_22</field>
-            <field name="sequence" eval="1"/>
+            <field name="sequence" eval="14"/>
             <field name="level" eval="0"/>
             <field name="position" eval="2"/>
         </record>
@@ -186,7 +196,7 @@
             <field name="code">line_21</field>
             <field name="parent_id" ref="balance_line_2000"/>
             <field name="formulas">line_2102 + line_2103 + line_2105 + line_2106 + line_2109</field>
-            <field name="sequence" eval="1"/>
+            <field name="sequence" eval="15"/>
             <field name="level" eval="1"/>
             <field name="position" eval="2"/>
         </record>
@@ -200,7 +210,7 @@
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="1"/>
+            <field name="sequence" eval="16"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
@@ -213,7 +223,7 @@
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="2"/>
+            <field name="sequence" eval="17"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
@@ -226,7 +236,7 @@
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="3"/>
+            <field name="sequence" eval="18"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
@@ -239,7 +249,7 @@
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="4"/>
+            <field name="sequence" eval="19"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
@@ -252,7 +262,7 @@
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="5"/>
+            <field name="sequence" eval="20"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
@@ -262,7 +272,7 @@
             <field name="code">line_22</field>
             <field name="parent_id" ref="balance_line_2000"/>
             <field name="formulas">line_2201</field>
-            <field name="sequence" eval="6"/>
+            <field name="sequence" eval="21"/>
             <field name="level" eval="1"/>
             <field name="position" eval="2"/>
         </record>
@@ -275,7 +285,7 @@
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="7"/>
+            <field name="sequence" eval="22"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
@@ -285,7 +295,7 @@
             <field name="code">line_31</field>
             <field name="financial_report_id" ref="report_balance_sheet"/>
             <field name="formulas">line_3101 + line_3102 + line_3103 + line_3104 + line_3105</field>
-            <field name="sequence" eval="1"/>
+            <field name="sequence" eval="23"/>
             <field name="level" eval="0"/>
             <field name="position" eval="2"/>
         </record>
@@ -298,8 +308,8 @@
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="2"/>
-            <field name="level" eval="1"/>
+            <field name="sequence" eval="24"/>
+            <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
         <!-- Se SUMAN todas las cuentas que en su código comiencen con 31020 -->
@@ -311,8 +321,8 @@
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="3"/>
-            <field name="level" eval="1"/>
+            <field name="sequence" eval="25"/>
+            <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
         <!-- Se SUMAN todas las cuentas que en su código comiencen con 31030 -->
@@ -324,8 +334,8 @@
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="4"/>
-            <field name="level" eval="1"/>
+            <field name="sequence" eval="26"/>
+            <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
         <!-- Se SUMAN todas las cuentas que en su código comiencen con 31040 -->
@@ -337,8 +347,8 @@
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="5"/>
-            <field name="level" eval="1"/>
+            <field name="sequence" eval="27"/>
+            <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
         <!-- Se SUMAN todas las cuentas que en su código comiencen con 31050 -->
@@ -350,8 +360,8 @@
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
-            <field name="sequence" eval="6"/>
-            <field name="level" eval="1"/>
+            <field name="sequence" eval="28"/>
+            <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
         <!-- Se define el grupo donde se suman los Pasivos y el capital -->
@@ -360,7 +370,7 @@
             <field name="code">line_40</field>
             <field name="financial_report_id" ref="report_balance_sheet"/>
             <field name="formulas">line_2 + line_31</field>
-            <field name="sequence" eval="1"/>
+            <field name="sequence" eval="29"/>
             <field name="level" eval="0"/>
             <field name="position" eval="2"/>
         </record>

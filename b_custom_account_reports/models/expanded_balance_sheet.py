@@ -93,6 +93,11 @@ class ExpandedBalanceSheet(models.Model):
 			'strings_to_formulas': False,
 		})
 		sheet = workbook.add_worksheet(self._get_report_name()[:31])
+
+		sheet.set_print_scale(95)
+		sheet.set_paper(1)
+		sheet.center_horizontally()
+
 		date_default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
 
 		level_0_style = workbook.add_format(
@@ -179,31 +184,39 @@ class ExpandedBalanceSheet(models.Model):
 
 		return generated_file
 
-	def get_xlsx(self, options):
+	def _balance_sheet_xlsx(self, options):
 		"""
-		The excel file is created in memory with the data obtained from Odoo
+		Generates the excel file of the balance sheet report with the same format as the pdf file
 		"""
-		if self.id == self.env.ref('b_custom_account_reports.result_state_report').id:
-			return self._state_result_xlsx(options)
-
 		output = io.BytesIO()
 		workbook = xlsxwriter.Workbook(output, {
 			'in_memory': True,
 			'strings_to_formulas': False,
 		})
 		sheet = workbook.add_worksheet(self._get_report_name()[:31])
+
+		sheet.set_print_scale(95)
+		sheet.set_landscape()
+		sheet.set_paper(1)
+		sheet.center_horizontally()
+		sheet.set_footer('&LF____________________&CF____________________&RF____________________')
+
 		date_default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
 
 		level_0_style = workbook.add_format(
-			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'valign': 'vcenter', 'bottom': 6, 'font_color': '#666666'})
+			{'font_name': 'Arial', 'bold': True, 'text_wrap': True, 'font_size': 11, 'valign': 'vcenter', 'bottom': 6, 'font_color': '#666666'})
 		level_0_number = workbook.add_format(
-			{'font_name': 'Arial', 'bold': True, 'font_size': 10, 'valign': 'vcenter', 'font_color': '#666666', 'num_format': '#,##0.00'})
+			{'font_name': 'Arial', 'bold': False, 'font_size': 10, 'align': 'center', 'valign': 'vcenter', 'font_color': '#666666', 'num_format':
+				'#,##0.00'})
 
-		level_1_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'font_size': 10, 'valign': 'vcenter', 'font_color': '#666666'})
+		level_1_style = workbook.add_format(
+			{'font_name': 'Arial', 'text_wrap': True, 'bold': True, 'font_size': 10, 'valign': 'vcenter', 'font_color': '#666666'})
 		level_1_number = workbook.add_format(
-			{'font_name': 'Arial', 'bold': False, 'font_size': 10, 'valign': 'vcenter', 'font_color': '#666666', 'num_format': '#,##0.00'})
+			{'font_name': 'Arial', 'bold': False, 'font_size': 10, 'align': 'center', 'valign': 'vcenter', 'font_color': '#666666', 'num_format':
+				'#,##0.00'})
 
-		level_2_style = workbook.add_format({'font_name': 'Arial', 'bold': False, 'font_size': 10, 'valign': 'vcenter', 'font_color': '#666666'})
+		level_2_style = workbook.add_format(
+			{'font_name': 'Arial', 'text_wrap': True, 'bold': False, 'font_size': 10, 'valign': 'vcenter', 'font_color': '#666666'})
 		level_2_number = workbook.add_format(
 			{'font_name': 'Arial', 'bold': False, 'font_size': 10, 'valign': 'vcenter', 'font_color': '#666666', 'num_format': '#,##0.00'})
 
@@ -217,28 +230,23 @@ class ExpandedBalanceSheet(models.Model):
 			{'font_name': 'Arial', 'align': 'center', 'valign': 'bottom', 'font_size': 12, 'font_color': '#666666'})
 
 		# Set the first column width to 50
-		sheet.set_column(0, 0, 50)
-		sheet.set_column(1, 1, 14)
+		sheet.set_column(0, 0, 40)
+		sheet.set_column(1, 1, 10)
 		sheet.set_column(2, 2, 13)
-		sheet.set_column(3, 3, 12)
-		sheet.set_row(0, 30)
+		sheet.set_column(3, 3, 40)
+		sheet.set_column(4, 4, 10)
+		sheet.set_column(5, 5, 13)
+		sheet.set_row(0, 25)
 
 		period = self._get_report_name() + ' DEL ' + options.get('date').get('date_from') + ' AL ' + options.get('date').get('date_to')
 
-		# if self._get_report_name() == 'Estado de Resultado Personalizado':
-		if self.id == self.env.ref('b_custom_account_reports.result_state_report').id:
-			sheet.merge_range(0, 0, 0, 3, self.env.company.name, company_name_style)
-			sheet.set_row(1, 20)
-			sheet.merge_range(1, 0, 1, 3, period, period_style)
-			sheet.merge_range(2, 0, 2, 3, '(Valores expresados en dólares de los Estados Unidos de America)', note_style)
-		else:
-			sheet.merge_range(0, 0, 0, 4, self.env.company.name, company_name_style)
-			sheet.set_row(1, 20)
-			sheet.merge_range(1, 0, 1, 4, period, period_style)
-			sheet.merge_range(2, 0, 2, 4, '(Valores expresados en dólares de los Estados Unidos de America)', note_style)
+		sheet.merge_range(0, 0, 0, 5, self.env.company.name, company_name_style)
+		sheet.set_row(1, 20)
+		sheet.merge_range(1, 0, 1, 5, period, period_style)
+		sheet.merge_range(2, 0, 2, 5, '(Valores expresados en dólares de los Estados Unidos de America)', note_style)
 
 		y_offset = 3
-		z_offset = 4
+		z_offset = 3
 		headers, lines = self.with_context(no_format=True, print_mode=True, prefetch_fields=False)._get_table(options)
 
 		col_one = list(filter(lambda item: item['position'] == 1, lines))
@@ -267,18 +275,209 @@ class ExpandedBalanceSheet(models.Model):
 					sheet.write(y + y_offset, 0, cell_value, style)
 
 			# write all the remaining cells
-			if col_one[y].get('class') != 'total' and level != 0:
+			if col_one[y].get('class') != 'total':
 				for x in range(1, len(col_one[y]['columns']) + 1):
 					cell_type, cell_value = self._get_cell_type_value(col_one[y]['columns'][x - 1])
 
-					if cell_type == 'number' and level == 0:
-						sheet.write_number(y + y_offset, x + col_one[y].get('colspan', 1) + 1, cell_value, number_style)
+					if cell_type == 'number' and level == 0 and col_one[y].get('name') == 'TOTAL ACTIVO':
+						sheet.write_number(y + y_offset, x + col_one[y].get('colspan', 1), cell_value, number_style)
 
 					if cell_type == 'number' and level == 2:
 						sheet.write_number(y + y_offset, x + col_one[y].get('colspan', 1) - 1, cell_value, number_style)
 
 					if cell_type == 'number' and level == 1:
 						sheet.write_number(y + y_offset, x + col_one[y].get('colspan', 1), cell_value, number_style)
+
+		# Imprime la Segunda columna del fichero Excel.
+		for y in range(0, len(col_two)):
+			level = col_two[y].get('level')
+			if level == 0:
+				z_offset += 1
+				style = level_0_style
+				number_style = level_0_number
+			elif level == 1:
+				style = level_1_style
+				number_style = level_1_number
+			elif level == 2:
+				style = level_2_style
+				number_style = level_2_number
+
+			# write the first column, with a specific style to manage the indentation
+			if col_two[y].get('class') != 'total':
+				cell_type, cell_value = self._get_cell_type_value(col_two[y])
+
+				if cell_type == 'date':
+					sheet.write_datetime(y + z_offset, 3, cell_value, date_default_style)
+				else:
+					sheet.write(y + z_offset, 3, cell_value, style)
+
+			# write all the remaining cells
+			if col_two[y].get('class') != 'total':
+				for x in range(1, len(col_two[y]['columns']) + 1):
+					cell_type, cell_value = self._get_cell_type_value(col_two[y]['columns'][x - 1])
+
+					if cell_type == 'number' and level == 0 and 'CAPITAL' in col_two[y].get('name'):
+						sheet.write_number(y + z_offset, x + 3 + col_two[y].get('colspan', 1), cell_value, number_style)
+
+					if cell_type == 'number' and level == 2:
+						sheet.write_number(y + z_offset, x + 3 + col_two[y].get('colspan', 1) - 1, cell_value, number_style)
+
+					if cell_type == 'number' and level == 1:
+						sheet.write_number(y + z_offset, x + 3 + col_two[y].get('colspan', 1), cell_value, number_style)
+
+		workbook.close()
+		output.seek(0)
+		generated_file = output.read()
+		output.close()
+
+		return generated_file
+
+	def get_xlsx(self, options):
+		"""
+		The excel file is created in memory with the data obtained from Odoo
+		"""
+		if self.id == self.env.ref('b_custom_account_reports.result_state_report').id:
+			return self._state_result_xlsx(options)
+
+		if self.id == self.env.ref('b_custom_account_reports.report_balance_sheet').id:
+			return self._balance_sheet_xlsx(options)
+
+		output = io.BytesIO()
+		workbook = xlsxwriter.Workbook(output, {
+			'in_memory': True,
+			'strings_to_formulas': False,
+		})
+		sheet = workbook.add_worksheet(self._get_report_name()[:31])
+
+		sheet.set_print_scale(95)
+		sheet.set_landscape()
+		sheet.set_paper(1)
+		sheet.center_horizontally()
+		sheet.set_footer('&LF____________________&CF____________________&RF____________________')
+
+		date_default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
+
+		level_0_style = workbook.add_format(
+			{'font_name': 'Arial', 'bold': True, 'text_wrap': True, 'font_size': 11, 'valign': 'vcenter', 'bottom': 6, 'font_color': '#666666'})
+		level_0_number = workbook.add_format(
+			{'font_name': 'Arial', 'bold': False, 'font_size': 10, 'align': 'center', 'valign': 'vcenter', 'font_color': '#666666', 'num_format':
+				'#,##0.00'})
+
+		level_1_style = workbook.add_format(
+			{'font_name': 'Arial', 'text_wrap': True, 'bold': True, 'font_size': 10, 'valign': 'vcenter', 'font_color': '#666666'})
+		level_1_number = workbook.add_format(
+			{'font_name': 'Arial', 'bold': False, 'font_size': 10, 'align': 'center', 'valign': 'vcenter', 'font_color': '#666666', 'num_format':
+				'#,##0.00'})
+
+		level_2_style = workbook.add_format(
+			{'font_name': 'Arial', 'text_wrap': True, 'bold': False, 'font_size': 10, 'valign': 'vcenter', 'font_color': '#666666'})
+		level_2_number = workbook.add_format(
+			{'font_name': 'Arial', 'bold': False, 'font_size': 10, 'valign': 'vcenter', 'font_color': '#666666', 'num_format': '#,##0.00'})
+
+		company_name_style = workbook.add_format(
+			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 16, 'font_color': '#666666'})
+		period_style = workbook.add_format(
+			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 11, 'font_color': '#666666'})
+		note_style = workbook.add_format(
+			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 11, 'font_color': '#666666'})
+		signature_style = workbook.add_format(
+			{'font_name': 'Arial', 'align': 'center', 'valign': 'bottom', 'font_size': 12, 'font_color': '#666666'})
+
+		# Set the first column width to 50
+		sheet.set_column(0, 0, 40)
+		sheet.set_column(1, 1, 10)
+		sheet.set_column(2, 2, 13)
+		sheet.set_column(3, 3, 40)
+		sheet.set_column(4, 4, 10)
+		sheet.set_column(5, 5, 13)
+		sheet.set_row(0, 25)
+
+		period = self._get_report_name() + ' DEL ' + options.get('date').get('date_from') + ' AL ' + options.get('date').get('date_to')
+
+		sheet.merge_range(0, 0, 0, 5, self.env.company.name, company_name_style)
+		sheet.set_row(1, 20)
+		sheet.merge_range(1, 0, 1, 5, period, period_style)
+		sheet.merge_range(2, 0, 2, 5, '(Valores expresados en dólares de los Estados Unidos de America)', note_style)
+
+		y_offset = 3
+		z_offset = 3
+		headers, lines = self.with_context(no_format=True, print_mode=True, prefetch_fields=False)._get_table(options)
+
+		col_one = list(filter(lambda item: item['position'] == 1, lines))
+		col_two = list(filter(lambda item: item['position'] == 2, lines))
+
+		for y in range(0, len(col_one)):
+			level = col_one[y].get('level')
+			if level == 0:
+				y_offset += 1
+				style = level_0_style
+				number_style = level_0_number
+			elif level == 1:
+				style = level_1_style
+				number_style = level_1_number
+			elif level == 2:
+				style = level_2_style
+				number_style = level_2_number
+
+			# write the first column, with a specific style to manage the indentation
+			if col_one[y].get('class') != 'total':
+				cell_type, cell_value = self._get_cell_type_value(col_one[y])
+
+				if cell_type == 'date':
+					sheet.write_datetime(y + y_offset, 0, cell_value, date_default_style)
+				else:
+					sheet.write(y + y_offset, 0, cell_value, style)
+
+			# write all the remaining cells
+			if col_one[y].get('class') != 'total':
+				for x in range(1, len(col_one[y]['columns']) + 1):
+					cell_type, cell_value = self._get_cell_type_value(col_one[y]['columns'][x - 1])
+
+					if cell_type == 'number' and level == 0 and col_one[y].get('name') == 'TOTAL ACTIVO':
+						sheet.write_number(y + y_offset, x + col_one[y].get('colspan', 1), cell_value, number_style)
+
+					if cell_type == 'number' and level == 2:
+						sheet.write_number(y + y_offset, x + col_one[y].get('colspan', 1) - 1, cell_value, number_style)
+
+					if cell_type == 'number' and level == 1:
+						sheet.write_number(y + y_offset, x + col_one[y].get('colspan', 1), cell_value, number_style)
+
+		# Imprime la Segunda columna del fichero Excel.
+		for y in range(0, len(col_two)):
+			level = col_two[y].get('level')
+			if level == 0:
+				z_offset += 1
+				style = level_0_style
+				number_style = level_0_number
+			elif level == 1:
+				style = level_1_style
+				number_style = level_1_number
+			elif level == 2:
+				style = level_2_style
+				number_style = level_2_number
+
+			# write the first column, with a specific style to manage the indentation
+			if col_two[y].get('class') != 'total':
+				cell_type, cell_value = self._get_cell_type_value(col_two[y])
+
+				if cell_type == 'date':
+					sheet.write_datetime(y + z_offset, 3, cell_value, date_default_style)
+				else:
+					sheet.write(y + z_offset, 3, cell_value, style)
+
+			# write all the remaining cells
+			if col_two[y].get('class') != 'total':
+				for x in range(1, len(col_two[y]['columns']) + 1):
+					cell_type, cell_value = self._get_cell_type_value(col_two[y]['columns'][x - 1])
+
+					if cell_type == 'number' and level == 0 and 'CAPITAL' in col_two[y].get('name'):
+						sheet.write_number(y + z_offset, x + 3 + col_two[y].get('colspan', 1), cell_value, number_style)
+
+					if cell_type == 'number' and level == 2:
+						sheet.write_number(y + z_offset, x + 3 + col_two[y].get('colspan', 1) - 1, cell_value, number_style)
+
+					if cell_type == 'number' and level == 1:
+						sheet.write_number(y + z_offset, x + 3 + col_two[y].get('colspan', 1), cell_value, number_style)
 
 		workbook.close()
 		output.seek(0)
