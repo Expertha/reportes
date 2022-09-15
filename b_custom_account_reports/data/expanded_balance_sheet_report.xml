@@ -410,7 +410,7 @@
         </record>
 
         <record id="balance_trial_3101" model="account.financial.html.report.line">
-            <field name="name">3101 CAPITAL SOCIAL</field>
+            <field name="name">CAPITAL SOCIAL</field>
             <field name="code">trial_3101</field>
             <field name="parent_id" ref="balance_trial_3100"/>
             <field name="domain" eval="[('account_id.code','=like','31010%')]"/>
@@ -418,7 +418,7 @@
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="2"/>
-            <field name="level" eval="1"/>
+            <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
 
@@ -431,7 +431,7 @@
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="3"/>
-            <field name="level" eval="1"/>
+            <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
 
@@ -444,7 +444,7 @@
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="4"/>
-            <field name="level" eval="1"/>
+            <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
 
@@ -457,7 +457,7 @@
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="5"/>
-            <field name="level" eval="1"/>
+            <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
 
@@ -470,7 +470,7 @@
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="6"/>
-            <field name="level" eval="1"/>
+            <field name="level" eval="2"/>
             <field name="position" eval="2"/>
         </record>
 
@@ -493,7 +493,7 @@
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="6"/>
-            <field name="level" eval="1"/>
+            <field name="level" eval="2"/>
             <field name="special_date_changer">from_fiscalyear</field>
             <field name="position" eval="2"/>
         </record>
