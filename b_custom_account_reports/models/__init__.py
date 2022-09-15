@@ -26,7 +26,6 @@
 ########################################################################
 
 from . import custom_trial_balance
-from . import custom_balance_situation
 from . import custom_sheet_balance
 from . import custom_result_state
 from . import expanded_balance_sheet
