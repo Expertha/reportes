@@ -38,6 +38,9 @@ class CustomResultState(models.Model):
 			return super(CustomResultState, self)._get_report_name()
 
 	def print_pdf(self, options):
+		"""
+		Printing to pdf is redefined using the reports defined in the module "financierosv_sucursal"
+		"""
 		if self.id == self.env.ref('b_custom_account_reports.result_state_report').id:
 
 			report_name = 'financierosv_sucursal.report_resultado_pdf'
