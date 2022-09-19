@@ -351,7 +351,9 @@ class ExpandedBalanceSheet(models.Model):
 		sheet.set_landscape()
 		sheet.set_paper(1)
 		sheet.center_horizontally()
-		sheet.set_footer('&LF____________________&CF____________________&RF____________________')
+
+		sheet.set_footer("&LF____________________\n                  Resp. "
+						 "Legal&CF____________________\nAuditor&RF____________________\n                     Contador")
 
 		date_default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
 
