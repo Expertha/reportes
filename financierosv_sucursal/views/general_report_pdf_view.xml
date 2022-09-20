@@ -451,8 +451,18 @@
                                             <strong t-esc="c.get('name')"/>
                                         </td>
                                         <td class="td2" style="border:none;"></td>
-                                        <t t-set="totaln3"
-                                           t-value="(c.get('previo4') + c.get('haber4') - c.get('debe4'))"/>
+
+                                        <!-- Para el caso que previo sea negativo -->
+                                        <t t-if="c.get('previo4') != 0">
+                                            <t t-set="previo4" t-value="(c.get('previo4') * -1)"/>
+                                        </t>
+
+                                        <t t-if="c.get('previo4') == 0">
+                                            <t t-set="previo4" t-value="c.get('previo4')"/>
+                                        </t>
+
+                                        <t t-set="totaln3" t-value="(previo4 + c.get('haber4') - c.get('debe4'))"/>
+
                                         <td class="td6" style="border:none;">
                                             <span t-esc="'{0:,.2f}'.format(totaln3)"/>
                                         </td>
@@ -464,8 +474,17 @@
                                         <td class="td1" style="border:none;">
                                             <span t-esc="c.get('name')"/>
                                         </td>
-                                        <t t-set="totalh"
-                                           t-value="(c.get('previo9') + c.get('haber9') - c.get('debe9'))"/>
+                                        <!-- Para el caso que saldo previo sea negativo -->
+                                        <t t-if="c.get('previo9') != 0">
+                                            <t t-set="previo" t-value="(c.get('previo9') * -1)"/>
+                                        </t>
+                                        <!-- Para el caso que saldo previo sea cero -->
+                                        <t t-if="c.get('previo9') == 0">
+                                            <t t-set="previo" t-value="c.get('previo9')"/>
+                                        </t>
+
+                                        <t t-set="totalh" t-value="(previo + c.get('haber9') - c.get('debe9'))"/>
+
                                         <td class="td6" style="border:none;">
                                             <span t-esc="'{0:,.2f}'.format(totalh)"/>
                                         </td>
