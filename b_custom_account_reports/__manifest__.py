@@ -38,7 +38,7 @@
 		'security/ir.model.access.csv',
 		'data/expanded_balance_sheet_report.xml',
 		'data/balance_sheet_report_data.xml',
-		'data/account_financial_report_data.xml',
+		# 'data/account_financial_report_data.xml',
 		'data/result_state_report.xml',
 		'views/report_views.xml',
 		'views/custom_line_template.xml',

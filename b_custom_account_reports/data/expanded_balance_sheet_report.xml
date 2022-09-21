@@ -268,11 +268,35 @@
             <field name="position" eval="1"/>
         </record>
 
+
+        <record id="balance_trial_45" model="account.financial.html.report.line">
+            <field name="name">OTROS GASTOS</field>
+            <field name="code">trial_45</field>
+            <field name="financial_report_id" ref="expanded_balance_sheet_report"/>
+            <field name="formulas">trial_4501</field>
+            <field name="sequence" eval="5"/>
+            <field name="level" eval="0"/>
+            <field name="position" eval="1"/>
+        </record>
+
+        <record id="balance_trial_4501" model="account.financial.html.report.line">
+            <field name="name">OTROS GASTOS NO OPERACIONALES</field>
+            <field name="code">trial_4501</field>
+            <field name="parent_id" ref="balance_trial_45"/>
+            <field name="domain" eval="[('account_id.code','=like','4501%')]"/>
+            <field name="formulas">sum</field>
+            <field name="groupby">account_id</field>
+            <field name="show_domain">never</field>
+            <field name="sequence" eval="2"/>
+            <field name="level" eval="2"/>
+            <field name="position" eval="1"/>
+        </record>
+
         <record id="balance_trial_5555" model="account.financial.html.report.line">
             <field name="name">TOTAL ACTIVO MAS COSTOS y GASTOS</field>
             <field name="code">trial_55</field>
             <field name="financial_report_id" ref="expanded_balance_sheet_report"/>
-            <field name="formulas">trial_1 + trial_42 + trial_41 + trial_4301</field>
+            <field name="formulas">trial_1 + trial_42 + trial_41 + trial_4301 + trial_45</field>
             <field name="sequence" eval="6"/>
             <field name="level" eval="0"/>
             <field name="position" eval="1"/>

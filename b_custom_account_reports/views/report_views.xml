@@ -9,18 +9,7 @@
             <field name="context" eval="{'model': 'custom.trial.balance'}"/>
         </record>
 
-        <!--        <record id="action_account_report_bs" model="ir.actions.client">-->
-        <!--            <field name="name">Balance Sheet</field>-->
-        <!--            <field name="tag">account_report</field>-->
-        <!--            <field name="context"-->
-        <!--                   eval="{'model': 'account.financial.html.report', 'id': ref('expanded_balance_sheet_report')}"/>-->
-        <!--        </record>-->
-
         <menuitem id="menu_custom_reports" name="Custom Reports" parent="account.menu_finance_reports" sequence="0"/>
-
-        <!--        <menuitem id="menu_balance_sheet" name="Balance Sheet"-->
-        <!--                  parent="menu_custom_reports"-->
-        <!--                  action="b_custom_account_reports.action_account_report_bs"/>-->
 
         <!-- MENU Trial Balance Sums and Balance -->
         <menuitem id="menu_custom_trial_balance" name="Trial Balance Sums and Balance"
