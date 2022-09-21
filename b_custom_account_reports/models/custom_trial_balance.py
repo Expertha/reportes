@@ -203,7 +203,7 @@ class CustomTrialBalance(models.AbstractModel):
 		sheet = workbook.add_worksheet(self._get_report_name()[:31])
 
 		date_default_col1_style = workbook.add_format(
-			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2, 'num_format': 'yyyy-mm-dd'})
+			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2, 'num_format': 'yyyy-mm-dd', 'align': 'right'})
 		date_default_style = workbook.add_format(
 			{'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
 		number_default_style = workbook.add_format(
@@ -211,7 +211,7 @@ class CustomTrialBalance(models.AbstractModel):
 		default_col1_style = workbook.add_format(
 			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2})
 		default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666'})
-		title_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'bottom': 2})
+		title_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'bottom': 2, 'align': 'right'})
 		level_0_style = workbook.add_format(
 			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'bottom': 6, 'font_color': '#666666'})
 		level_1_style = workbook.add_format(
@@ -274,7 +274,7 @@ class CustomTrialBalance(models.AbstractModel):
 					sheet.set_column(y_offset, x_offset, 40)
 					sheet.write(y_offset, x_offset, column_name_formated, title_style)
 				else:
-					sheet.merge_range(y_offset, x_offset, y_offset, x_offset + colspan - 1, column_name_formated,
+					sheet.merge_range(y_offset, x_offset, y_offset, x_offset + colspan, column_name_formated,
 									  title_style)
 				x_offset += colspan
 			y_offset += 1

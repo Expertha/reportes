@@ -36,14 +36,16 @@
 	'depends': ['account_reports'],
 	'data': [
 		'security/ir.model.access.csv',
-		'data/account_financial_report_data.xml',
+		'data/expanded_balance_sheet_report.xml',
+		'data/balance_sheet_report_data.xml',
+		# 'data/account_financial_report_data.xml',
+		'data/result_state_report.xml',
+		'views/report_views.xml',
 		'views/custom_line_template.xml',
+		'views/custom_search_sheet.xml',
 		'views/custom_search_extras_options.xml',
 		'views/custom_sheet_balance.xml',
-		'views/custom_search_sheet.xml',
-		'data/balance_sheet_report_data.xml',
-		'data/expanded_balance_sheet_report.xml',
-		'data/result_state_report.xml'
+
 	],
 	'demo': [],
 	'installable': True,
