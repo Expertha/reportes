@@ -218,6 +218,14 @@ class wizard_sv_mayor_report(models.TransientModel):
 		row = 4
 		for account in accounts:
 			name = account.get('code') + ' ' + account.get('name')
+
+			account_type = self.env['account.account'].search([('code', 'like', '%s%%' % account.get('code'))], limit=1)
+
+			if account_type.internal_group in ('equity', 'income', 'liability'):
+				saldo_init = account.get('previo') * -1
+			else:
+				saldo_init = account.get('previo')
+
 			page_1.row(row).height = 20 * 20
 			page_1.write_merge(row, row, 0, 4, name, bold_style_account)
 			row += 1
@@ -231,7 +239,7 @@ class wizard_sv_mayor_report(models.TransientModel):
 			page_1.write(row, 1, _('Previous balance'), bold_style)
 			page_1.write(row, 2, '0.00', bold_style_num)
 			page_1.write(row, 3, '0.00', bold_style_num)
-			page_1.write(row, 4, account.get('previo'), bold_style_num)
+			page_1.write(row, 4, saldo_init, bold_style_num)
 			row += 1
 
 			options['code'] = account.get('code')
@@ -241,14 +249,19 @@ class wizard_sv_mayor_report(models.TransientModel):
 			flag = False
 			for item in details:
 				flag = True
-				saldo = account.get('previo') + item.get('debit') - item.get('credit')
+
+				if account_type.internal_group in ('asset', 'expense'):
+					saldo_init = saldo_init + item.get('debit') - item.get('credit')
+				else:
+					saldo_init = saldo_init + item.get('credit') - item.get('debit')
+
 				formula_debe = "SUBTOTAL(9,C%d:C%d)" % (i, row + 1)
 				formula_haber = "SUBTOTAL(9,D%d:D%d)" % (i, row + 1)
 				page_1.write(row, 0, item.get('date'), bold_style_date)
 				page_1.write(row, 1, _('MOVEMENT JOURNALS'), bold_style)
 				page_1.write(row, 2, item.get('debit'), bold_style_num)
 				page_1.write(row, 3, item.get('credit'), bold_style_num)
-				page_1.write(row, 4, saldo, bold_style_num)
+				page_1.write(row, 4, saldo_init, bold_style_num)
 				row += 1
 
 			if flag:
@@ -282,7 +295,7 @@ class wizard_sv_mayor_report(models.TransientModel):
 
 		wizard_id = self.env['wizard.report.download.xls'].create(
 			{
-				'file_name': _('Libro Mayor diario.xlsx'),
+				'file_name': _('Libro Mayor diario.xls'),
 				'file': file
 			}
 		)

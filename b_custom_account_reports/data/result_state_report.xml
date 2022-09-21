@@ -163,6 +163,29 @@
             <field name="position" eval="1"/>
         </record>
 
+        <record id="result_state_45" model="account.financial.html.report.line">
+            <field name="name">OTROS GASTOS</field>
+            <field name="code">state_45</field>
+            <field name="parent_id" ref="result_state_4"/>
+            <field name="formulas">state_4501</field>
+            <field name="sequence" eval="3"/>
+            <field name="level" eval="1"/>
+            <field name="position" eval="1"/>
+        </record>
+
+        <record id="result_state_4501" model="account.financial.html.report.line">
+            <field name="name">OTROS GASTOS NO OPERACIONALES</field>
+            <field name="code">state_4501</field>
+            <field name="parent_id" ref="result_state_45"/>
+            <field name="domain" eval="[('account_id.code','=like','4501%')]"/>
+            <field name="formulas">sum</field>
+            <field name="groupby">account_id</field>
+            <field name="show_domain">never</field>
+            <field name="sequence" eval="2"/>
+            <field name="level" eval="2"/>
+            <field name="position" eval="1"/>
+        </record>
+
         <record id="result_state_01" model="account.financial.html.report.line">
             <field name="name">UTILIDAD DE OPERACIÓN</field>
             <field name="code">state_01</field>
