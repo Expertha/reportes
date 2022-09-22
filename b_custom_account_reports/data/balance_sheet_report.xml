@@ -2,13 +2,22 @@
 <odoo>
     <data>
         <!-- Reporte del Balance General -->
-        <record forcecreate="True" id="report_balance_sheet" model="account.financial.html.report">
+        <record id="report_balance_sheet" model="account.financial.html.report" forcecreate="True">
             <field name="name">Custom Balance Sheet</field>
             <field name="date_range" eval="True"/>
             <field name="analytic" eval="False"/>
             <field name="unfold_all_filter" eval="True"/>
-            <field name='parent_id' ref='b_custom_account_reports.menu_custom_reports'/>
+            <field name="generated_menu_id" ref="b_custom_account_reports.menu_custom_reports"/>
+            <field name="position" eval="1"/>
         </record>
+
+        <!-- ACTION Custom Balance Sheet -->
+        <record id="action_custom_balance_sheet" model="ir.actions.client">
+            <field name="name">Custom Balance Sheet</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.financial.html.report', 'id': ref('report_balance_sheet')}"/>
+        </record>
+
         <!-- Se definen la fórmula para el total de activo la misma es Corriente + no Corriente -->
         <record id="balance_line_1000" model="account.financial.html.report.line">
             <field name="name">ACTIVO</field>

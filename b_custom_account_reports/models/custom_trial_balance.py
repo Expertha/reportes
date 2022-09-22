@@ -210,34 +210,34 @@ class CustomTrialBalance(models.AbstractModel):
 			{'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666', 'num_format': '#,##0.00'})
 		default_col1_style = workbook.add_format(
 			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2})
-		default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666'})
+		default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 10, 'font_color': '#666666'})
 		title_style = workbook.add_format({'font_name': 'Arial', 'bold': True, 'bottom': 2, 'align': 'right'})
 		level_0_style = workbook.add_format(
-			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'bottom': 6, 'font_color': '#666666'})
+			{'font_name': 'Arial', 'bold': True, 'font_size': 10, 'bottom': 6, 'font_color': '#666666'})
 		level_1_style = workbook.add_format(
 			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'bottom': 1, 'font_color': '#666666'})
 		level_2_col1_style = workbook.add_format(
 			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'font_color': '#666666', 'indent': 1})
 		level_2_col1_total_style = workbook.add_format(
-			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'font_color': '#666666'})
+			{'font_name': 'Arial', 'bold': True, 'font_size': 10, 'font_color': '#666666'})
 		level_2_style = workbook.add_format(
 			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'font_color': '#666666'})
 		level_3_col1_style = workbook.add_format(
 			{'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'indent': 2})
 		level_3_col1_total_style = workbook.add_format(
 			{'font_name': 'Arial', 'bold': True, 'font_size': 11, 'font_color': '#666666', 'indent': 1})
-		level_3_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666'})
+		level_3_style = workbook.add_format({'font_name': 'Arial', 'font_size': 10, 'font_color': '#666666'})
 
 		company_name_style = workbook.add_format(
-			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 20, 'font_color': '#000000'})
+			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 20, 'font_color': '#666666'})
 		period_style = workbook.add_format(
 			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 14, 'font_color': '#666666'})
 		note_style = workbook.add_format(
 			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 12, 'font_color': '#666666'})
 		signature_style = workbook.add_format(
-			{'font_name': 'Arial', 'align': 'center', 'valign': 'bottom', 'font_size': 12, 'font_color': '#000000'})
+			{'font_name': 'Arial', 'valign': 'bottom', 'font_size': 12, 'font_color': '#666666'})
 		code_style = workbook.add_format(
-			{'font_name': 'Arial', 'valign': 'left', 'font_size': 11, 'font_color': '#000000'})
+			{'font_name': 'Arial', 'valign': 'left', 'font_size': 11, 'font_color': '#666666'})
 
 		# Set the first column width to 50
 		sheet.set_column(0, 0, 50)
@@ -313,36 +313,38 @@ class CustomTrialBalance(models.AbstractModel):
 
 			# write the first column, with a specific style to manage the indentation
 			cell_type, cell_value = self._get_cell_type_value(lines[y])
-			if cell_type == 'date':
-				sheet.write_datetime(y + y_offset, 1, cell_value, date_default_col1_style)
-			else:
-				cell_value = cell_value.split(' ', 1)
-				if len(cell_value) == 1:
-					cuenta = cell_value[0]
+			if lines[y].get('class') != 'total o_account_coa_column_contrast':
+				if cell_type == 'date':
+					sheet.write_datetime(y + y_offset, 1, cell_value, date_default_col1_style)
 				else:
-					cuenta = cell_value[1]
-				sheet.write(y + y_offset, 1, cuenta, col1_style)
+					cell_value = cell_value.split(' ', 1)
+					if len(cell_value) == 1:
+						cuenta = cell_value[0]
+					else:
+						cuenta = cell_value[1]
+					sheet.write(y + y_offset, 1, cuenta, col1_style)
 
 			# write all the remaining cells
-			for x in range(1, len(lines[y]['columns']) + 1):
-				cell_type, cell_value = self._get_cell_type_value(lines[y]['columns'][x - 1])
-				if cell_type == 'number':
-					sheet.write_number(y + y_offset, x + lines[y].get('colspan', 1), cell_value,
-									   number_default_style)
-				else:
-					sheet.write(y + y_offset, x + lines[y].get('colspan', 1), cell_value, style)
+			if lines[y].get('class') != 'total o_account_coa_column_contrast':
+				for x in range(1, len(lines[y]['columns']) + 1):
+					cell_type, cell_value = self._get_cell_type_value(lines[y]['columns'][x - 1])
+					if cell_type == 'number':
+						sheet.write_number(y + y_offset, x + lines[y].get('colspan', 1), cell_value,
+										   number_default_style)
+					else:
+						sheet.write(y + y_offset, x + lines[y].get('colspan', 1), cell_value, style)
 
 		sheet.set_row(len(lines) + 10, 30)
 
-		sheet.merge_range(len(lines) + 10, 0, len(lines) + 10, 5, 'F._________________________                                           '
-																  'F._________________________                                           '
-																  'F._________________________', signature_style)
+		sheet.merge_range(len(lines) + 10, 0, len(lines) + 10, 5,
+						  'F._________________                                '
+						  'F._________________                                   '
+						  'F._________________', signature_style)
 
 		sheet.merge_range(len(lines) + 11, 0, len(lines) + 11, 5,
-						  '                    Representante Legal                                             '
-						  '                                                                 Contador          '
-						  '                                                                                                            '
-						  'Auditor  ', '')
+						  '            Representante Legal                                                    '
+						  '                      Contador                                                 '
+						  '                          Auditor ', '')
 
 		workbook.close()
 		output.seek(0)
