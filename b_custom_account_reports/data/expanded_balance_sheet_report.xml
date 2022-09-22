@@ -2,13 +2,20 @@
 <odoo>
     <data>
         <!-- Reporte de Balance de comprobación -->
-        <record id="expanded_balance_sheet_report" model="account.financial.html.report">
-            <field name="name">Balance Trial</field>
+        <record id="expanded_balance_sheet_report" model="account.financial.html.report" forcecreate="True">
+            <field name="name">Checking Balance</field>
             <field name="date_range" eval="True"/>
             <field name="analytic" eval="False"/>
             <field name="unfold_all_filter" eval="True"/>
-            <field name='parent_id' ref='b_custom_account_reports.menu_custom_reports'/>
+            <field name="generated_menu_id" ref="b_custom_account_reports.menu_custom_reports"/>
             <field name="position" eval="1"/>
+        </record>
+
+        <!-- ACTION Checking Balance -->
+        <record id="action_checking_balance" model="ir.actions.client">
+            <field name="name">Checking Balance</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'model': 'account.financial.html.report', 'id': ref('expanded_balance_sheet_report')}"/>
         </record>
 
         <record id="balance_trial_1000" model="account.financial.html.report.line">

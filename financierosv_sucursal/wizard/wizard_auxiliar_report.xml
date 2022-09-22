@@ -7,7 +7,7 @@
                 <form string="Report XLS" create="false" edit="false">
                     <sheet>
                         <group>
-                            <label for="file" string="Guarde el archivo con la extensión '.xlsx'."/>
+                            <label for="file" string="Guarde el archivo con la extensión '.xls'."/>
                             <field name="file_name" invisible="1"/>
                             <field name="file" readonly="1" widget="binary" filename="file_name" nolabel="1"/>
                         </group>
@@ -54,6 +54,9 @@
 
         <menuitem id="auxiliar_report" name="Libro Diario Auxiliar" action="action_auxiliar_report_wizard"
                   parent="account_reports.account_reports_audit_reports_menu" sequence="9"/>
+
+        <!-- Este es el Menu Reportes personalizados del modulos de reportes
+        <menuitem id="menu_custom_reports" name="Custom Reports" parent="account.menu_finance_reports" sequence="0"/>-->
 
     </data>
 </odoo>

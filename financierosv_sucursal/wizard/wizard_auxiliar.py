@@ -110,15 +110,15 @@ class wizard_sv_auxiliar_report(models.TransientModel):
 		page_1.set_horz_split_pos(1)
 		page_1.panes_frozen = True
 		page_1.remove_splits = True
-		page_1.col(0).width = 256 * 20
-		page_1.col(1).width = 256 * 20
+		page_1.col(0).width = 256 * 15
+		page_1.col(1).width = 256 * 15
 		page_1.col(2).width = 256 * 20
-		page_1.col(3).width = 256 * 60
-		page_1.col(4).width = 256 * 40
+		page_1.col(3).width = 256 * 50
+		page_1.col(4).width = 256 * 30
 		page_1.col(5).width = 256 * 20
-		page_1.col(6).width = 256 * 20
-		page_1.col(7).width = 256 * 20
-		page_1.row(0).height = 40 * 20
+		page_1.col(6).width = 256 * 15
+		page_1.col(7).width = 256 * 15
+		page_1.row(0).height = 40 * 15
 
 		date_from = fields.Date.to_string(options.get('form').get('fechai'))
 		date_to = fields.Date.to_string(options.get('form').get('fechaf'))
@@ -201,6 +201,14 @@ class wizard_sv_auxiliar_report(models.TransientModel):
 		row = 4
 		for account in accounts:
 			name = account.get('code') + ' ' + account.get('name')
+
+			account_type = self.env['account.account'].search([('code', 'like', '%s%%' % account.get('code'))], limit=1)
+
+			if account_type.internal_group in ('equity', 'income', 'liability'):
+				saldo_init = account.get('previo') * -1
+			else:
+				saldo_init = account.get('previo')
+
 			page_1.row(row).height = 20 * 20
 			page_1.write_merge(row, row, 0, 7, name, bold_style_account)
 			row += 1
@@ -221,7 +229,7 @@ class wizard_sv_auxiliar_report(models.TransientModel):
 			page_1.write(row, 4, _('Previous balance'), bold_style)
 			page_1.write(row, 5, '0.00', bold_style_num)
 			page_1.write(row, 6, '0.00', bold_style_num)
-			page_1.write(row, 7, account.get('previo'), bold_style_num)
+			page_1.write(row, 7, saldo_init, bold_style_num)
 			row += 1
 
 			options['id'] = account.get('id')
@@ -231,9 +239,14 @@ class wizard_sv_auxiliar_report(models.TransientModel):
 			flag = False
 			for item in details:
 				flag = True
-				saldo = account.get('previo') + item.get('debit') - item.get('credit')
-				formula_debe = "SUBTOTAL(9,C%d:C%d)" % (i, row + 1)
-				formula_haber = "SUBTOTAL(9,D%d:D%d)" % (i, row + 1)
+
+				if account_type.internal_group in ('asset', 'expense'):
+					saldo_init = saldo_init + item.get('debit') - item.get('credit')
+				else:
+					saldo_init = saldo_init + item.get('credit') - item.get('debit')
+
+				formula_debe = "SUBTOTAL(9,F%d:F%d)" % (i, row + 1)
+				formula_haber = "SUBTOTAL(9,G%d:G%d)" % (i, row + 1)
 				page_1.row(row).height = 30 * 20
 				page_1.write(row, 0, item.get('date'), bold_style_date)
 				page_1.write(row, 1, item.get('name'), bold_style)
@@ -242,7 +255,7 @@ class wizard_sv_auxiliar_report(models.TransientModel):
 				page_1.write(row, 4, item.get('journal'), bold_style)
 				page_1.write(row, 5, item.get('debit'), bold_style_num)
 				page_1.write(row, 6, item.get('credit'), bold_style_num)
-				page_1.write(row, 7, saldo, bold_style_num)
+				page_1.write(row, 7, saldo_init, bold_style_num)
 				row += 1
 
 			if flag:
@@ -271,7 +284,7 @@ class wizard_sv_auxiliar_report(models.TransientModel):
 
 		wizard_id = self.env['wizard.report.download.assistant.xls'].create(
 			{
-				'file_name': _('Libro auxiliar diario.xlsx'),
+				'file_name': _('Libro auxiliar diario.xls'),
 				'file': file
 			}
 		)
