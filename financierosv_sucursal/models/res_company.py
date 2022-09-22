@@ -170,7 +170,7 @@ order by S1.code
         				  COALESCE(am2.date,am2.invoice_date)<=CAST('{5}' as date) and 
         				  am2.state in ('posted') ) as haber
 						  from account_account aa
-						  where aa.company_id= {0}  and length(trim(aa.code))>4 and aa.internal_type<>'view'
+						  where aa.company_id= {0}  and length(trim(aa.code))>4 and aa.code not in ('110304') and aa.internal_type<>'view'
 						order by aa.code	
 					) S1
 				   where S1.previo<>0 or S1.debe<>0 or S1.haber<>0
