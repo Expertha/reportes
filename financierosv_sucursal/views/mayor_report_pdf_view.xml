@@ -204,23 +204,26 @@
                                 <div style="col-12">
                                     <table style="width:100%;">
                                         <tr class="border-black">
-                                            <td></td>
-                                            <td style="width:40%; text-align: right;">
+                                            <td style="width:10%;">
+                                            </td>
+                                            <td style="width:30%;text-align: right;">
                                                 <b>Subtotal</b>
                                             </td>
-                                            <td style="width:15%;text-align: right;">
+                                            <td style="width:20%;text-align: right;">
                                                 <b>
                                                     <span t-esc="company.currency_id.symbol"/>
                                                     <span t-esc="'{:,.2f}'.format(debeTotal)"/>
                                                 </b>
                                             </td>
-                                            <td style="width:15%;text-align: right;">
+                                            <td style="width:20%;text-align: right;">
                                                 <b>
                                                     <span t-esc="company.currency_id.symbol"/>
                                                     <span t-esc="'{:,.2f}'.format(haberTotal)"/>
                                                 </b>
                                             </td>
-                                            <td style="width:15%;text-align: right;"></td>
+                                            <td style="width:20%;text-align: center;">
+
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
