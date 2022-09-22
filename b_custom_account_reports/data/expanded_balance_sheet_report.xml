@@ -509,7 +509,7 @@
             <field name="name">CUENTAS DE RESULTADO INGRESOS</field>
             <field name="code">trial_51</field>
             <field name="financial_report_id" ref="expanded_balance_sheet_report"/>
-            <field name="formulas">trial_5101</field>
+            <field name="formulas">trial_5101 - trial_5301</field>
             <field name="sequence" eval="9"/>
             <field name="level" eval="0"/>
             <field name="position" eval="2"/>
@@ -521,6 +521,20 @@
             <field name="parent_id" ref="balance_trial_5100"/>
             <field name="domain" eval="[('account_id.code','=like','5101%')]"/>
             <field name="formulas">-sum</field>
+            <field name="groupby">account_id</field>
+            <field name="show_domain">foldable</field>
+            <field name="sequence" eval="6"/>
+            <field name="level" eval="2"/>
+            <field name="special_date_changer">from_fiscalyear</field>
+            <field name="position" eval="2"/>
+        </record>
+
+        <record id="balance_trial_5301" model="account.financial.html.report.line">
+            <field name="name">DESCUENTOS SOBRE LAS VENTAS</field>
+            <field name="code">trial_5301</field>
+            <field name="parent_id" ref="balance_trial_5100"/>
+            <field name="domain" eval="[('account_id.code','=like','5301%')]"/>
+            <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
             <field name="sequence" eval="6"/>

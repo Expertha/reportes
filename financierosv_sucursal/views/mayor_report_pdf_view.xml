@@ -117,19 +117,19 @@
                                 <div style="col-12">
                                     <table style="width:100%;">
                                         <tr>
-                                            <td class="tb-header" style="width:15%;">
+                                            <td class="tb-header" style="width:10%;">
                                                 <b>Fecha</b>
                                             </td>
-                                            <td class="tb-header" style="width:40%;">
+                                            <td class="tb-header" style="width:30%;">
                                                 <b>Descripcion</b>
                                             </td>
-                                            <td class="tb-header" style="width:15%;text-align: center;">
+                                            <td class="tb-header" style="width:20%;text-align: center;">
                                                 <b>Debe</b>
                                             </td>
-                                            <td class="tb-header" style="width:15%;text-align: center;">
+                                            <td class="tb-header" style="width:20%;text-align: center;">
                                                 <b>Haber</b>
                                             </td>
-                                            <td class="tb-header" style="width:15%;text-align: center;">
+                                            <td class="tb-header" style="width:20%;text-align: center;">
                                                 <b>Saldo</b>
                                             </td>
                                         </tr>
@@ -147,14 +147,14 @@
                                                 <t t-if="company.get_type_account(c.get('code')) in ('asset', 'expense')">
                                                     <t t-set="SaldoInicial" t-value="c.get('previo')"/>
                                                     <span t-esc="company.currency_id.symbol"/>
-                                                    <span t-esc="'{0:.2f}'.format(SaldoInicial)"/>
+                                                    <span t-esc="'{:,.2f}'.format(SaldoInicial)"/>
                                                 </t>
 
                                                 <!--CUENTAS DE SALDO = SALDO_ANTERIOR + s.get('haber') - s.get('debe')-->
                                                 <t t-if="company.get_type_account(c.get('code')) in ('equity', 'income', 'liability')">
                                                     <t t-set="SaldoInicial" t-value="c.get('previo') * -1"/>
                                                     <span t-esc="company.currency_id.symbol"/>
-                                                    <span t-esc="'{0:.2f}'.format(SaldoInicial)"/>
+                                                    <span t-esc="'{:,.2f}'.format(SaldoInicial)"/>
                                                 </t>
 
                                             </td>
@@ -172,11 +172,11 @@
                                                 </td>
                                                 <td style="text-align: right;">
                                                     <span t-esc="company.currency_id.symbol"/>
-                                                    <span t-esc="'{0:.2f}'.format(s.get('debit'))"/>
+                                                    <span t-esc="'{:,.2f}'.format(s.get('debit'))"/>
                                                 </td>
                                                 <td style="text-align: right;">
                                                     <span t-esc="company.currency_id.symbol"/>
-                                                    <span t-esc="'{0:.2f}'.format(s.get('credit'))"/>
+                                                    <span t-esc="'{:,.2f}'.format(s.get('credit'))"/>
                                                 </td>
                                                 <!--CUENTAS DE SALDO = SALDO_ANTERIOR + s.get('debe') -  s.get('haber')-->
                                                 <t t-if="company.get_type_account(c.get('code')) in ('asset', 'expense')">
@@ -192,7 +192,7 @@
                                                 <!--<t t-set="saldo" t-value="c.get('previo') + s.get('debit') - s.get('credit')"/>-->
                                                 <td style="text-align: right;">
                                                     <span t-esc="company.currency_id.symbol"/>
-                                                    <span t-esc="'{0:.2f}'.format(SaldoInicial)"/>
+                                                    <span t-esc="'{:,.2f}'.format(SaldoInicial)"/>
                                                 </td>
                                             </tr>
                                         </t>
@@ -211,13 +211,13 @@
                                             <td style="width:15%;text-align: right;">
                                                 <b>
                                                     <span t-esc="company.currency_id.symbol"/>
-                                                    <span t-esc="'{0:.2f}'.format(debeTotal)"/>
+                                                    <span t-esc="'{:,.2f}'.format(debeTotal)"/>
                                                 </b>
                                             </td>
                                             <td style="width:15%;text-align: right;">
                                                 <b>
                                                     <span t-esc="company.currency_id.symbol"/>
-                                                    <span t-esc="'{0:.2f}'.format(haberTotal)"/>
+                                                    <span t-esc="'{:,.2f}'.format(haberTotal)"/>
                                                 </b>
                                             </td>
                                             <td style="width:15%;text-align: right;"></td>
@@ -245,7 +245,7 @@
                                             <h6>
                                                 <b>
                                                     <span t-esc="company.currency_id.symbol"/>
-                                                    <span t-esc="'{0:.2f}'.format(debeTotalGeneral)"/>
+                                                    <span t-esc="'{:,.2f}'.format(debeTotalGeneral)"/>
                                                 </b>
                                             </h6>
                                         </td>
@@ -253,7 +253,7 @@
                                             <h6>
                                                 <b>
                                                     <span t-esc="company.currency_id.symbol"/>
-                                                    <span t-esc="'{0:.2f}'.format(haberTotalGeneral)"/>
+                                                    <span t-esc="'{:,.2f}'.format(haberTotalGeneral)"/>
                                                 </b>
                                             </h6>
                                         </td>

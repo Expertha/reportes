@@ -552,8 +552,8 @@
                                                 <strong t-esc="c.get('name')"/>
                                             </td>
                                             <td class="td2" style="border:none;"></td>
-                                            <t t-set="totali"
-                                               t-value="(c.get('previo16') + c.get('haber16') - c.get('debe16'))"/>
+                                            <!--<t t-set="totali" t-value="(c.get('previo16') + c.get('haber16') - c.get('debe16'))"/>-->
+                                            <t t-set="totali" t-value="(c.get('previo16'))"/>
                                             <td class="td6" style="border:none;">
                                                 <span t-esc="'{0:,.2f}'.format(totali)"/>
                                             </td>

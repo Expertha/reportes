@@ -43,7 +43,7 @@
             <field name="name">SERVICIOS DE RESTAURANTE</field>
             <field name="code">state_5101</field>
             <field name="parent_id" ref="result_state_5153"/>
-            <field name="domain" eval="[('account_id.code','=like','51010%')]"/>
+            <field name="domain" eval="[('account_id.code','=like','5101%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
@@ -56,7 +56,7 @@
             <field name="name">DESCUENTOS SOBRE LAS VENTAS</field>
             <field name="code">state_5301</field>
             <field name="parent_id" ref="result_state_5153"/>
-            <field name="domain" eval="[('account_id.code','=like','53010%')]"/>
+            <field name="domain" eval="[('account_id.code','=like','5301%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
             <field name="show_domain">foldable</field>
