@@ -109,15 +109,6 @@
                                 <td class="td6" style="border:none;">
                                     <span t-esc="'{0:,.2f}'.format(total)"/>
                                 </td>
-                                <!--CUENTAS DE SALDO = SALDO_ANTERIOR + c.get('debe') -  c.get('haber')
-                                <t t-if="company.get_type_account(c.get('code')) in ('asset', 'expense')">
-                                    <t t-set="saldo" t-value="c.get('previo') + c.get('debe') - c.get('haber')"/>
-                                </t>-->
-
-                                <!--CUENTAS DE SALDO = SALDO_ANTERIOR + c.get('haber') - c.get('debe')
-                                <t t-if="company.get_type_account(c.get('code')) in ('equity', 'income', 'liability')">
-                                    <t t-set="saldo" t-value="c.get('previo') + c.get('haber') - c.get('debe')"/>
-                                </t>-->
                             </tr>
                         </table>
                         <br/>

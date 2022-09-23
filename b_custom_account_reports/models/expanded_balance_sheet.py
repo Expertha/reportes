@@ -209,7 +209,6 @@ class ExpandedBalanceSheet(models.Model):
 		sheet.set_landscape()
 		sheet.set_paper(1)
 		sheet.center_horizontally()
-		# sheet.set_footer('&LF____________________&CF____________________&RF____________________')
 
 		date_default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
 
@@ -367,29 +366,30 @@ class ExpandedBalanceSheet(models.Model):
 		})
 		sheet = workbook.add_worksheet(self._get_report_name()[:31])
 
-		sheet.set_print_scale(95)
+		sheet.set_print_scale(90)
 		sheet.set_landscape()
 		sheet.set_paper(1)
 		sheet.center_horizontally()
+		# sheet.set_footer('&LF____________________&CF____________________&RF____________________')
 
-		date_default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 10, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
+		date_default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 8, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
 
 		level_0_style = workbook.add_format(
-			{'font_name': 'Arial', 'bold': True, 'text_wrap': True, 'font_size': 10, 'valign': 'vcenter', 'bottom': 6, 'font_color': '#666666'})
+			{'font_name': 'Arial', 'bold': True, 'text_wrap': True, 'font_size': 8, 'valign': 'vcenter', 'bottom': 6, 'font_color': '#666666'})
 		level_0_number = workbook.add_format(
 			{'font_name': 'Arial', 'bold': True, 'font_size': 10, 'align': 'center', 'valign': 'vcenter', 'font_color': '#666666', 'num_format':
 				'#,##0.00'})
 
 		level_1_style = workbook.add_format(
-			{'font_name': 'Arial', 'text_wrap': True, 'bold': True, 'font_size': 10, 'valign': 'vcenter', 'font_color': '#666666'})
+			{'font_name': 'Arial', 'text_wrap': True, 'bold': True, 'font_size': 8, 'valign': 'vcenter', 'font_color': '#666666'})
 		level_1_number = workbook.add_format(
-			{'font_name': 'Arial', 'bold': True, 'font_size': 10, 'align': 'center', 'valign': 'vcenter', 'font_color': '#666666', 'num_format':
+			{'font_name': 'Arial', 'bold': True, 'font_size': 8, 'align': 'center', 'valign': 'vcenter', 'font_color': '#666666', 'num_format':
 				'#,##0.00'})
 
 		level_2_style = workbook.add_format(
-			{'font_name': 'Arial', 'text_wrap': True, 'bold': False, 'font_size': 10, 'valign': 'vcenter', 'font_color': '#666666'})
+			{'font_name': 'Arial', 'text_wrap': True, 'bold': False, 'font_size': 8, 'valign': 'vcenter', 'font_color': '#666666'})
 		level_2_number = workbook.add_format(
-			{'font_name': 'Arial', 'bold': False, 'font_size': 10, 'valign': 'vcenter', 'font_color': '#666666', 'num_format': '#,##0.00'})
+			{'font_name': 'Arial', 'bold': False, 'font_size': 8, 'valign': 'vcenter', 'font_color': '#666666', 'num_format': '#,##0.00'})
 
 		company_name_style = workbook.add_format(
 			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 14, 'font_color': '#666666'})
@@ -502,13 +502,13 @@ class ExpandedBalanceSheet(models.Model):
 			else:
 				z_offset -= 1
 
-		# sheet.merge_range(30, 0, 30, 5, 'F.____________________                                           '
-		# 								'F._________________                                                        '
-		# 								'F_________________', signature_style)
-		#
-		# sheet.merge_range(31, 0, 31, 5, '                Representante Legal                                                            '
-		# 								'Contador                                                                               '
-		# 								'Auditor ', name_signature_style)
+		sheet.merge_range(34, 0, 34, 5, 'F.____________________                                           '
+										'F._________________                                                        '
+										'F_________________', signature_style)
+
+		sheet.merge_range(35, 0, 35, 5, '                Representante Legal                                                            '
+										'Contador                                                                               '
+										'Auditor ', name_signature_style)
 
 		workbook.close()
 		output.seek(0)
