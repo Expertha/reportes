@@ -120,7 +120,9 @@ class ExpandedBalanceSheet(models.Model):
 		note_style = workbook.add_format(
 			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 11, 'font_color': '#666666'})
 		signature_style = workbook.add_format(
-			{'font_name': 'Arial', 'align': 'center', 'valign': 'bottom', 'font_size': 12, 'font_color': '#666666'})
+			{'font_name': 'Arial', 'align': 'center', 'valign': 'bottom', 'font_size': 11, 'font_color': '#666666'})
+		name_signature_style = workbook.add_format(
+			{'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666'})
 
 		# Set the first column width to 50
 		sheet.set_column(0, 0, 50)
@@ -177,6 +179,14 @@ class ExpandedBalanceSheet(models.Model):
 					if cell_type == 'number' and level == 1:
 						sheet.write_number(y + y_offset, x + lines[y].get('colspan', 1), cell_value, number_style)
 
+		sheet.merge_range(41, 0, 41, 3, 'F._________________                         '
+										'F._________________                        '
+										'F._________________', signature_style)
+
+		sheet.merge_range(42, 0, 42, 3, '     Representante Legal                                   '
+										'Contador                                                    '
+										'Auditor ', name_signature_style)
+
 		workbook.close()
 		output.seek(0)
 		generated_file = output.read()
@@ -199,7 +209,7 @@ class ExpandedBalanceSheet(models.Model):
 		sheet.set_landscape()
 		sheet.set_paper(1)
 		sheet.center_horizontally()
-		sheet.set_footer('&LF____________________&CF____________________&RF____________________')
+		# sheet.set_footer('&LF____________________&CF____________________&RF____________________')
 
 		date_default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
 
@@ -227,7 +237,9 @@ class ExpandedBalanceSheet(models.Model):
 		note_style = workbook.add_format(
 			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 11, 'font_color': '#666666'})
 		signature_style = workbook.add_format(
-			{'font_name': 'Arial', 'align': 'center', 'valign': 'bottom', 'font_size': 12, 'font_color': '#666666'})
+			{'font_name': 'Arial', 'align': 'center', 'valign': 'bottom', 'font_size': 11, 'font_color': '#666666'})
+
+		name_signature_style = workbook.add_format({'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666'})
 
 		# Set the first column width to 50
 		sheet.set_column(0, 0, 40)
@@ -329,6 +341,14 @@ class ExpandedBalanceSheet(models.Model):
 			else:
 				z_offset -= 1
 
+		sheet.merge_range(30, 0, 30, 5, 'F.____________________                                           '
+										'F._________________                                                        '
+										'F_________________', signature_style)
+
+		sheet.merge_range(31, 0, 31, 5, '                Representante Legal                                                            '
+										'Contador                                                                               '
+										'Auditor ', name_signature_style)
+
 		workbook.close()
 		output.seek(0)
 		generated_file = output.read()
@@ -352,10 +372,7 @@ class ExpandedBalanceSheet(models.Model):
 		sheet.set_paper(1)
 		sheet.center_horizontally()
 
-		sheet.set_footer("&LF____________________\n                  Resp. "
-						 "Legal&CF____________________\nAuditor&RF____________________\n                     Contador")
-
-		date_default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 12, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
+		date_default_style = workbook.add_format({'font_name': 'Arial', 'font_size': 10, 'font_color': '#666666', 'num_format': 'yyyy-mm-dd'})
 
 		level_0_style = workbook.add_format(
 			{'font_name': 'Arial', 'bold': True, 'text_wrap': True, 'font_size': 10, 'valign': 'vcenter', 'bottom': 6, 'font_color': '#666666'})
@@ -375,13 +392,15 @@ class ExpandedBalanceSheet(models.Model):
 			{'font_name': 'Arial', 'bold': False, 'font_size': 10, 'valign': 'vcenter', 'font_color': '#666666', 'num_format': '#,##0.00'})
 
 		company_name_style = workbook.add_format(
-			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 16, 'font_color': '#666666'})
+			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 14, 'font_color': '#666666'})
 		period_style = workbook.add_format(
 			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 11, 'font_color': '#666666'})
 		note_style = workbook.add_format(
 			{'font_name': 'Arial', 'align': 'center', 'valign': 'vcenter', 'font_size': 11, 'font_color': '#666666'})
 		signature_style = workbook.add_format(
-			{'font_name': 'Arial', 'align': 'center', 'valign': 'bottom', 'font_size': 12, 'font_color': '#666666'})
+			{'font_name': 'Arial', 'align': 'center', 'valign': 'bottom', 'font_size': 11, 'font_color': '#666666'})
+
+		name_signature_style = workbook.add_format({'font_name': 'Arial', 'font_size': 11, 'font_color': '#666666'})
 
 		# Set the first column width to 50
 		sheet.set_column(0, 0, 40)
@@ -482,6 +501,14 @@ class ExpandedBalanceSheet(models.Model):
 						sheet.write_number(y + z_offset, x + 3 + col_two[y].get('colspan', 1), cell_value, number_style)
 			else:
 				z_offset -= 1
+
+		# sheet.merge_range(30, 0, 30, 5, 'F.____________________                                           '
+		# 								'F._________________                                                        '
+		# 								'F_________________', signature_style)
+		#
+		# sheet.merge_range(31, 0, 31, 5, '                Representante Legal                                                            '
+		# 								'Contador                                                                               '
+		# 								'Auditor ', name_signature_style)
 
 		workbook.close()
 		output.seek(0)

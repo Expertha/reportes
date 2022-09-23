@@ -45,7 +45,7 @@
             <field name="domain" eval="[('account_id.code','=like','11010%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
@@ -58,7 +58,7 @@
             <field name="domain" eval="[('account_id.code','=like','11030%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
@@ -71,7 +71,7 @@
             <field name="domain" eval="[('account_id.code','=like','11040%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="4"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
@@ -84,7 +84,7 @@
             <field name="domain" eval="[('account_id.code','=like','11050%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="5"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
@@ -107,7 +107,7 @@
             <field name="domain" eval="[('account_id.code','=like','12010%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="10"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
@@ -120,7 +120,7 @@
             <field name="domain" eval="[('account_id.code','=like','12020%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="10"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
@@ -133,7 +133,7 @@
             <field name="domain" eval="[('account_id.code','=like','12030%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="11"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
@@ -146,7 +146,7 @@
             <field name="domain" eval="[('account_id.code','=like','12040%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="12"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
@@ -159,7 +159,7 @@
             <field name="domain" eval="[('account_id.code','=like','12060%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="13"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
@@ -172,7 +172,7 @@
             <field name="domain" eval="[('account_id.code','=like','12090%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="14"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
@@ -196,7 +196,7 @@
             <field name="domain" eval="[('account_id.code','=like','4101%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="2"/>
             <field name="special_date_changer">from_fiscalyear</field>
@@ -210,7 +210,7 @@
             <field name="domain" eval="[('account_id.code','=like','4102%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="2"/>
             <field name="special_date_changer">from_fiscalyear</field>
@@ -246,7 +246,7 @@
             <field name="domain" eval="[('account_id.code','=like','4202%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
@@ -269,7 +269,7 @@
             <field name="domain" eval="[('account_id.code','=like','4301%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="2"/>
             <field name="position" eval="1"/>
@@ -336,7 +336,7 @@
             <field name="domain" eval="[('account_id.code','=like','21020%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="1"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
@@ -349,7 +349,7 @@
             <field name="domain" eval="[('account_id.code','=like','21030%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
@@ -362,7 +362,7 @@
             <field name="domain" eval="[('account_id.code','=like','21050%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
@@ -375,7 +375,7 @@
             <field name="domain" eval="[('account_id.code','=like','21060%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="4"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
@@ -388,7 +388,7 @@
             <field name="domain" eval="[('account_id.code','=like','21070%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="5"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
@@ -401,7 +401,7 @@
             <field name="domain" eval="[('account_id.code','=like','21090%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="5"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
@@ -424,7 +424,7 @@
             <field name="domain" eval="[('account_id.code','=like','22010%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="7"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
@@ -447,7 +447,7 @@
             <field name="domain" eval="[('account_id.code','=like','31010%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="2"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
@@ -460,7 +460,7 @@
             <field name="domain" eval="[('account_id.code','=like','31020%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="3"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
@@ -473,7 +473,7 @@
             <field name="domain" eval="[('account_id.code','=like','31030%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="4"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
@@ -486,7 +486,7 @@
             <field name="domain" eval="[('account_id.code','=like','31040%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="5"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
@@ -499,7 +499,7 @@
             <field name="domain" eval="[('account_id.code','=like','3105%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="6"/>
             <field name="level" eval="2"/>
             <field name="position" eval="2"/>
@@ -522,7 +522,7 @@
             <field name="domain" eval="[('account_id.code','=like','5101%')]"/>
             <field name="formulas">-sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="6"/>
             <field name="level" eval="2"/>
             <field name="special_date_changer">from_fiscalyear</field>
@@ -536,7 +536,7 @@
             <field name="domain" eval="[('account_id.code','=like','5301%')]"/>
             <field name="formulas">sum</field>
             <field name="groupby">account_id</field>
-            <field name="show_domain">foldable</field>
+            <field name="show_domain">never</field>
             <field name="sequence" eval="6"/>
             <field name="level" eval="2"/>
             <field name="special_date_changer">from_fiscalyear</field>
